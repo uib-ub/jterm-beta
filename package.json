@@ -7,11 +7,13 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
+    "@nuxt/content": "^2.0.1",
     "nuxt": "3.0.0-rc.6"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
     "bootstrap": "^5.2.0",
-    "sass": "^1.54.4"
+    "sass": "^1.54.4",
+    "sparqljs": "^3.5.2"
   }
 }
