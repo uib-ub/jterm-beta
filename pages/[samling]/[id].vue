@@ -57,8 +57,6 @@ function mapConceptData(binding, conceptData) {
     }
     try {
       const path = mappingTableNested[binding.p0.value][binding.p1.value];
-      console.log(path[0])
-      console.log(dataDisplayLanguages)
       if (dataDisplayLanguages.value.includes(path[0])) {
         set(path, binding.s1.value, conceptData)
       }
@@ -83,10 +81,10 @@ function mapConceptData(binding, conceptData) {
 
 async function fetchData() {
   const data = await $fetch(
-    "/api/concept",
+    "/api/prod",
     {
       method: "post",
-      body: { samling: samling, art: id },
+      body: generateConceptQuery(samling, id),
     }
   )
   mydata.value = data.results.bindings

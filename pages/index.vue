@@ -15,14 +15,12 @@ definePageMeta({
 
 const data = ref({})
 const searchterm = useSearchterm()
-const searchLanguage = useSearchLanguage()
 
 async function fetchData() {
-  data.value = await $fetch('/api/search', {
-    method: 'post', body: {
-      searchterm: searchterm.value,
-      searchLanguage: searchLanguage.value
-    }
+  console.log("fetch: " + searchterm)
+  data.value = await $fetch('/api/prod', {
+    method: 'post',
+    body: generateSearchQuery(searchterm.value)
   })
   data.value = data.value.results.bindings.map(processBindings);
 }

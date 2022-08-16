@@ -19,11 +19,9 @@ const searchterm = useSearchterm()
 const searchLanguage = useSearchLanguage()
 
 async function fetchData() {
-    data.value = await $fetch('/api/search', {
-        method: 'post', body: {
-            searchterm: route.query.q,
-            searchLanguage: searchLanguage.value
-        }
+    data.value = await $fetch('/api/prod', {
+        method: 'post',
+        body: generateSearchQuery(searchterm.value),
     })
     data.value = data.value.results.bindings.map(processBindings);
 }
