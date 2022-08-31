@@ -1,7 +1,8 @@
 <template>
   <div class="py-1">
-    <input class="m-2" v-model="searchterm" @keypress.enter="execSearch" /><br>
-
+    <input id="searchfield" class="m-2" v-model="searchterm" @keypress.enter="execSearch" />
+    <label for="searchfield">Search</label>
+    <br>
 
     <select class="mx-2" name="searchLang" id="searchLang" v-model="searchLanguage">
       <option value="">Alle</option>
