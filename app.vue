@@ -6,11 +6,19 @@
   </div>
 </template>
 
+<script setup>
+useHead({
+  htmlAttrs: {
+    lang: 'no',
+  }
+})
+</script>
+
 <style>
 body::before {
   display: block;
   content: '';
-  height: 65px;
+  height: 55px;
 
 }
 
