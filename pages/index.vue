@@ -17,8 +17,7 @@ const data = ref({})
 const searchterm = useSearchterm()
 
 async function fetchData() {
-  console.log("fetch: " + searchterm)
-  data.value = await $fetch('/api/prod', {
+  data.value = await $fetch('/api/termjson', {
     method: 'post',
     body: generateSearchQuery(searchterm.value)
   })
