@@ -7,19 +7,20 @@ export default defineEventHandler(async (event) => {
             body: body,
             headers: {
                 'Content-type': 'application/sparql-query',
-                'Referer': 'https://term.uib.no/'
+                'Referer': 'https://term.uib.no/',
+                'Accept': 'application/ld+json'
             }
-
         });
+        //console.log(body)
         if (response.ok) {
-            return await response.json()
+            return response.json()
         }
         else {
-            console.log(response.status)
+            console.log("Status: " + response.status)
         }
     }
     catch (e) {
-        console.error(e.name)
+        console.error("Error: " + e.name)
     }
 })
 
