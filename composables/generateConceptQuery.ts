@@ -1,12 +1,11 @@
-import sparqljs from 'sparqljs';
+import sparqljs from "sparqljs";
 
 export function generateConceptQuery(samling: string, begrep: string) {
   const { Parser, Generator } = sparqljs;
   const parser = new Parser();
   const generator = new Generator();
 
-  const query =
-    `
+  const query = `
     PREFIX dc: <http://purl.org/dc/elements/1.1/>
     PREFIX dcterms: <http://purl.org/dc/terms/>
     PREFIX xkos: <http://rdf-vocabulary.ddialliance.org/xkos#>
@@ -48,5 +47,5 @@ export function generateConceptQuery(samling: string, begrep: string) {
 
   //const parsedQuery = parser.parse(construct_query);
   //const generatedQuery = generator.stringify(parsedQuery);
-  return query
+  return query;
 }

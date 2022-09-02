@@ -1,13 +1,16 @@
 <template>
-  <div class="list-group">
-    <NuxtLink
-      class="list-group-item list-group-item-action"
-      v-for="item in data"
-      :to="`/${item.link}`"
-    >
-      <div>{{ item.label }}</div>
-      <div>({{ localizationData[item.lang] }})</div>
-    </NuxtLink>
+  <div>
+    <div class="container p-4">{{ data.length }} resultater</div>
+    <div class="list-group">
+      <NuxtLink
+        class="list-group-item list-group-item-action"
+        v-for="item in data"
+        :to="`/${item.link}`"
+      >
+        <div>{{ item.label }}</div>
+        <div>({{ localizationData[item.lang] }})</div>
+      </NuxtLink>
+    </div>
   </div>
 </template>
 

@@ -5,8 +5,18 @@
       style="background-color: var(--tp-blue-4)"
     >
       <div class="container">
-        <NuxtLink to="/" class="navbar-brand" alt="termportalen.no">termportalen.no</NuxtLink>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <NuxtLink to="/" class="navbar-brand" alt="termportalen.no"
+          >termportalen.no</NuxtLink
+        >
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -18,8 +28,13 @@
               <NuxtLink to="/config" class="nav-link active">Config</NuxtLink>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle active" href="#" id="navbarDropdown" role="button"
-                data-toggle="dropdown">
+              <a
+                class="nav-link dropdown-toggle active"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+              >
                 Menu
               </a>
               <div class="dropdown-menu">

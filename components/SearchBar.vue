@@ -1,10 +1,20 @@
 <template>
   <div class="py-1">
-    <input id="searchfield" class="m-2" v-model="searchterm" @keypress.enter="execSearch" />
+    <input
+      id="searchfield"
+      class="m-2"
+      v-model="searchterm"
+      @keypress.enter="execSearch"
+    />
     <label for="searchfield">Search</label>
-    <br>
+    <br />
 
-    <select class="mx-2" name="searchLang" id="searchLang" v-model="searchLanguage">
+    <select
+      class="mx-2"
+      name="searchLang"
+      id="searchLang"
+      v-model="searchLanguage"
+    >
       <option value="">Alle</option>
       <option value="nb">Bokmål</option>
       <option value="nn">Nynorsk</option>
@@ -17,20 +27,19 @@
 </template>
 
 <script setup>
-const route = useRoute()
+const route = useRoute();
 const router = useRouter();
 const searchterm = useSearchterm();
 const searchLanguage = useSearchLanguage();
 
 function execSearch(event) {
-  let myparams = route.query
-  myparams.q = searchterm.value
-  console.log("Searching for" + searchterm.value)
+  let myparams = route.query;
+  myparams.q = searchterm.value;
+  console.log("Searching for" + searchterm.value);
   router.push({
     path: "/search",
     force: true,
     query: myparams,
   });
-};
-
+}
 </script>
