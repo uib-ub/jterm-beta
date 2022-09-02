@@ -15,6 +15,15 @@ useHead({
 </script>
 
 <style>
+:root {
+  --tp-dark: black;
+  --tp-blue-4: #14417b;
+  --tp-blue-3: #008aff;
+  --tp-blue-2: #69b9fe;
+  --tp-blue-1: #e2efff;
+  --tp-light: white;
+}
+
 body::before {
   display: block;
   content: '';
@@ -24,6 +33,6 @@ body::before {
 
 body {
   overflow-y: scroll;
-  background-color: #e2efff;
+  background-color: var(--tp-blue-1);
 }
 </style>
