@@ -15,7 +15,6 @@
 const data = ref({});
 const route = useRoute();
 const searchterm = useSearchterm();
-const searchLanguage = useSearchLanguage();
 
 async function fetchData() {
   data.value = await $fetch("/api/termjson", {
