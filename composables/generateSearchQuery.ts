@@ -14,17 +14,17 @@ export function generateSearchQuery(searchterm: string) {
   const generator = new Generator();
 
   const query = `
-    SELECT distinct ?art ?tword ?samling
+    SELECT distinct ?uri ?predicate ?term ?samling
     WHERE {
       GRAPH <urn:x-arq:UnionGraph> {
         {
-          SELECT  ?lab ?tword
-          WHERE  { ?lab text:query "". }
-          ORDER BY str(?tword) LIMIT 100
+          SELECT  ?label ?term
+          WHERE  { ?label text:query "". }
+          ORDER BY str(?term) LIMIT 100
         }
-        ?art ?p ?lab;
+        ?uri ?predicate ?label;
           skosp:memberOf ?samling.
-        ?lab skosxl:literalForm ?tword.
+        ?label skosxl:literalForm ?term.
       }
     }`;
 
