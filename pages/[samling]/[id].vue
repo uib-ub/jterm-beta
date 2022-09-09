@@ -13,7 +13,7 @@
 
     <div v-if="conceptViewToggle">
       <h2>Språkdata</h2>
-      <table class="table table-hover table-borderless">
+      <table class="table table-sm table-hover table-borderless">
         <!--Header-->
         <thead>
           <tr>
@@ -54,8 +54,8 @@
     </div>
 
     <div v-for="lang in displayLanguages" v-else>
-      <h2>{{ localizationData[lang] || prop }}</h2>
-      <table class="table table-hover table-borderless">
+      <h2>{{ localizationData[lang] || lang }}</h2>
+      <table class="table table-sm table-hover table-borderless">
         <tbody>
           <!--Anbefalt term-->
           <tr v-for="label in data[uri]?.prefLabel?.[lang]">
@@ -77,7 +77,7 @@
     </div>
 
     <h2>{{ localizationData["felles"] }}</h2>
-    <table class="table table-hover table-borderless">
+    <table class="table table-sm table-hover table-borderless">
       <tbody>
         <!--Samling-->
         <tr v-if="data[uri]?.memberOf">
@@ -193,9 +193,9 @@ async function fetchData() {
   return data;
 }
 
-function updateLabels(data, labelType) {
+function updateLabels(data, conceptUri, labelType) {
   const newLabels = {};
-  const labels = data[uri][labelType];
+  const labels = data[conceptUri][labelType];
   for (const label of labels) {
     const language = data[label].literalForm["@language"];
     conceptLanguages.add(language);
@@ -213,7 +213,7 @@ function mapData(graph) {
   const data = Object.assign({}, ...graph.map((x) => ({ [x["@id"]]: x })));
   for (const labeltype of ["prefLabel", "altLabel", "hiddenLabel"]) {
     try {
-      data[uri][labeltype] = updateLabels(data, labeltype);
+      data[uri][labeltype] = updateLabels(data, uri, labeltype);
     } catch (e) {
       console.log("No label of type '" + labeltype + " present.");
     }
@@ -250,8 +250,4 @@ async function getData() {
 getData();
 </script>
 
-<style>
-tr {
-  line-height: 12px;
-}
-</style>
+<style></style>
