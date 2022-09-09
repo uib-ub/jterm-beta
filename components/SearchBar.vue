@@ -7,7 +7,7 @@
           v-model="searchLanguage"
           aria-label="search language"
         >
-          <option value="">Alle</option>
+          <option value="">Alle språk</option>
           <option value="nb">Bokmål</option>
           <option value="nn">Nynorsk</option>
           <option value="en">Engelsk</option>
