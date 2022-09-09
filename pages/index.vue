@@ -28,11 +28,11 @@ async function fetchData() {
 watch(searchterm, fetchData);
 
 function processBindings(binding) {
-  let link = binding.art.value.split("/").at(-1).replace("-3A", "/");
+  let link = binding.uri.value.split("/").at(-1).replace("-3A", "/");
   return {
-    label: binding.tword.value,
+    label: binding.term.value,
     link: link,
-    lang: binding.tword["xml:lang"],
+    lang: binding.term["xml:lang"],
   };
 }
 </script>
