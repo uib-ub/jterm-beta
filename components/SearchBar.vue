@@ -37,9 +37,17 @@
             v-model="searchterm"
             placeholder="Søk"
             @keypress.enter="execSearch"
+            @focus="$event.target.select()"
             aria-label="searchfield"
           />
-          <button class="btn tp-search-btn active" type="button">Søk</button>
+          <button
+            id="searchbutton"
+            type="submit"
+            class="btn tp-search-btn"
+            @click="execSearch"
+          >
+            Søk
+          </button>
         </div>
       </div>
     </div>
@@ -52,10 +60,12 @@ const router = useRouter();
 const searchterm = useSearchterm();
 const searchLanguage = useSearchLanguage();
 
-function execSearch(event) {
+function execSearch() {
   let myparams = route.query;
   myparams.q = searchterm.value;
-  console.log("Searching for" + searchterm.value);
+  console.log("Searching for: " + searchterm.value);
+  searchbutton.focus();
+  searchfield.focus();
   router.push({
     path: "/search",
     force: true,
