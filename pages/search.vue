@@ -30,11 +30,18 @@ fetchData();
 watch(route, fetchData);
 
 function processBindings(binding) {
-  const link = binding.art.value.split("/").at(-1).replace("-3A", "/");
+  const link = binding.uri.value.split("/").at(-1).replace("-3A", "/");
+  const samling = binding.samling.value.split("/").at(-1).split("3A").at(-1);
+  const predicate = binding.predicate.value.replace(
+    "http://www.w3.org/2008/05/skos-xl#",
+    ""
+  );
   return {
-    label: binding.tword.value,
+    predicate: predicate,
+    label: binding.term.value,
     link: link,
-    lang: binding.tword["xml:lang"],
+    lang: binding.term["xml:lang"],
+    samling: samling,
   };
 }
 </script>
