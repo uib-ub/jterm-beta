@@ -95,11 +95,13 @@ function execSearch() {
   text-indent: 4px;
   border: 1px solid var(--tp-blue-4);
   border-radius: 4px 0px 0px 4px;
+  /* box-shadow: 0px 0px 5px rgba(56, 169, 240, 10);; */
   box-shadow: 5px 5px 5px rgba(51, 51, 51, 0.1);
 }
 
 .tp-search {
   position: relative;
+  text-indent: 5px;
   box-shadow: 5px 5px 5px rgba(51, 51, 51, 0.1);
   border-radius: 0px 4px 4px 0px;
 }
@@ -119,14 +121,16 @@ function execSearch() {
 
 .tp-search-btn {
   width: 115px;
+  height: 45px;
   border: 1px solid var(--tp-blue-4);
-  color: var(--tp-light);
-  background-color: var(--tp-blue-4);
+  color: var(--tp-dark);
+  background-color: var(--tp-light);
 }
 
 .tp-search-btn:hover {
   box-shadow: none;
   color: var(--tp-dark);
+  border: 1px solid var(--tp-blue-4);
   background-color: var(--tp-light);
 }
 
@@ -136,5 +140,4 @@ function execSearch() {
   border: 1px solid var(--tp-blue-4);
   background-color: var(--tp-blue-4);
 }
-
 </style>
