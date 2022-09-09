@@ -1,8 +1,10 @@
 export const useSearchterm = () => useState<string>("searchterm", () => "");
 export const useSearchLanguage = () =>
   useState<string>("searchLanguage", () => "");
-export const useSearchBase = () =>
-  useState<Array<String>>("searchBase", () => []);
+export const useSearchTermbase = () =>
+  useState<Array<string>>("searchTermbase", () => []);
+export const useSearchData = () =>
+  useState<Array<{ [key: string]: string }>>("searchData", () => []);
 export const useDataDisplayLanguages = () =>
   useState<Array<string>>("dataDisplayLanguages", () => [
     "nb",
