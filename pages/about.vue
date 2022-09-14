@@ -1,5 +1,5 @@
 <template>
   <div class="container">
-    <h3>Om termportalen</h3>
+    <h3>{{ $t("about.title") }}</h3>
   </div>
 </template>
