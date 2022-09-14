@@ -1,0 +1,44 @@
+{
+  "global": {
+    "language": "Språk",
+    "lang": {
+      "all": "Alle språk",
+      "ar": "Arabic",
+      "da": "Dansk",
+      "de": "Tysk",
+      "en": "Engelsk",
+      "es": "Spansk",
+      "fi": "Finsk",
+      "fr": "Fransk",
+      "it": "Italienisk",
+      "la": "Latin",
+      "nb": "Bokmål",
+      "nn": "Nynorsk",
+      "pl": "Polsk",
+      "ru": "Russisk",
+      "so": "Somali",
+      "sv": "Svensk",
+      "ti": "Tigrinja"
+    }
+  },
+  "navBar": {},
+  "searchBar": { "search": "Søk" },
+  "searchFilter": { "results": "resultater", "filter": "Filter" },
+
+  "samling": { "not-found": "Innhold ikke funnet." },
+  "id": {
+    "tableview": "Tabellvisning",
+    "languagedata": "Språkdata",
+    "prefLabel": "Anbefalt term",
+    "altLabel": "Tillat term",
+    "hiddenLabel": "Frarådet term",
+    "general": "Felles",
+    "collection": "Samling",
+    "subject": "Fagområde",
+    "domain": "Domene",
+    "modified": "Sist oppdatert",
+    "note": "Merknad"
+  },
+  "about": { "title": "Om termportalen" },
+  "config": { "title": "Inn­stillingar" }
+}
