@@ -7,25 +7,23 @@
           v-model="searchLanguage"
           aria-label="search language"
         >
-          <option value="">Alle språk</option>
-          <option value="nb">Bokmål</option>
-          <option value="nn">Nynorsk</option>
-          <option value="en">Engelsk</option>
-          <option value="ar">Arabisk</option>
-          <option value="da">Dansk</option>
-          <option value="de">Tysk</option>
-          <option value="es">Spansk</option>
-          <option value="fa-af">Dari</option>
-          <option value="fi">Finsk</option>
-          <option value="fr">Fransk</option>
-          <option value="it">Italiensk</option>
-          <option value="la">Latin</option>
-          <option value="pl">Polsk</option>
-          <option value="ru">Russisk</option>
-          <option value="smj">Lulesamisk</option>
-          <option value="so">Somalisk</option>
-          <option value="sv">Svensk</option>
-          <option value="ti">Tigrinja</option>
+          <option value="">{{ $t("global.lang.all") }}</option>
+          <option value="nb">{{ $t("global.lang.nb") }}</option>
+          <option value="nn">{{ $t("global.lang.nn") }}</option>
+          <option value="en">{{ $t("global.lang.en") }}</option>
+          <option value="ar">{{ $t("global.lang.ar") }}</option>
+          <option value="da">{{ $t("global.lang.da") }}</option>
+          <option value="de">{{ $t("global.lang.de") }}</option>
+          <option value="es">{{ $t("global.lang.es") }}</option>
+          <option value="fi">{{ $t("global.lang.fi") }}</option>
+          <option value="fr">{{ $t("global.lang.fr") }}</option>
+          <option value="it">{{ $t("global.lang.it") }}</option>
+          <option value="la">{{ $t("global.lang.la") }}</option>
+          <option value="pl">{{ $t("global.lang.pl") }}</option>
+          <option value="ru">{{ $t("global.lang.ru") }}</option>
+          <option value="so">{{ $t("global.lang.so") }}</option>
+          <option value="sv">{{ $t("global.lang.sv") }}</option>
+          <option value="ti">{{ $t("global.lang.ti") }}</option>
         </select>
       </div>
       <div class="container p-0">
@@ -35,7 +33,7 @@
             type="text"
             class="form-control"
             v-model="searchterm"
-            placeholder="Søk"
+            :placeholder="$t('searchBar.search')"
             @keypress.enter="execSearch"
             @focus="$event.target.select()"
             aria-label="searchfield"
@@ -46,7 +44,7 @@
             class="btn tp-search-btn"
             @click="execSearch"
           >
-            Søk
+            {{ $t("searchBar.search") }}
           </button>
         </div>
       </div>
