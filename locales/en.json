@@ -1,0 +1,45 @@
+{
+  "global": {
+    "language": "Language",
+    "lang": {
+      "all": "All languages",
+      "ar": "Arabic",
+      "da": "Dansk",
+      "de": "German",
+      "en": "English",
+      "es": "Spanish",
+      "fi": "Finnish",
+      "fr": "French",
+      "it": "Italian",
+      "la": "Latin",
+      "nb": "Bokmål",
+      "nn": "Nynorsk",
+      "pl": "Polish",
+      "ru": "Russian",
+      "so": "Somali",
+      "sv": "Swedish",
+      "ti": "Tigrinya"
+    }
+  },
+
+  "navBar": { "about": "About", "config": "Settings" },
+  "searchBar": { "search": "Search" },
+  "searchFilter": { "results": "results", "filter": "Filter" },
+
+  "samling": { "not-found": "Content not found." },
+  "id": {
+    "tableview": "Table view",
+    "languagedata": "Language data",
+    "prefLabel": "Preferred label",
+    "altLabel": "Alternative label",
+    "hiddenLabel": "Hidden label",
+    "general": "General information",
+    "collection": "Collection",
+    "subject": "Subject",
+    "domain": "Domain",
+    "modified": "Modified",
+    "note": "Note"
+  },
+  "about": { "title": "About termportalen" },
+  "config": { "title": "Settings", "dataDispLang": "Data display languages" }
+}

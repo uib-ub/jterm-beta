@@ -20,12 +20,11 @@
           </div>
 
           <div class="container px-3">
-            {{ localizationData[item.lang] || item.lang }}
+            {{ $t(`global.lang.${item.lang}`) }}
           </div>
           <div class="container p-0">{{ item.samling }}</div>
         </div>
       </NuxtLink>
-      <div>{{ searchData }}</div>
     </div>
   </div>
 </template>

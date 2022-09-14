@@ -22,10 +22,14 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto">
             <li class="nav-item">
-              <NuxtLink to="/about" class="nav-link active">About</NuxtLink>
+              <NuxtLink to="/about" class="nav-link active">
+                {{ $t("navBar.about") }}
+              </NuxtLink>
             </li>
             <li class="nav-item">
-              <NuxtLink to="/config" class="nav-link active">Config</NuxtLink>
+              <NuxtLink to="/config" class="nav-link active">
+                {{$t("navBar.config")}}
+              </NuxtLink>
             </li>
             <li class="nav-item dropdown">
               <a

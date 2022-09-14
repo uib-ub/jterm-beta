@@ -7,26 +7,26 @@
         id="viewToggle"
         v-model="conceptViewToggle"
       />
-      <label for="viewToggle">Tabellvisning</label>
+      <label for="viewToggle">{{ $t("id.tableview") }}</label>
     </div>
     <h1>{{ data[uri]?.label }}</h1>
 
     <div v-if="conceptViewToggle">
-      <h2>Språkdata</h2>
+      <h2>{{ $t("id.languagedata") }}</h2>
       <table class="table table-sm table-hover table-borderless">
         <!--Header-->
         <thead>
           <tr>
             <th class="col-2" scope="col"></th>
             <th scope="col" v-for="lang in displayLanguages">
-              {{ localizationData[lang] || lang }}
+              {{ $t("global.lang." + lang) }}
             </th>
           </tr>
         </thead>
         <tbody>
           <!--PrefLabel-->
           <tr v-for="(e, i) in prefLabelLength">
-            <th scope="row">Anbefalt term</th>
+            <th scope="row">{{ $t("id.prefLabel") }}</th>
             <td v-for="lang in displayLanguages">
               {{ data[data[uri]?.prefLabel[lang]?.[i]]?.literalForm["@value"] }}
             </td>
@@ -34,14 +34,14 @@
           </tr>
           <!--AltLabel-->
           <tr v-for="(e, i) in altLabelLength">
-            <th scope="row">Synonym</th>
+            <th scope="row">{{ $t("id.altLabel") }}</th>
             <td v-for="lang in displayLanguages">
               {{ data[data[uri]?.altLabel[lang]?.[i]]?.literalForm["@value"] }}
             </td>
           </tr>
           <!--HiddenLabel-->
           <tr v-for="(e, i) in hiddenLabelLength">
-            <th scope="row">Frarådet term</th>
+            <th scope="row">{{ $t("id.hiddenLabel") }}</th>
             <td v-for="lang in displayLanguages">
               {{
                 data[data[uri]?.hiddenLabel[lang]?.[i]]?.literalForm["@value"]
@@ -54,57 +54,57 @@
     </div>
 
     <div v-for="lang in displayLanguages" v-else>
-      <h2>{{ localizationData[lang] || lang }}</h2>
+      <h2>{{ $t("global.lang." + lang) }}</h2>
       <table class="table table-sm table-hover table-borderless">
         <tbody>
           <!--Anbefalt term-->
           <tr v-for="label in data[uri]?.prefLabel?.[lang]">
-            <th class="col-2" scope="row">Anbefalt term</th>
+            <th class="col-2" scope="row">{{ $t("id.prefLabel") }}</th>
             <td>{{ data[label]?.literalForm["@value"] }}</td>
           </tr>
           <!--AltLabel-->
           <tr v-for="label in data[uri]?.altLabel?.[lang]">
-            <th class="col-2" scope="row">Synonym</th>
+            <th class="col-2" scope="row">{{ $t("id.altLabel") }}</th>
             <td>{{ data[label]?.literalForm["@value"] }}</td>
           </tr>
           <!--HiddenLabel-->
           <tr v-for="label in data[uri]?.hiddenLabel?.[lang]">
-            <th class="col-2" scope="row">Frarådet term</th>
+            <th class="col-2" scope="row">{{ $t("id.hiddenLabel") }}</th>
             <td>{{ data[label]?.literalForm["@value"] }}</td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <h2>{{ localizationData["felles"] }}</h2>
+    <h2>{{ $t("id.general") }}</h2>
     <table class="table table-sm table-hover table-borderless">
       <tbody>
         <!--Samling-->
         <tr v-if="data[uri]?.memberOf">
-          <th class="col-2" scope="row">Samling</th>
+          <th class="col-2" scope="row">{{ $t("id.collection") }}</th>
           <td :samling="data[uri]?.memberOf.split('-3A')[0]">
             <NuxtLink :to="`/${samling}`">{{ samling }}</NuxtLink>
           </td>
         </tr>
         <!--Domene-->
         <tr v-if="data[uri]?.domene">
-          <th class="col-2" scope="row">Domene</th>
+          <th class="col-2" scope="row">{{ $t("id.domain") }}</th>
           <td>{{ data[uri]?.domene }}</td>
         </tr>
         <!--Bruksområde-->
         <tr v-if="data[uri]?.subject">
-          <th class="col-2" scope="row">Bruksområde</th>
+          <th class="col-2" scope="row">{{ $t("id.subject") }}</th>
           <td>{{ data[uri]?.subject.join(", ") }}</td>
         </tr>
         <!--Modified-->
         <tr v-if="data[uri]?.modified">
-          <th class="col-2" scope="row">Oppdatert</th>
+          <th class="col-2" scope="row">{{ $t("id.modified") }}</th>
           <td>{{ data[uri]?.modified["@value"] }}</td>
         </tr>
         <!--Created-->
         <!--Note TODO after export fix-->
         <tr v-if="data[uri]?.scopeNote">
-          <th class="col-2" scope="row">Merknad</th>
+          <th class="col-2" scope="row">{{ $t("id.note") }}</th>
           <td>{{ data[uri]?.scopeNote }}</td>
         </tr>
       </tbody>
