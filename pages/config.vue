@@ -1,11 +1,11 @@
 <template>
   <div>
     <Head>
-      <Title>Termportalen config</Title>
+      <Title>{{ $t("config.title") }}</Title>
     </Head>
     <div class="container">
-      <h1>Config</h1>
-      <h2>Data display languages</h2>
+      <h1>{{ $t("config.title") }}</h1>
+      <h2>{{$t("config.dataDispLang")}}</h2>
       <div class="form-check">
         <input
           class="form-check-input"
@@ -14,7 +14,7 @@
           value="nb"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-nb">bokmål</label><br />
+        <label for="ddl-nb">{{$t("global.lang.nb")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -22,7 +22,7 @@
           value="nn"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-nn">nynorsk</label><br />
+        <label for="ddl-nn">{{$t("global.lang.nn")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -30,7 +30,7 @@
           value="en"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-en">engelsk</label><br />
+        <label for="ddl-en">{{$t("global.lang.en")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -38,7 +38,7 @@
           value="ar"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-ar">arabisk</label><br />
+        <label for="ddl-ar">{{$t("global.lang.ar")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -46,7 +46,7 @@
           value="da"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-da">dansk</label><br />
+        <label for="ddl-da">{{$t("global.lang.da")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -54,7 +54,7 @@
           value="de"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-de">tysk</label><br />
+        <label for="ddl-de">{{$t("global.lang.de")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -62,15 +62,7 @@
           value="es"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-es">spank</label><br />
-        <input
-          class="form-check-input"
-          type="checkbox"
-          id="ddl-fa-af"
-          value="fa-af"
-          v-model="dataDisplayLanguages"
-        />
-        <label for="ddl-fa-af">dari</label><br />
+        <label for="ddl-es">{{$t("global.lang.es")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -78,7 +70,7 @@
           value="fi"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-fi">finsk</label><br />
+        <label for="ddl-fi">{{$t("global.lang.fi")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -86,7 +78,7 @@
           value="fr"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-fr">fransk</label><br />
+        <label for="ddl-fr">{{$t("global.lang.fr")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -94,7 +86,7 @@
           value="it"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-it">italiensk</label><br />
+        <label for="ddl-it">{{$t("global.lang.it")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -102,7 +94,7 @@
           value="la"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-la">latin</label><br />
+        <label for="ddl-la">{{$t("global.lang.la")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -110,7 +102,7 @@
           value="pl"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-pl">polsk</label><br />
+        <label for="ddl-pl">{{$t("global.lang.pl")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -118,15 +110,7 @@
           value="ru"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-ru">russisk</label><br />
-        <input
-          class="form-check-input"
-          type="checkbox"
-          id="ddl-smj"
-          value="smj"
-          v-model="dataDisplayLanguages"
-        />
-        <label for="ddl-smj">lulesamisk</label><br />
+        <label for="ddl-ru">{{$t("global.lang.ru")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -134,7 +118,7 @@
           value="so"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-so">somalisk</label><br />
+        <label for="ddl-so">{{$t("global.lang.so")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -142,7 +126,7 @@
           value="sv"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-sv">svensk</label><br />
+        <label for="ddl-sv">{{$t("global.lang.sv")}}</label><br />
         <input
           class="form-check-input"
           type="checkbox"
@@ -150,9 +134,17 @@
           value="ti"
           v-model="dataDisplayLanguages"
         />
-        <label for="ddl-ti">tigrinja</label><br />
+        <label for="ddl-ti">{{$t("global.lang.ti")}}</label><br />
       </div>
     </div>
+    <form>
+      <label for="locale-select">{{ $t("global.language") }}: </label>
+      <select id="locale-select" v-model="$i18n.locale">
+        <option value="nb">{{$t("global.lang.nb")}}</option>
+        <option value="nn">{{$t("global.lang.nn")}}</option>
+        <option value="en">{{$t("global.lang.en")}}</option>
+      </select>
+    </form>
   </div>
 </template>
 
