@@ -24,19 +24,19 @@
                 v-if="orgData?.['rdfs:label']?.['@value']"
                 :data="orgData['rdfs:label']['@value']"
                 class="col-3"
-                label="samling.organisation"
+                :label="$t('samling.organisation')"
               />
               <!--Organisation number-->
               <DataRow
                 v-if="orgData?.['dcterms:identifier']"
                 :data="orgData['dcterms:identifier']"
-                label="samling.orgnr"
+                :label="$t('samling.orgnr')"
               />
 
               <!--Email-->
               <DataRow
                 v-if="contactData?.['vcard:hasEmail']?.['@id']"
-                label="samling.email"
+                :label="$t('samling.email')"
                 :to="contactData['vcard:hasEmail']['@id']"
                 :data="contactData['vcard:hasEmail']['@id'].split(':')[1]"
               />
@@ -44,7 +44,7 @@
               <DataRow
                 v-if="contactData?.['vcard:hasTelephone']"
                 :data="contactData?.['vcard:hasTelephone']"
-                label="samling.telephone"
+                :label="$t('samling.telephone')"
               />
               <!--Languages-->
               <DataRow
@@ -57,7 +57,7 @@
               <DataRow
                 v-if="uriData?.['skosp:opprinneligSpraak']"
                 :data="$t('global.lang.' + uriData['skosp:opprinneligSpraak'])"
-                label="samling.startLang"
+                :label="$t('samling.startLang')"
               />
             </tbody>
           </table>

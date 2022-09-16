@@ -1,7 +1,7 @@
 <template>
   <tr>
     <th class="class" scope="row">
-      {{ $t(label) }}
+      {{ label }}
     </th>
     <td v-if="to">
       <NuxtLink v-if="nuxtlink" to="to">{{ data || to }}</NuxtLink>
