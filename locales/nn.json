@@ -1,6 +1,6 @@
 {
   "global": {
-    "language": "Språk",
+    "language": "Språk | Språk",
     "lang": {
       "all": "Alle språk",
       "ar": "Arabic",
@@ -25,7 +25,15 @@
   "searchBar": { "search": "Søk" },
   "searchFilter": { "results": "resultater", "filter": "Filter" },
 
-  "samling": { "not-found": "Innhold ikke funnet." },
+  "samling": {
+    "organisation": "Organisajon",
+    "orgnr": "Organisasjonsnr",
+    "email": "Epost",
+    "telephone": "Telefone",
+    "license": "Lisens",
+    "languages": "Språk",
+    "startLang": "Opprinnelig språk"
+  },
   "id": {
     "tableview": "Tabellvisning",
     "languagedata": "Språkdata",
