@@ -7,7 +7,11 @@
       <div class="row row-cols-1 row-cols-md-2">
         <!--Description-->
         <div class="col">
-          <p v-for="p in descriptionData">
+          <p
+            v-for="p in uriData?.['dcterms:description']?.['@value'].split(
+              '\n\n'
+            )"
+          >
             {{ p }}
           </p>
         </div>
@@ -16,79 +20,45 @@
           <table class="table table-sm table-hover table-borderless">
             <tbody>
               <!--Organisation-->
-              <tr
-                v-if="displayData?.[`${uri}-23org`]?.['rdfs:label']?.['@value']"
-              >
-                <th class="col-3" scope="row">
-                  {{ $t("samling.organisation") }}
-                </th>
-                <td>
-                  {{ displayData[`${uri}-23org`]["rdfs:label"]["@value"] }}
-                </td>
-              </tr>
+              <DataRow
+                v-if="orgData?.['rdfs:label']?.['@value']"
+                :data="orgData['rdfs:label']['@value']"
+                class="col-3"
+                label="samling.organisation"
+              />
               <!--Organisation number-->
-              <tr v-if="displayData?.[`${uri}-23org`]?.['dcterms:identifier']">
-                <th class="col" scope="row">
-                  {{ $t("samling.orgnr") }}
-                </th>
-                <td>
-                  {{ displayData[`${uri}-23org`]["dcterms:identifier"] }}
-                </td>
-              </tr>
+              <DataRow
+                v-if="orgData?.['dcterms:identifier']"
+                :data="orgData['dcterms:identifier']"
+                label="samling.orgnr"
+              />
+
               <!--Email-->
-              <tr v-if="displayData?.[`${uri}-23contact`]?.['vcard:hasEmail']">
-                <th class="col" scope="row">
-                  {{ $t("samling.email") }}
-                </th>
-                <td>
-                  <a
-                    :href="displayData[`${uri}-23contact`]?.['vcard:hasEmail']['@id']"
-                    >{{
-                      displayData[`${uri}-23contact`]?.["vcard:hasEmail"][
-                        "@id"
-                      ].split(":")[1]
-                    }}</a
-                  >
-                </td>
-              </tr>
+              <DataRow
+                v-if="contactData?.['vcard:hasEmail']?.['@id']"
+                label="samling.email"
+                :to="contactData['vcard:hasEmail']['@id']"
+                :data="contactData['vcard:hasEmail']['@id'].split(':')[1]"
+              />
               <!--Telephone-->
-              <tr
-                v-if="displayData?.[`${uri}-23contact`]?.['vcard:hasTelephone']"
-              >
-                <th class="col" scope="row">
-                  {{ $t("samling.telephone") }}
-                </th>
-                <td>
-                  {{ displayData[`${uri}-23contact`]?.["vcard:hasTelephone"] }}
-                </td>
-              </tr>
+              <DataRow
+                v-if="contactData?.['vcard:hasTelephone']"
+                :data="contactData?.['vcard:hasTelephone']"
+                label="samling.telephone"
+              />
               <!--Languages-->
-              <tr v-if="displayData[uri]?.['dcterms:language']">
-                <th class="col" scope="row">
-                  {{ $t("global.language", 1) }}
-                </th>
-                <td>
-                  {{
-                    displayData[uri]["dcterms:language"]
-                      .map((lang: string) => $t("global.lang." + lang))
-                      .join(", ")
-                  }}
-                </td>
-              </tr>
+              <DataRow
+                v-if="uriData?.['dcterms:language']"
+                :label="$t('global.language', 1)"
+                :data="uriData['dcterms:language']
+              .map((lang: string) => $t('global.lang.' + lang)) .join(', ')"
+              />
               <!--Starting languages-->
-              <tr v-if="displayData[uri]?.['skosp:opprinneligSpraak']">
-                <th class="col" scope="row">
-                  {{ $t("samling.startLang") }}
-                </th>
-                <td>
-                  {{
-                    $t(
-                      "global.lang." +
-                        displayData[uri]?.["skosp:opprinneligSpraak"]
-                    )
-                  }}
-                </td>
-              </tr>
+              <DataRow
+                v-if="uriData?.['skosp:opprinneligSpraak']"
+                :data="$t('global.lang.' + uriData['skosp:opprinneligSpraak'])"
+                label="samling.startLang"
+              />
             </tbody>
           </table>
         </div>
@@ -105,14 +75,14 @@ const samlingData = ref();
 const displayData = computed(() => {
   return mapData(samlingData.value?.["@graph"]);
 });
-const descriptionData = computed(() => {
-  try {
-    return displayData.value[uri]?.["dcterms:description"]?.["@value"].split(
-      "\n\n"
-    );
-  } catch (e) {
-    return;
-  }
+const uriData = computed(() => {
+  return displayData.value[uri];
+});
+const orgData = computed(() => {
+  return displayData.value?.[`${uri}-23org`];
+});
+const contactData = computed(() => {
+  return displayData.value?.[`${uri}-23contact`];
 });
 
 function getSamlingFromParam() {
