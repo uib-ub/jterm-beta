@@ -113,7 +113,8 @@
 </template>
 
 <script setup>
-import jsonld from "jsonld";
+import { compactConceptData } from '~~/composables/compactData';
+
 
 const route = useRoute();
 const samling = route.params.samling;
@@ -127,63 +128,6 @@ const data = ref({});
 const prefLabelLength = ref(0);
 const altLabelLength = ref(0);
 const hiddenLabelLength = ref(0);
-
-const context2 = {
-  "@context": {
-    "@base": "http://wiki.terminologi.no/index.php/Special:URIResolver/",
-    rdfs: "http://www.w3.org/2000/01/rdf-schema#",
-    skos: "http://www.w3.org/2004/02/skos/core#",
-    xkos: "http://rdf-vocabulary.ddialliance.org/xkos#",
-    skosxl: "http://www.w3.org/2008/05/skos-xl#",
-    skosno: "https://data.norge.no/vocabulary/skosno#",
-    skosp: "http://www.data.ub.uib.no/ns/spraksamlingene/skos#",
-    dcterms: "http://purl.org/dc/terms/",
-    xsd: "http://www.w3.org/2001/XMLSchema#",
-    literalForm: "skosxl:literalForm",
-    label: "rdfs:label",
-    domene: "skosp:domene",
-    modified: "dcterms:modified",
-    scopeNote: "skos:scopeNote", // TODO
-
-    semanticRelation: {
-      "@id": "skos:semanticRelation",
-      "@type": "@id",
-      "@container": "@set",
-    },
-    subject: {
-      "@id": "dcterms:subject",
-      "@type": "@id",
-      "@container": "@set",
-    },
-    memberOf: {
-      "@id": "skosp:memberOf",
-      "@type": "@id",
-    },
-    related: {
-      "@id": "skos:related",
-      "@type": "@id",
-      "@container": "@set",
-    },
-    prefLabel: {
-      "@id": "skosxl:prefLabel",
-      "@type": "@id",
-    },
-    altLabel: {
-      "@id": "skosxl:altLabel",
-      "@type": "@id",
-      "@container": "@set",
-    },
-    hiddenLabel: {
-      "@id": "skosxl:hiddenLabel",
-      "@type": "@id",
-      "@container": "@set",
-    },
-    "dcterms:source": {
-      "@id": "dcterms:source",
-      "@type": "@id",
-    },
-  },
-};
 
 async function fetchData() {
   const data = await $fetch("/api/termjsonld", {
@@ -236,7 +180,7 @@ function getNumberOfInstances(data, property) {
 
 async function getData() {
   const fetched = await fetchData();
-  const compacted = await jsonld.compact(fetched, context2);
+  const compacted = await compactData(fetched);
   const mapped = await mapData(compacted["@graph"]);
   displayLanguages.value = dataDisplayLanguages.value.filter((language) =>
     Array.from(conceptLanguages).includes(language)
