@@ -18,31 +18,31 @@
         <thead>
           <tr>
             <th class="col-2" scope="col"></th>
-            <th scope="col" v-for="lang in displayLanguages">
+            <th scope="col" v-for="lang in displayInfo.displayLanguages">
               {{ $t("global.lang." + lang) }}
             </th>
           </tr>
         </thead>
         <tbody>
           <!--PrefLabel-->
-          <tr v-for="(e, i) in prefLabelLength">
+          <tr v-for="(e, i) in displayInfo.prefLabelLength">
             <th scope="row">{{ $t("id.prefLabel") }}</th>
-            <td v-for="lang in displayLanguages">
+            <td v-for="lang in displayInfo.displayLanguages">
               {{ data[data[uri]?.prefLabel[lang]?.[i]]?.literalForm["@value"] }}
             </td>
             <!--Kontekst?-->
           </tr>
           <!--AltLabel-->
-          <tr v-for="(e, i) in altLabelLength">
+          <tr v-for="(e, i) in displayInfo.altLabelLength">
             <th scope="row">{{ $t("id.altLabel") }}</th>
-            <td v-for="lang in displayLanguages">
+            <td v-for="lang in displayInfo.displayLanguages">
               {{ data[data[uri]?.altLabel[lang]?.[i]]?.literalForm["@value"] }}
             </td>
           </tr>
           <!--HiddenLabel-->
-          <tr v-for="(e, i) in hiddenLabelLength">
+          <tr v-for="(e, i) in displayInfo.hiddenLabelLength">
             <th scope="row">{{ $t("id.hiddenLabel") }}</th>
-            <td v-for="lang in displayLanguages">
+            <td v-for="lang in displayInfo.displayLanguages">
               {{
                 data[data[uri]?.hiddenLabel[lang]?.[i]]?.literalForm["@value"]
               }}
@@ -53,7 +53,7 @@
       </table>
     </div>
 
-    <div v-for="lang in displayLanguages" v-else>
+    <div v-for="lang in displayInfo.displayLanguages" v-else>
       <h2>{{ $t("global.lang." + lang) }}</h2>
       <table class="table table-sm table-hover table-borderless">
         <tbody>
