@@ -1,11 +1,9 @@
 <template>
   <tr>
-    <th class="class" scope="row">
-      {{ label }}
-    </th>
+    <th :class="thClass" scope="row">{{ label }} {{class}}</th>
     <td v-if="to">
-      <NuxtLink v-if="nuxtlink" to="to">{{ data || to }}</NuxtLink>
-      <a v-else href="to">{{ data || to }}</a>
+      <NuxtLink v-if="nuxtlink" :to="to">{{ data || to }}</NuxtLink>
+      <a v-else :href="to">{{ data || to }}</a>
     </td>
     <td v-else>
       {{ data }}
@@ -16,9 +14,10 @@
 <script setup lang="ts">
 const props = defineProps({
   data: { type: String },
-  class: { type: String, default: "col" },
+  thClass: { type: String, default: "col" },
   label: { type: String, required: true },
   to: String,
   nuxtlink: Boolean,
 });
+console.log(props.thClass);
 </script>
