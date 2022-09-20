@@ -24,9 +24,7 @@ export function idLabelsWithLang(
   for (const labeltype of labeltypes) {
     try {
       data[conceptUri][labeltype] = updateLabel(data, conceptUri, labeltype);
-    } catch (e) {
-      console.log("No label of type '" + labeltype + "' present.");
-    }
+    } catch (e) {}
   }
   return data;
 }
