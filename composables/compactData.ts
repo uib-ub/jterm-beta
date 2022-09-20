@@ -55,6 +55,10 @@ const context: ContextDefinition = {
   },
 };
 
-export function compactData(data: any) {
-  return jsonld.compact(data, context);
+export async function compactData(data: any) {
+  try {
+    return await jsonld.compact(data, context);
+  } catch (e) {
+    console.log(e);
+  }
 }
