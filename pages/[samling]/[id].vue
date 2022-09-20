@@ -159,56 +159,6 @@ async function fetchData() {
   return data;
 }
 
-function getConceptLanguages(data, uri) {
-  try {
-    const prefLabel = Object.keys(data[uri]?.prefLabel || []);
-    const altLabel = Object.keys(data[uri]?.altLabel || []);
-    const hiddenLabel = Object.keys(data[uri]?.hiddenLabel || [])
-    return [...new Set([...prefLabel, ...altLabel, ...hiddenLabel])];
-  } catch (e) {
-    return [];
-  }
-}
-
-function idLabelsWithLang(data, conceptUri, labeltypes) {
-  for (const labeltype of labeltypes) {
-    try {
-      data[conceptUri][labeltype] = updateLabels(data, conceptUri, labeltype);
-    } catch (e) {
-      console.log("No label of type '" + labeltype + "' present.");
-    }
-  }
-  return data;
-}
-
-function updateLabels(data, conceptUri, labelType) {
-  const newLabels = {};
-  const labels = data[conceptUri][labelType];
-  for (const label of labels) {
-    const language = data[label].literalForm["@language"];
-    try {
-      newLabels[language].push(label);
-    } catch (e) {
-      newLabels[language] = [];
-      newLabels[language].push(label);
-    }
-  }
-  return newLabels;
-}
-
-function getNumberOfInstances(data, uri, property) {
-  try {
-    const propertyDict = data[uri][property];
-    const values = Object.keys(propertyDict).map(function (key) {
-      return propertyDict[key];
-    });
-    const lengths = values.map((lang) => lang.length);
-    return Math.max(...lengths);
-  } catch (e) {
-    return 0;
-  }
-}
-
 async function getData() {
   const fetched = await fetchData();
   const compacted = await compactData(fetched);
