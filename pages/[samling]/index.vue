@@ -73,7 +73,7 @@ const samling = getSamlingFromParam();
 const uri = `base:${samling}-3A${samling}`;
 const samlingData = ref();
 const displayData = computed(() => {
-  return mapData(samlingData.value?.["@graph"]);
+  return identifyData(samlingData.value?.["@graph"]);
 });
 const uriData = computed(() => {
   return displayData.value[uri];
@@ -92,13 +92,6 @@ function getSamlingFromParam() {
   } else {
     return samling[0];
   }
-}
-
-function mapData(graph: []) {
-  try {
-    return Object.assign({}, ...graph.map((x) => ({ [x["@id"]]: x })));
-  } catch (e) {}
-  return {};
 }
 
 async function fetchData() {
