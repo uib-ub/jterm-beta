@@ -90,7 +90,7 @@
           v-if="data[uri]?.memberOf"
           :samling="data[uri]?.memberOf.split('-3A')[0]"
           :data="samling"
-          nuxtlink="true"
+          :nuxtlink="true"
           :to="`/${samling}`"
           :label="$t('id.collection')"
         />
