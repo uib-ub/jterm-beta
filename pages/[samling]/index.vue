@@ -37,10 +37,10 @@
               <!--Email-->
               <DataRow
                 v-if="contactData?.['vcard:hasEmail']?.['@id']"
-                :label="$t('samling.email')"
-                thClass="col-3"
-                :to="contactData['vcard:hasEmail']['@id']"
                 :data="contactData['vcard:hasEmail']['@id'].split(':')[1]"
+                thClass="col-3"
+                :label="$t('samling.email')"
+                :to="contactData['vcard:hasEmail']['@id']"
               />
               <!--Telephone-->
               <DataRow
@@ -52,10 +52,9 @@
               <!--Languages-->
               <DataRow
                 v-if="uriData?.['dcterms:language']"
+                :data="uriData['dcterms:language'].map((lang: string) => $t('global.lang.' + lang)) .join(', ')"
                 thClass="col-3"
                 :label="$t('global.language', 1)"
-                :data="uriData['dcterms:language']
-              .map((lang: string) => $t('global.lang.' + lang)) .join(', ')"
               />
               <!--Starting languages-->
               <DataRow
