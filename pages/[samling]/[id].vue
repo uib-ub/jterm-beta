@@ -130,8 +130,8 @@ const data = computed(() => {
   ]);
   return labeled;
 });
-const conceptLanguages = new Set([]);
 const displayInfo = computed(() => {
+  const conceptLanguages = getConceptLanguages(data.value, uri);
   const displayLanguages = dataDisplayLanguages.value.filter((language) =>
     Array.from(conceptLanguages).includes(language)
   );
@@ -143,6 +143,7 @@ const displayInfo = computed(() => {
     "hiddenLabel"
   );
   return {
+    conceptLanguages,
     displayLanguages,
     prefLabelLength,
     altLabelLength,
@@ -156,6 +157,17 @@ async function fetchData() {
     body: generateConceptQuery(samling, id),
   });
   return data;
+}
+
+function getConceptLanguages(data, uri) {
+  try {
+    const prefLabel = Object.keys(data[uri]?.prefLabel || []);
+    const altLabel = Object.keys(data[uri]?.altLabel || []);
+    const hiddenLabel = Object.keys(data[uri]?.hiddenLabel || [])
+    return [...new Set([...prefLabel, ...altLabel, ...hiddenLabel])];
+  } catch (e) {
+    return [];
+  }
 }
 
 function idLabelsWithLang(data, conceptUri, labeltypes) {
@@ -174,7 +186,6 @@ function updateLabels(data, conceptUri, labelType) {
   const labels = data[conceptUri][labelType];
   for (const label of labels) {
     const language = data[label].literalForm["@language"];
-    conceptLanguages.add(language);
     try {
       newLabels[language].push(label);
     } catch (e) {
