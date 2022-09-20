@@ -58,55 +58,71 @@
       <table class="table table-sm table-hover table-borderless">
         <tbody>
           <!--Anbefalt term-->
-          <tr v-for="label in data[uri]?.prefLabel?.[lang]">
-            <th class="col-2" scope="row">{{ $t("id.prefLabel") }}</th>
-            <td>{{ data[label]?.literalForm["@value"] }}</td>
-          </tr>
+          <DataRow
+            v-for="label in data[uri]?.prefLabel?.[lang]"
+            :data="data[label]?.literalForm['@value']"
+            thClass="col-2"
+            :label="$t('id.prefLabel')"
+          />
           <!--AltLabel-->
-          <tr v-for="label in data[uri]?.altLabel?.[lang]">
-            <th class="col-2" scope="row">{{ $t("id.altLabel") }}</th>
-            <td>{{ data[label]?.literalForm["@value"] }}</td>
-          </tr>
+          <DataRow
+            v-for="label in data[uri]?.altLabel?.[lang]"
+            :data="data[label]?.literalForm['@value']"
+            thClass="col-2"
+            :label="$t('id.altLabel')"
+          />
           <!--HiddenLabel-->
-          <tr v-for="label in data[uri]?.hiddenLabel?.[lang]">
-            <th class="col-2" scope="row">{{ $t("id.hiddenLabel") }}</th>
-            <td>{{ data[label]?.literalForm["@value"] }}</td>
-          </tr>
+          <DataRow
+            v-for="label in data[uri]?.hiddenLabel?.[lang]"
+            :data="data[label]?.literalForm['@value']"
+            thClass="col-2"
+            :label="$t('id.hiddenLabel')"
+          />
         </tbody>
       </table>
     </div>
 
-    <h2>{{ $t("id.general") }}</h2>
+    <h2 v-if="data[uri]">{{ $t("id.general") }}</h2>
     <table class="table table-sm table-hover table-borderless">
       <tbody>
         <!--Samling-->
-        <tr v-if="data[uri]?.memberOf">
-          <th class="col-2" scope="row">{{ $t("id.collection") }}</th>
-          <td :samling="data[uri]?.memberOf.split('-3A')[0]">
-            <NuxtLink :to="`/${samling}`">{{ samling }}</NuxtLink>
-          </td>
-        </tr>
+        <DataRow
+          v-if="data[uri]?.memberOf"
+          :samling="data[uri]?.memberOf.split('-3A')[0]"
+          :data="samling"
+          nuxtlink="true"
+          :to="`/${samling}`"
+          :label="$t('id.collection')"
+        />
         <!--Domene-->
-        <tr v-if="data[uri]?.domene">
-          <th class="col-2" scope="row">{{ $t("id.domain") }}</th>
-          <td>{{ data[uri]?.domene }}</td>
-        </tr>
+        <DataRow
+          v-if="data[uri]?.domene"
+          :data="data[uri]?.domene"
+          thClass="col-2"
+          :label="$t('id.domain')"
+        />
         <!--Bruksområde-->
-        <tr v-if="data[uri]?.subject">
-          <th class="col-2" scope="row">{{ $t("id.subject") }}</th>
-          <td>{{ data[uri]?.subject.join(", ") }}</td>
-        </tr>
+        <DataRow
+          v-if="data[uri]?.subject"
+          :data="data[uri]?.subject.join(', ')"
+          thClass="col-2"
+          :label="$t('id.subject')"
+        />
         <!--Modified-->
-        <tr v-if="data[uri]?.modified">
-          <th class="col-2" scope="row">{{ $t("id.modified") }}</th>
-          <td>{{ data[uri]?.modified["@value"] }}</td>
-        </tr>
+        <DataRow
+          v-if="data[uri]?.modified"
+          :data="data[uri]?.modified['@value']"
+          thClass="col-2"
+          :label="$t('id.modified')"
+        />
         <!--Created-->
         <!--Note TODO after export fix-->
-        <tr v-if="data[uri]?.scopeNote">
-          <th class="col-2" scope="row">{{ $t("id.note") }}</th>
-          <td>{{ data[uri]?.scopeNote }}</td>
-        </tr>
+        <DataRow
+          v-if="data[uri]?.scopeNote"
+          :data="data[uri]?.scopeNote"
+          thClass="col-2"
+          :label="$t('id.note')"
+        />
       </tbody>
     </table>
   </div>
