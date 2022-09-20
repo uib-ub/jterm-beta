@@ -1,6 +1,6 @@
 <template>
   <tr>
-    <th :class="thClass" scope="row">{{ label }} {{class}}</th>
+    <th :class="thClass" scope="row">{{ label }}</th>
     <td v-if="to">
       <NuxtLink v-if="nuxtlink" :to="to">{{ data || to }}</NuxtLink>
       <a v-else :href="to">{{ data || to }}</a>
@@ -19,5 +19,4 @@ const props = defineProps({
   to: String,
   nuxtlink: Boolean,
 });
-console.log(props.thClass);
 </script>
