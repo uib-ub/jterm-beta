@@ -113,27 +113,59 @@
 </template>
 
 <script setup>
-import { compactConceptData } from '~~/composables/compactData';
-
-
 const route = useRoute();
 const samling = route.params.samling;
 const id = route.params.id;
 const uri = `${samling}-3A${id}`;
 const dataDisplayLanguages = useDataDisplayLanguages();
-const conceptLanguages = new Set([]);
-const displayLanguages = ref([]);
 const conceptViewToggle = useConceptViewToggle();
-const data = ref({});
-const prefLabelLength = ref(0);
-const altLabelLength = ref(0);
-const hiddenLabelLength = ref(0);
+
+const fetchedData = ref({});
+const data = computed(() => {
+  const identified = identifyData(fetchedData.value?.["@graph"]);
+  const labeled = idLabelsWithLang(identified, uri, [
+    "prefLabel",
+    "altLabel",
+    "hiddenLabel",
+  ]);
+  return labeled;
+});
+const conceptLanguages = new Set([]);
+const displayInfo = computed(() => {
+  const displayLanguages = dataDisplayLanguages.value.filter((language) =>
+    Array.from(conceptLanguages).includes(language)
+  );
+  const prefLabelLength = getNumberOfInstances(data.value, uri, "prefLabel");
+  const altLabelLength = getNumberOfInstances(data.value, uri, "altLabel");
+  const hiddenLabelLength = getNumberOfInstances(
+    data.value,
+    uri,
+    "hiddenLabel"
+  );
+  return {
+    displayLanguages,
+    prefLabelLength,
+    altLabelLength,
+    hiddenLabelLength,
+  };
+});
 
 async function fetchData() {
   const data = await $fetch("/api/termjsonld", {
     method: "post",
     body: generateConceptQuery(samling, id),
   });
+  return data;
+}
+
+function idLabelsWithLang(data, conceptUri, labeltypes) {
+  for (const labeltype of labeltypes) {
+    try {
+      data[conceptUri][labeltype] = updateLabels(data, conceptUri, labeltype);
+    } catch (e) {
+      console.log("No label of type '" + labeltype + "' present.");
+    }
+  }
   return data;
 }
 
@@ -153,19 +185,7 @@ function updateLabels(data, conceptUri, labelType) {
   return newLabels;
 }
 
-function mapData(graph) {
-  const data = Object.assign({}, ...graph.map((x) => ({ [x["@id"]]: x })));
-  for (const labeltype of ["prefLabel", "altLabel", "hiddenLabel"]) {
-    try {
-      data[uri][labeltype] = updateLabels(data, uri, labeltype);
-    } catch (e) {
-      console.log("No label of type '" + labeltype + " present.");
-    }
-  }
-  return data;
-}
-
-function getNumberOfInstances(data, property) {
+function getNumberOfInstances(data, uri, property) {
   try {
     const propertyDict = data[uri][property];
     const values = Object.keys(propertyDict).map(function (key) {
@@ -181,14 +201,7 @@ function getNumberOfInstances(data, property) {
 async function getData() {
   const fetched = await fetchData();
   const compacted = await compactData(fetched);
-  const mapped = await mapData(compacted["@graph"]);
-  displayLanguages.value = dataDisplayLanguages.value.filter((language) =>
-    Array.from(conceptLanguages).includes(language)
-  );
-  prefLabelLength.value = getNumberOfInstances(mapped, "prefLabel");
-  altLabelLength.value = getNumberOfInstances(mapped, "altLabel");
-  hiddenLabelLength.value = getNumberOfInstances(mapped, "hiddenLabel");
-  data.value = mapped;
+  fetchedData.value = compacted;
 }
 
 getData();
