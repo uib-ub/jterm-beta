@@ -10,11 +10,18 @@ const context: ContextDefinition = {
   skosp: "http://www.data.ub.uib.no/ns/spraksamlingene/skos#",
   dcterms: "http://purl.org/dc/terms/",
   xsd: "http://www.w3.org/2001/XMLSchema#",
+  vcard: "http://www.w3.org/2006/vcard/ns#",
   literalForm: "skosxl:literalForm",
   label: "rdfs:label",
   domene: "skosp:domene",
   modified: "dcterms:modified",
+  identifier: "dcterms:identifier",
+  description: "dcterms:description",
+  language: "dcterms:language",
   scopeNote: "skos:scopeNote", // TODO
+  opprinneligSpraak: "skosp:opprinneligSpraak",
+  hasTelephone: "vcard:hasTelephone",
+  hasEmail: { "@id": "vcard:hasEmail", "@type": "@id" },
 
   semanticRelation: {
     "@id": "skos:semanticRelation",
@@ -49,7 +56,11 @@ const context: ContextDefinition = {
     "@type": "@id",
     "@container": "@set",
   },
-  "dcterms:source": {
+  publisher: {
+    "@id": "dcterms:publisher",
+    "@type": "@id",
+  },
+  source: {
     "@id": "dcterms:source",
     "@type": "@id",
   },
