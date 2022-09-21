@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="py-3">
-      {{ uriData?.label[0]["@value"] }}
+      {{ uriData?.label[0]["@value"] || uriData?.label[0] }}
     </h1>
     <div class="container p-0">
       <div class="row row-cols-1 row-cols-md-2">
