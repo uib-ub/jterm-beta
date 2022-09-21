@@ -1,7 +1,11 @@
 <template>
   <div class="row row-cols-1 row-cols-md-2 p-3">
-    <ContentDoc class="col" :path="`/welcome_${$i18n.locale}`" />
-    <ContentDoc class="col" :path="`/samlinger_${$i18n.locale}`" />
+    <ContentDoc class="col" :path="`/welcome_${$i18n.locale}`">
+      <template #not-found> <h2>Velkommen</h2> </template>
+    </ContentDoc>
+    <ContentDoc class="col" :path="`/samlinger_${$i18n.locale}`">
+      <template #not-found></template>
+    </ContentDoc>
   </div>
 </template>
 
