@@ -29,6 +29,36 @@
 
 <script setup lang="ts">
 const searchData = useSearchData();
+const searchDataFiltered = useSearchDataFiltered();
+const searchDataStats = ref({});
+
+watch(searchData, () => {
+  searchDataStats.value = { lang: {}, predicate: {}, samling: {} };
+  searchDataFiltered.value = searchData.value;
+});
+
+watch(searchDataFiltered, () => {
+  calcStatsSearchData(searchDataFiltered.value, searchDataStats.value);
+});
+
+function calcStatsSearchData(data, stats) {
+  resetStats(stats);
+  data.forEach((match) => {
+    try {
+      stats.predicate[match.predicate] =
+        stats.predicate[match.predicate] + 1 || 1;
+      stats.lang[match.lang] = stats.lang[match.lang] + 1 || 1;
+      stats.samling[match.samling] = stats.samling[match.samling] + 1 || 1;
+    } catch (e) {}
+  });
+  return stats;
+}
+
+function resetStats(stats) {
+  try {
+    Object.keys(stats.lang).forEach((v) => (stats.lang[v] = 0));
+  } catch (e) {}
+}
 </script>
 
 <style>
