@@ -5,6 +5,8 @@ export const useSearchTermbase = () =>
   useState<Array<string>>("searchTermbase", () => []);
 export const useSearchData = () =>
   useState<Array<{ [key: string]: string }>>("searchData", () => []);
+export const useSearchDataFiltered = () =>
+  useState<Array<{ [key: string]: string }>>("searchDataFiltered", () => []);
 export const useDataDisplayLanguages = () =>
   useState<Array<string>>("dataDisplayLanguages", () => [
     "nb",
