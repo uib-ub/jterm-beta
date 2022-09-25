@@ -42,16 +42,21 @@ watch(searchDataFiltered, () => {
 });
 
 function calcStatsSearchData(data, stats) {
-  resetStats(stats);
+  const newStats = {
+    lang: { ...stats.lang },
+    samling: { ...stats.samling },
+    predicate: { ...stats.predicate },
+  };
   data.forEach((match) => {
     try {
-      stats.predicate[match.predicate] =
-        stats.predicate[match.predicate] + 1 || 1;
-      stats.lang[match.lang] = stats.lang[match.lang] + 1 || 1;
-      stats.samling[match.samling] = stats.samling[match.samling] + 1 || 1;
+      newStats.lang[match.lang] = newStats.lang[match.lang] + 1 || 1;
+      newStats.samling[match.samling] =
+        newStats.samling[match.samling] + 1 || 1;
+      newStats.predicate[match.predicate] =
+        newStats.predicate[match.predicate] + 1 || 1;
     } catch (e) {}
   });
-  return stats;
+  return newStats;
 }
 
 function resetStats(stats, deleteStats: boolean) {
