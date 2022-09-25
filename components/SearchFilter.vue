@@ -54,10 +54,21 @@ function calcStatsSearchData(data, stats) {
   return stats;
 }
 
-function resetStats(stats) {
+function resetStats(stats, deleteStats: boolean) {
   try {
-    Object.keys(stats.lang).forEach((v) => (stats.lang[v] = 0));
-  } catch (e) {}
+    let newStats = { lang: {}, samling: {}, predicate: {} };
+    if (deleteStats) {
+    } else {
+      Object.keys(stats).forEach((key) => {
+        Object.keys(stats[key]).forEach((nestedKey) => {
+          newStats[key][nestedKey] = 0;
+        });
+      });
+    }
+    return newStats;
+  } catch (e) {
+    return {};
+  }
 }
 </script>
 
