@@ -30,15 +30,31 @@
 <script setup lang="ts">
 const searchData = useSearchData();
 const searchDataFiltered = useSearchDataFiltered();
-const searchDataStats = ref({});
+const searchDataStats = ref();
+const searchFilterData = useSearchFilterData();
+let calcInitialState: boolean;
 
 watch(searchData, () => {
-  searchDataStats.value = { lang: {}, predicate: {}, samling: {} };
+  calcInitialState = true;
   searchDataFiltered.value = searchData.value;
+  searchDataStats.value = resetStats(searchDataStats.value, true);
+  searchDataStats.value = calcStatsSearchData(
+    searchData.value,
+    searchDataStats.value
+  );
+  searchFilterData.value.lang = Object.keys(searchDataStats.value.lang);
 });
 
 watch(searchDataFiltered, () => {
-  calcStatsSearchData(searchDataFiltered.value, searchDataStats.value);
+  if (calcInitialState == true) {
+    calcInitialState = false;
+  } else {
+    searchDataStats.value = resetStats(searchDataStats.value, false);
+    searchDataStats.value = calcStatsSearchData(
+      searchDataFiltered.value,
+      searchDataStats.value
+    );
+  }
 });
 
 function calcStatsSearchData(data, stats) {
