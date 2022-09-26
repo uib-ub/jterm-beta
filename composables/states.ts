@@ -7,6 +7,14 @@ export const useSearchData = () =>
   useState<Array<{ [key: string]: string }>>("searchData", () => []);
 export const useSearchDataFiltered = () =>
   useState<Array<{ [key: string]: string }>>("searchDataFiltered", () => []);
+export const useSearchDataStats = () =>
+  useState("searchDataStats", () => ({ lang: {}, samling: {}, predicate: {} }));
+export const useSearchFilterData = () =>
+  useState<{ [key: string]: string[] }>("searchFilterData", () => ({
+    lang: [],
+    samling: [],
+    predicate: [],
+  }));
 export const useDataDisplayLanguages = () =>
   useState<Array<string>>("dataDisplayLanguages", () => [
     "nb",

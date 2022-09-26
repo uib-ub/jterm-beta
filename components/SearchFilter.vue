@@ -30,7 +30,7 @@
 <script setup lang="ts">
 const searchData = useSearchData();
 const searchDataFiltered = useSearchDataFiltered();
-const searchDataStats = ref();
+const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
 let calcInitialState: boolean;
 
