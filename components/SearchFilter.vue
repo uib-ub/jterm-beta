@@ -43,6 +43,10 @@ watch(searchData, () => {
     searchDataStats.value
   );
   searchFilterData.value.lang = Object.keys(searchDataStats.value.lang);
+  searchFilterData.value.samling = Object.keys(searchDataStats.value.samling);
+  searchFilterData.value.predicate = Object.keys(
+    searchDataStats.value.predicate
+  );
 });
 
 watch(searchDataFiltered, () => {
