@@ -19,8 +19,36 @@
     <div class="collapse" id="filterCard">
       <div class="card card-body">
         <div class="row row-cols-4">
-          <div class="col" style="width: 300px">Languages</div>
-          <div class="col" style="width: 300px">Samling</div>
+          <div class="col">
+            Languages
+            <div class="form-check">
+              <FilterCheckbox
+                v-for="language in Object.keys(searchDataStats?.lang)"
+                ftype="lang"
+                :fvalue="language"
+              />
+            </div>
+          </div>
+          <div class="col">
+            Samling
+            <div class="form-check">
+              <FilterCheckbox
+                v-for="samling in Object.keys(searchDataStats?.samling)"
+                ftype="samling"
+                :fvalue="samling"
+              />
+            </div>
+          </div>
+          <div class="col">
+            Label
+            <div class="form-check">
+              <FilterCheckbox
+                v-for="predicate in Object.keys(searchDataStats?.predicate)"
+                ftype="predicate"
+                :fvalue="predicate"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
