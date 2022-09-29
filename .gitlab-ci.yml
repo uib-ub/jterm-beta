@@ -9,7 +9,7 @@ publish_beta:
   - echo "$PRIVATE_KEY" | base64 --decode | ssh-add -
 
   script:
-  - ssh -4 -o StrictHostKeyChecking=no $USER@termportalen.ubbe.no "cd /home/frontend/jterm-beta && git fetch && git checkout $CI_COMMIT_SHA && npm ci && npm run build && /usr/bin/systemctl restart node"
+  - ssh -4 -o StrictHostKeyChecking=no $USER@termportalen.ubbe.no "cd /home/frontend/jterm-beta && git fetch && git checkout $CI_COMMIT_SHA && npm ci && npm run build && sudo /usr/bin/systemctl restart node"
   tags:
   - terminologi
 
