@@ -3,7 +3,7 @@
     <!--Filter-->
     <div class="d-flex justify-content-betweem align-items-center">
       <div class="container py-0">
-        {{ searchData.length }} {{ $t("searchFilter.results") }}
+        {{ searchDataFiltered.length }} {{ $t("searchFilter.results") }}
       </div>
       <button
         class="btn tp-filter-btn"
