@@ -11,9 +11,6 @@ export default defineNuxtConfig({
   content: {
     // https://content.nuxtjs.org/api/configuration
   },
-  build: {
-    transpile: ["jsonld"],
-  },
   vite: {
     plugins: [
       VueI18nVitePlugin({
