@@ -4,7 +4,7 @@
     <div class="list-group">
       <NuxtLink
         class="list-group-item list-group-item-action"
-        v-for="item in searchData"
+        v-for="item in searchDataFiltered"
         :to="`/${item.link}`"
       >
         <div class="d-flex flex-lg-row">
@@ -32,6 +32,7 @@
 <script setup>
 const route = useRoute();
 const searchData = useSearchData();
+const searchDataFiltered = useSearchDataFiltered();
 const searchterm = useSearchterm();
 
 async function fetchData() {
