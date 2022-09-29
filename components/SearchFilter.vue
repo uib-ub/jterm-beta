@@ -60,7 +60,26 @@ const searchData = useSearchData();
 const searchDataFiltered = useSearchDataFiltered();
 const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
-let calcInitialState: boolean;
+let calcInitialState: boolean = false;
+const searchFilterActive = computed(() => {
+  let filter = undefined;
+  try {
+    Object.entries(searchFilterData.value).forEach(([k, v]) => {
+      const lenStats = Object.keys(searchDataStats.value[k]).length;
+      const lenFilter = v.length;
+      if (lenStats == lenFilter) {
+      } else {
+        if (filter) {
+          filter[k] = v;
+        } else {
+          filter = {};
+          filter[k] = v;
+        }
+      }
+    });
+  } catch (e) {}
+  return filter;
+});
 
 watch(searchData, () => {
   calcInitialState = true;
@@ -88,6 +107,30 @@ watch(searchDataFiltered, () => {
     );
   }
 });
+
+watch(
+  searchFilterData,
+  () => {
+    searchDataFiltered.value = searchData.value.filter((match) =>
+      filterData(match)
+    );
+  },
+  { deep: true }
+);
+
+function filterData(match) {
+  if (searchFilterActive.value) {
+    return Object.entries(searchFilterActive.value).every(([k, v]) => {
+      if (v.includes(match[k])) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } else {
+    return true;
+  }
+}
 
 function calcStatsSearchData(data, stats) {
   const newStats = {
