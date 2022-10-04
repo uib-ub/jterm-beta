@@ -23,7 +23,7 @@
             Languages
             <div class="form-check">
               <FilterCheckbox
-                v-for="language in Object.keys(searchDataStats?.lang)"
+                v-for="language in Object.keys(searchDataStats.lang)"
                 ftype="lang"
                 :fvalue="language"
               />
@@ -33,7 +33,7 @@
             Samling
             <div class="form-check">
               <FilterCheckbox
-                v-for="samling in Object.keys(searchDataStats?.samling)"
+                v-for="samling in Object.keys(searchDataStats.samling)"
                 ftype="samling"
                 :fvalue="samling"
               />
@@ -43,7 +43,7 @@
             Label
             <div class="form-check">
               <FilterCheckbox
-                v-for="predicate in Object.keys(searchDataStats?.predicate)"
+                v-for="predicate in Object.keys(searchDataStats.predicate)"
                 ftype="predicate"
                 :fvalue="predicate"
               />
@@ -56,24 +56,35 @@
 </template>
 
 <script setup lang="ts">
+import { SearchDataEntry, SearchDataStats } from "~~/composables/states";
+
 const searchData = useSearchData();
 const searchDataFiltered = useSearchDataFiltered();
 const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
 let calcInitialState: boolean = false;
-const searchFilterActive = computed(() => {
-  let filter = undefined;
+
+interface SearchFilterActive {
+  lang?: string[];
+  samling?: string[];
+  predicate?: string[];
+}
+
+const searchFilterActive: SearchFilterActive = computed(() => {
+  let filter: SearchFilterActive = {};
   try {
     Object.entries(searchFilterData.value).forEach(([k, v]) => {
-      const lenStats = Object.keys(searchDataStats.value[k]).length;
+      const lenStats = Object.keys(
+        searchDataStats.value[k as keyof SearchDataStats]
+      ).length;
       const lenFilter = v.length;
       if (lenStats == lenFilter) {
       } else {
         if (filter) {
-          filter[k] = v;
+          filter[k as keyof SearchFilterActive] = v;
         } else {
           filter = {};
-          filter[k] = v;
+          filter[k as keyof SearchFilterActive] = v;
         }
       }
     });
@@ -118,10 +129,11 @@ watch(
   { deep: true }
 );
 
-function filterData(match) {
-  if (searchFilterActive.value) {
+function filterData(match: SearchDataEntry) {
+  if (searchFilterActive) {
     return Object.entries(searchFilterActive.value).every(([k, v]) => {
-      if (v.includes(match[k])) {
+      console.log("filterdata: " + k + " " + v);
+      if ((v as string[]).includes(match[k as keyof SearchFilterActive])) {
         return true;
       } else {
         return false;
@@ -132,7 +144,7 @@ function filterData(match) {
   }
 }
 
-function calcStatsSearchData(data, stats) {
+function calcStatsSearchData(data: SearchDataEntry[], stats: SearchDataStats) {
   const newStats = {
     lang: { ...stats.lang },
     samling: { ...stats.samling },
@@ -150,20 +162,22 @@ function calcStatsSearchData(data, stats) {
   return newStats;
 }
 
-function resetStats(stats, deleteStats: boolean) {
+function resetStats(stats: SearchDataStats, deleteStats: boolean) {
+  let newStats: SearchDataStats = { lang: {}, samling: {}, predicate: {} };
   try {
-    let newStats = { lang: {}, samling: {}, predicate: {} };
     if (deleteStats) {
     } else {
       Object.keys(stats).forEach((key) => {
-        Object.keys(stats[key]).forEach((nestedKey) => {
-          newStats[key][nestedKey] = 0;
-        });
+        Object.keys(stats[key as keyof SearchDataStats]).forEach(
+          (nestedKey) => {
+            newStats[key as keyof SearchDataStats][nestedKey] = 0;
+          }
+        );
       });
     }
     return newStats;
   } catch (e) {
-    return {};
+    return newStats;
   }
 }
 </script>
