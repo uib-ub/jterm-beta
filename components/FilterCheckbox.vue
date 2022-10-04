@@ -8,11 +8,13 @@
   />
   <label for="`filter-${ftype}-${fvalue}`"
     >{{ $t("global." + ftype + "." + fvalue) }} ({{
-      searchDataStats?.[ftype]?.[fvalue]
+      searchDataStats[ftype as keyof SearchDataStats][fvalue]
     }})</label
   ><br />
 </template>
 <script setup lang="ts">
+import { SearchDataStats } from '~~/composables/states';
+
 const searchFilterData = useSearchFilterData();
 const searchDataStats = useSearchDataStats();
 const props = defineProps({
