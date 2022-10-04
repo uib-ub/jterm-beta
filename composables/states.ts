@@ -1,14 +1,32 @@
+export interface SearchDataEntry {
+  predicate: string,
+  label: string,
+  link: string,
+  lang: string,
+  samling: string
+}
+
+export interface SearchDataStats {
+  lang: { [key: string]: number };
+  samling: { [key: string]: number };
+  predicate: { [key: string]: number };
+}
+
 export const useSearchterm = () => useState<string>("searchterm", () => "");
 export const useSearchLanguage = () =>
   useState<string>("searchLanguage", () => "");
 export const useSearchTermbase = () =>
   useState<Array<string>>("searchTermbase", () => []);
 export const useSearchData = () =>
-  useState<Array<{ [key: string]: string }>>("searchData", () => []);
+  useState<Array<SearchDataEntry>>("searchData", () => []);
 export const useSearchDataFiltered = () =>
-  useState<Array<{ [key: string]: string }>>("searchDataFiltered", () => []);
+  useState<Array<SearchDataEntry>>("searchDataFiltered", () => []);
 export const useSearchDataStats = () =>
-  useState("searchDataStats", () => ({ lang: {}, samling: {}, predicate: {} }));
+  useState<SearchDataStats>("searchDataStats", () => ({
+    lang: {},
+    samling: {},
+    predicate: {},
+  }));
 export const useSearchFilterData = () =>
   useState<{ [key: string]: string[] }>("searchFilterData", () => ({
     lang: [],
