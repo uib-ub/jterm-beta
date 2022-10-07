@@ -19,6 +19,29 @@
       "so": "Somali",
       "sv": "Swedish",
       "ti": "Tigrinya"
+    },
+    "samling": {
+      "ARTSDB": "ARTSDB",
+      "ASTRONOMI": "Astronomi",
+      "CMBIOLOGI": "Celle- og molekylærbiologi",
+      "EVERTEBRATER": "EVERTEBRATER",
+      "KLIMA": "Klima",
+      "LINGVISTIKK": "Lingvistikk",
+      "MRT": "MRT",
+      "MRT2": "MRT2",
+      "NOT": "NOT",
+      "NHH": "NHH",
+      "NOJU": "NOJU",
+      "ROMFYS": "Romfysikk",
+      "RTT": "RTT",
+      "SDIR": "SDIR",
+      "TOLKING": "TOLKING",
+      "UHR": "UHR"
+    },
+    "predicate": {
+      "prefLabel": "Preferred label",
+      "altLabel": "Alternative label",
+      "hiddenLabel": "Hidden label "
     }
   },
 

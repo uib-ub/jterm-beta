@@ -1,0 +1,193 @@
+<template>
+  <div class="container py-2 p-0">
+    <!--Filter-->
+    <div class="d-flex justify-content-betweem align-items-center">
+      <div class="container py-0">
+        {{ searchDataFiltered.length }} {{ $t("searchFilter.results") }}
+      </div>
+      <button
+        class="btn tp-filter-btn"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#filterCard"
+        aria-expanded="false"
+        aria-controls="filterCard"
+      >
+        Filter
+      </button>
+    </div>
+    <div class="collapse" id="filterCard">
+      <div class="card card-body">
+        <div class="row row-cols-4">
+          <div class="col">
+            Languages
+            <div class="form-check">
+              <FilterCheckbox
+                v-for="language in Object.keys(searchDataStats.lang)"
+                ftype="lang"
+                :fvalue="language"
+              />
+            </div>
+          </div>
+          <div class="col">
+            Samling
+            <div class="form-check">
+              <FilterCheckbox
+                v-for="samling in Object.keys(searchDataStats.samling)"
+                ftype="samling"
+                :fvalue="samling"
+              />
+            </div>
+          </div>
+          <div class="col">
+            Label
+            <div class="form-check">
+              <FilterCheckbox
+                v-for="predicate in Object.keys(searchDataStats.predicate)"
+                ftype="predicate"
+                :fvalue="predicate"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { SearchDataEntry, SearchDataStats } from "~~/composables/states";
+
+const searchData = useSearchData();
+const searchDataFiltered = useSearchDataFiltered();
+const searchDataStats = useSearchDataStats();
+const searchFilterData = useSearchFilterData();
+let calcInitialState: boolean = false;
+
+interface SearchFilterActive {
+  lang?: string[];
+  samling?: string[];
+  predicate?: string[];
+}
+
+const searchFilterActive: SearchFilterActive = computed(() => {
+  let filter: SearchFilterActive = {};
+  try {
+    Object.entries(searchFilterData.value).forEach(([k, v]) => {
+      const lenStats = Object.keys(
+        searchDataStats.value[k as keyof SearchDataStats]
+      ).length;
+      const lenFilter = v.length;
+      if (lenStats == lenFilter) {
+      } else {
+        if (filter) {
+          filter[k as keyof SearchFilterActive] = v;
+        } else {
+          filter = {};
+          filter[k as keyof SearchFilterActive] = v;
+        }
+      }
+    });
+  } catch (e) {}
+  return filter;
+});
+
+watch(searchData, () => {
+  calcInitialState = true;
+  searchDataFiltered.value = searchData.value;
+  searchDataStats.value = resetStats(searchDataStats.value, true);
+  searchDataStats.value = calcStatsSearchData(
+    searchData.value,
+    searchDataStats.value
+  );
+  searchFilterData.value.lang = Object.keys(searchDataStats.value.lang);
+  searchFilterData.value.samling = Object.keys(searchDataStats.value.samling);
+  searchFilterData.value.predicate = Object.keys(
+    searchDataStats.value.predicate
+  );
+});
+
+watch(searchDataFiltered, () => {
+  if (calcInitialState == true) {
+    calcInitialState = false;
+  } else {
+    searchDataStats.value = resetStats(searchDataStats.value, false);
+    searchDataStats.value = calcStatsSearchData(
+      searchDataFiltered.value,
+      searchDataStats.value
+    );
+  }
+});
+
+watch(
+  searchFilterData,
+  () => {
+    searchDataFiltered.value = searchData.value.filter((match) =>
+      filterData(match)
+    );
+  },
+  { deep: true }
+);
+
+function filterData(match: SearchDataEntry) {
+  if (searchFilterActive) {
+    return Object.entries(searchFilterActive.value).every(([k, v]) => {
+      console.log("filterdata: " + k + " " + v);
+      if ((v as string[]).includes(match[k as keyof SearchFilterActive])) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  } else {
+    return true;
+  }
+}
+
+function calcStatsSearchData(data: SearchDataEntry[], stats: SearchDataStats) {
+  const newStats = {
+    lang: { ...stats.lang },
+    samling: { ...stats.samling },
+    predicate: { ...stats.predicate },
+  };
+  data.forEach((match) => {
+    try {
+      newStats.lang[match.lang] = newStats.lang[match.lang] + 1 || 1;
+      newStats.samling[match.samling] =
+        newStats.samling[match.samling] + 1 || 1;
+      newStats.predicate[match.predicate] =
+        newStats.predicate[match.predicate] + 1 || 1;
+    } catch (e) {}
+  });
+  return newStats;
+}
+
+function resetStats(stats: SearchDataStats, deleteStats: boolean) {
+  let newStats: SearchDataStats = { lang: {}, samling: {}, predicate: {} };
+  try {
+    if (deleteStats) {
+    } else {
+      Object.keys(stats).forEach((key) => {
+        Object.keys(stats[key as keyof SearchDataStats]).forEach(
+          (nestedKey) => {
+            newStats[key as keyof SearchDataStats][nestedKey] = 0;
+          }
+        );
+      });
+    }
+    return newStats;
+  } catch (e) {
+    return newStats;
+  }
+}
+</script>
+
+<style>
+.tp-filter-btn {
+  border: none;
+  width: 115px;
+  height: 40px;
+  color: var(--tp-dark);
+  background-color: var(--tp-light);
+}
+</style>
