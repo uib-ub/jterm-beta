@@ -4,12 +4,14 @@ export interface SearchDataEntry {
   link: string,
   lang: string,
   samling: string
+  matching: string;
 }
 
 export interface SearchDataStats {
   lang: { [key: string]: number };
   samling: { [key: string]: number };
   predicate: { [key: string]: number };
+  matching: { [key: string]: number };
 }
 
 export interface SearchOptions {
@@ -30,6 +32,7 @@ export const useSearchOptions = () =>
     searchLimit: 100,
     searchOffset: 0,
   }));
+
 export const useSearchterm = () => useState<string>("searchterm", () => "");
 export const useSearchLanguage = () =>
   useState<string>("searchLanguage", () => "");
@@ -46,12 +49,14 @@ export const useSearchDataStats = () =>
     lang: {},
     samling: {},
     predicate: {},
+    matching: {},
   }));
 export const useSearchFilterData = () =>
   useState<{ [key: string]: string[] }>("searchFilterData", () => ({
     lang: [],
     samling: [],
     predicate: [],
+    matching: [],
   }));
 export const useDataDisplayLanguages = () =>
   useState<Array<string>>("dataDisplayLanguages", () => [
