@@ -4,7 +4,7 @@
       <div class="container p-0 tp-language">
         <select
           class="form-select p-0 tp-language-dd"
-          v-model="searchLanguage"
+          v-model="searchOptions.searchLanguage"
           aria-label="search language"
         >
           <option value="">{{ $t("global.lang.all") }}</option>
@@ -55,20 +55,25 @@
 <script setup>
 const route = useRoute();
 const router = useRouter();
+const searchOptions = useSearchOptions();
 const searchterm = useSearchterm();
-const searchLanguage = useSearchLanguage();
+const searchData = useSearchData();
 
 function execSearch() {
-  let myparams = route.query;
-  myparams.q = searchterm.value;
-  console.log("Searching for: " + searchterm.value);
+  if (searchterm.value.length > -1) {
+    searchData.value = [];
+    let myparams = route.query;
+    searchOptions.value.searchTerm = searchterm.value;
+    myparams.q = searchOptions.value.searchTerm;
+    router.push({
+      path: "/search",
+      force: true,
+      query: myparams,
+    });
+    fetchSearchData(searchData);
+  }
   searchbutton.focus();
   searchfield.focus();
-  router.push({
-    path: "/search",
-    force: true,
-    query: myparams,
-  });
 }
 </script>
 
