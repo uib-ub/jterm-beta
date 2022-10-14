@@ -38,6 +38,15 @@
             @focus="$event.target.select()"
             aria-label="searchfield"
           />
+          <div style="border-top: 1px solid; border-bottom: 1px solid; height: 45px;">
+            <button
+              type="button"
+              class="btn-close m-2"
+              aria-label="Clear searchfield"
+              v-on:click="clearText"
+            ></button>
+          </div>
+
           <button
             id="searchbutton"
             type="submit"
@@ -58,6 +67,10 @@ const router = useRouter();
 const searchOptions = useSearchOptions();
 const searchterm = useSearchterm();
 const searchData = useSearchData();
+
+const clearText = () => {
+  searchterm.value = "";
+};
 
 function execSearch() {
   if (searchterm.value.length > -1) {
@@ -113,13 +126,15 @@ function execSearch() {
   height: 45px;
   text-indent: 5px;
   border: 1px solid var(--tp-blue-4);
+  border-right: 0px;
   border-radius: 0px 3px 3px 0px;
 }
 
 .tp-search input:focus {
   text-indent: 4px;
   box-shadow: none;
-  border: 2px solid var(--tp-blue-4);
+  border: 1px solid var(--tp-blue-4);
+  border-right: 0px
 }
 
 .tp-search-btn {
