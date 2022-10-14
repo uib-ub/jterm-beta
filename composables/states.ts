@@ -12,6 +12,24 @@ export interface SearchDataStats {
   predicate: { [key: string]: number };
 }
 
+export interface SearchOptions {
+  searchTerm: string;
+  searchBase: number;
+  searchLanguage?: string;
+  searchMatching: string[];
+  searchLimit: number;
+  searchOffset: number;
+}
+
+export const useSearchOptions = () =>
+  useState<SearchOptions>("searchOptions", () => ({
+    searchTerm: "",
+    searchBase: NaN,
+    searchLanguage: "",
+    searchMatching: ["full-cs", "full-ci", "startsWith-ci", "subWord-ci"],
+    searchLimit: 100,
+    searchOffset: 0,
+  }));
 export const useSearchterm = () => useState<string>("searchterm", () => "");
 export const useSearchLanguage = () =>
   useState<string>("searchLanguage", () => "");
