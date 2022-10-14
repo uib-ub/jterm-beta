@@ -1,9 +1,9 @@
 export interface SearchDataEntry {
-  predicate: string,
-  label: string,
-  link: string,
-  lang: string,
-  samling: string
+  predicate: string;
+  label: string;
+  link: string;
+  lang: string;
+  samling: string;
   matching: string;
 }
 
