@@ -37,6 +37,8 @@ export const useSearchTermbase = () =>
   useState<Array<string>>("searchTermbase", () => []);
 export const useSearchData = () =>
   useState<Array<SearchDataEntry>>("searchData", () => []);
+export const useSearchDataPending = () =>
+  useState<boolean>("searchDataPending", () => false);
 export const useSearchDataFiltered = () =>
   useState<Array<SearchDataEntry>>("searchDataFiltered", () => []);
 export const useSearchDataStats = () =>
