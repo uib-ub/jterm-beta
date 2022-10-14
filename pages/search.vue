@@ -30,19 +30,5 @@
 </template>
 
 <script setup>
-const route = useRoute();
-const searchData = useSearchData();
 const searchDataFiltered = useSearchDataFiltered();
-const searchterm = useSearchterm();
-
-async function fetchData() {
-  searchData.value = await $fetch("/api/termjson", {
-    method: "post",
-    body: generateSearchQuery(searchterm.value),
-  });
-  searchData.value = searchData.value.results.bindings.map(processBindings);
-}
-fetchData();
-watch(route, fetchData);
-
 </script>
