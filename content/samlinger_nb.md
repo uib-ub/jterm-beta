@@ -1,6 +1,6 @@
-## Samlinger
+## Termbaser
 
-- Maritime termbaser
+- Maritime terminologi
   - [Maritim ordbok](/MRT)
   - [Maritim ordbok del 2](/MRT2)
   - [Maritim terminologi (Sjøfartsdirektoratet)](/SDIR)

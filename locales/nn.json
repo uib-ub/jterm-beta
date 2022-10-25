@@ -44,7 +44,7 @@
       "hiddenLabel": "Frarådet term"
     }
   },
-  "navBar": {},
+  "navBar": { "about": "Om Termportalen", "config": "Inn­stillingar" },
   "searchBar": { "search": "Søk" },
   "searchFilter": { "results": "resultater", "filter": "Filter" },
 

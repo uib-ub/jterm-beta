@@ -45,7 +45,7 @@
     }
   },
 
-  "navBar": { "about": "Om termportalen", "config": "Inn­stillinger" },
+  "navBar": { "about": "Om Termportalen", "config": "Inn­stillinger" },
   "searchBar": { "search": "Søk" },
   "searchFilter": { "results": "resultater", "filter": "Filter" },
 
