@@ -68,10 +68,11 @@ export function processBindings(binding) {
   );
   return {
     predicate: predicate,
-    label: binding.term.value,
+    label: binding.literal.value,
     link: link,
     lang: binding.lang.value.split(","),
     samling: samling,
     matching: binding.matching.value,
+    score: binding.score.value
   };
 }
