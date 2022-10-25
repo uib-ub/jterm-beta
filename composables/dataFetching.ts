@@ -5,7 +5,6 @@ let lastFetch = NaN;
 
 export async function fetchData(query: string, accept?: string) {
   const url = "https://sparql.terminologi.no/termwiki_test/query";
->>>>>>> 86cf63e (add types to dataFetching)
   return await $fetch(url, {
     method: "post",
     body: query,
