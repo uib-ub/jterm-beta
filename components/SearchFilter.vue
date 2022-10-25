@@ -133,21 +133,19 @@ watch(searchData, () => {
 });
 
 watch([searchDataFiltered, searchDataPending], () => {
-  if (searchDataPending.value) {
-  } else {
+  if (!searchDataPending.value) {
     if (calcInitialState) {
-      calcInitialState = false;
       searchDataStats.value = calcStatsSearchData(
         searchDataFiltered.value,
-        searchDataStats.value
+        searchDataStats.value,
+        calcInitialState
       );
-      const filterCategories = ["lang", "samling", "predicate", "matching"];
-      filterCategories.forEach((category) => {
+      calcInitialState = false;
+      Object.keys(searchDataStats.value).forEach((category) => {
         searchFilterData.value[category] = Object.keys(
-          searchDataStats.value[category]
+          searchDataStats.value[category as keyof SearchDataStats]
         );
       });
-    } else {
     }
     searchDataStats.value = resetStats(searchDataStats.value, false);
     searchDataStats.value = calcStatsSearchData(
@@ -169,28 +167,49 @@ watch(
 
 function filterData(match: SearchDataEntry) {
   if (searchFilterActive) {
-    return Object.entries(searchFilterActive.value).every(([k, v]) => {
-      if ((v as string[]).includes(match[k as keyof SearchFilterActive])) {
-        return true;
-      } else {
-        return false;
+    return Object.entries(searchFilterActive.value).every(
+      ([filter, filterValue]) => {
+        const matchValue = match[filter as keyof SearchFilterActive];
+        if (typeof matchValue == "string") {
+          if ((filterValue as string[]).includes(matchValue)) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          if (matchValue.every((v) => !filterValue.includes(v))) {
+            return false;
+          } else {
+            return true;
+          }
+        }
       }
-    });
+    );
   } else {
     return true;
   }
 }
 
-function calcStatsSearchData(data: SearchDataEntry[], stats: SearchDataStats) {
+function calcStatsSearchData(
+  data: SearchDataEntry[],
+  stats: SearchDataStats,
+  initialCalc?: boolean
+) {
   const newStats = {
     lang: { ...stats.lang },
     samling: { ...stats.samling },
     predicate: { ...stats.predicate },
     matching: { ...stats.matching },
   };
+
   data.forEach((match) => {
     try {
-      newStats.lang[match.lang] = newStats.lang[match.lang] + 1 || 1;
+      match.lang.forEach((l) => {
+        const langFilter = searchFilterActive.value?.lang;
+        if (initialCalc || !langFilter || langFilter.includes(l)) {
+          newStats.lang[l] = newStats.lang[l] + 1 || 1;
+        }
+      });
       newStats.samling[match.samling] =
         newStats.samling[match.samling] + 1 || 1;
       newStats.predicate[match.predicate] =
@@ -203,15 +222,12 @@ function calcStatsSearchData(data: SearchDataEntry[], stats: SearchDataStats) {
 }
 
 function resetStats(stats: SearchDataStats, deleteStats: boolean) {
-  let newStats: SearchDataStats = {
-    lang: {},
-    samling: {},
-    predicate: {},
-    matching: {},
-  };
+  let newStats: SearchDataStats = Object.keys(searchDataStats.value).reduce(
+    (o, category) => ({ ...o, [category]: {} }),
+    {}
+  );
   try {
-    if (deleteStats) {
-    } else {
+    if (!deleteStats) {
       Object.keys(stats).forEach((key) => {
         Object.keys(stats[key as keyof SearchDataStats]).forEach(
           (nestedKey) => {
