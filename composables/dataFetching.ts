@@ -21,26 +21,37 @@ export async function fetchSearchDataMatching(
   append: boolean,
   tmpid: number
 ) {
-  const data = await fetchData(useSearchQuery(matching));
-  if (append) {
-    dataState.value = dataState.value.concat(
-      data.results.bindings.map(processBindings)
-    );
-  } else {
-    dataState.value = data.results.bindings.map(processBindings);
+  const searchOptions = useSearchOptions();
+  const data = await fetchData(useSearchQuery(searchOptions.value, matching));
+  if (tmpid == lastFetch) {
+    if (append) {
+      dataState.value = dataState.value.concat(
+        data.results.bindings.map(processBindings)
+      );
+    } else {
+      dataState.value = data.results.bindings.map(processBindings);
+    }
   }
 }
 export async function fetchSearchData(dataState: SearchDataEntry[]) {
   const searchOptions = useSearchOptions();
   const searchDataPending = useSearchDataPending();
   let append = false;
-
   searchDataPending.value = true;
-  const matching = ["full", "startsWith", "subWord"];
-  for (const m of matching) {
-    if (searchOptions.value.searchMatching.includes(m)) {
-      await fetchSearchDataMatching(m, dataState, append);
-      append = true;
+  const fetchTime = Date.now();
+  lastFetch = fetchTime;
+
+  if (searchOptions.value.searchOffset > 0) {
+    await fetchSearchDataMatching(matching, dataState, append, fetchTime);
+  } else {
+    for (const m of matching) {
+      if (searchOptions.value.searchMatching.includes(m)) {
+        await fetchSearchDataMatching([m], dataState, append, fetchTime);
+        append = true;
+        if (fetchTime != lastFetch) {
+          break;
+        }
+      }
     }
   }
   searchDataPending.value = false;
