@@ -34,3 +34,9 @@
 <script setup>
 const searchDataFiltered = useSearchDataFiltered();
 </script>
+
+<style>
+.searchHighlight {
+  background-color: var(--tp-blue-1);
+}
+</style>
