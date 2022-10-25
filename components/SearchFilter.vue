@@ -1,10 +1,23 @@
 <template>
   <div class="container py-2 p-0">
     <!--Filter-->
-    <div class="d-flex justify-content-betweem align-items-center">
+    <div class="d-flex justify-content-between align-items-center">
       <div class="container py-0">
         {{ searchDataFiltered.length }} {{ $t("searchFilter.results") }}
       </div>
+
+      <div class="container"></div>
+      <div class="container">
+        <div
+          v-if="searchDataPending"
+          class="spinner-border"
+          style="width: 1.75rem; height: 1.75rem"
+          role="status"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div class="container"></div>
       <button
         class="btn tp-filter-btn"
         type="button"
@@ -16,8 +29,17 @@
         Filter
       </button>
     </div>
-    <div class="collapse" id="filterCard">
-      <div class="card card-body">
+    <div class="collapse mt-2" id="filterCard">
+      <div v-if="searchDataPending" class="card card-body text-center">
+        <div
+          class="spinner-border"
+          style="width: 1.75rem; height: 1.75rem"
+          role="status"
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div v-else class="card card-body">
         <div class="row row-cols-4">
           <div class="col">
             Languages
@@ -49,6 +71,16 @@
               />
             </div>
           </div>
+          <div class="col">
+            Match
+            <div class="form-check">
+              <FilterCheckbox
+                v-for="matching in Object.keys(searchDataStats.matching)"
+                ftype="matching"
+                :fvalue="matching"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -62,12 +94,14 @@ const searchData = useSearchData();
 const searchDataFiltered = useSearchDataFiltered();
 const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
+const searchDataPending = useSearchDataPending();
 let calcInitialState: boolean = false;
 
 interface SearchFilterActive {
   lang?: string[];
   samling?: string[];
   predicate?: string[];
+  matching?: string[];
 }
 
 const searchFilterActive: SearchFilterActive = computed(() => {
@@ -94,23 +128,25 @@ const searchFilterActive: SearchFilterActive = computed(() => {
 
 watch(searchData, () => {
   calcInitialState = true;
-  searchDataFiltered.value = searchData.value;
   searchDataStats.value = resetStats(searchDataStats.value, true);
-  searchDataStats.value = calcStatsSearchData(
-    searchData.value,
-    searchDataStats.value
-  );
-  searchFilterData.value.lang = Object.keys(searchDataStats.value.lang);
-  searchFilterData.value.samling = Object.keys(searchDataStats.value.samling);
-  searchFilterData.value.predicate = Object.keys(
-    searchDataStats.value.predicate
-  );
+  searchDataFiltered.value = searchData.value;
 });
 
-watch(searchDataFiltered, () => {
-  if (calcInitialState == true) {
-    calcInitialState = false;
-  } else {
+watch([searchDataFiltered, searchDataPending], () => {
+  if (!searchDataPending.value) {
+    if (calcInitialState) {
+      searchDataStats.value = calcStatsSearchData(
+        searchDataFiltered.value,
+        searchDataStats.value,
+        calcInitialState
+      );
+      calcInitialState = false;
+      Object.keys(searchDataStats.value).forEach((category) => {
+        searchFilterData.value[category] = Object.keys(
+          searchDataStats.value[category as keyof SearchDataStats]
+        );
+      });
+    }
     searchDataStats.value = resetStats(searchDataStats.value, false);
     searchDataStats.value = calcStatsSearchData(
       searchDataFiltered.value,
@@ -131,42 +167,67 @@ watch(
 
 function filterData(match: SearchDataEntry) {
   if (searchFilterActive) {
-    return Object.entries(searchFilterActive.value).every(([k, v]) => {
-      console.log("filterdata: " + k + " " + v);
-      if ((v as string[]).includes(match[k as keyof SearchFilterActive])) {
-        return true;
-      } else {
-        return false;
+    return Object.entries(searchFilterActive.value).every(
+      ([filter, filterValue]) => {
+        const matchValue = match[filter as keyof SearchFilterActive];
+        if (typeof matchValue == "string") {
+          if ((filterValue as string[]).includes(matchValue)) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          if (matchValue.every((v) => !filterValue.includes(v))) {
+            return false;
+          } else {
+            return true;
+          }
+        }
       }
-    });
+    );
   } else {
     return true;
   }
 }
 
-function calcStatsSearchData(data: SearchDataEntry[], stats: SearchDataStats) {
+function calcStatsSearchData(
+  data: SearchDataEntry[],
+  stats: SearchDataStats,
+  initialCalc?: boolean
+) {
   const newStats = {
     lang: { ...stats.lang },
     samling: { ...stats.samling },
     predicate: { ...stats.predicate },
+    matching: { ...stats.matching },
   };
+
   data.forEach((match) => {
     try {
-      newStats.lang[match.lang] = newStats.lang[match.lang] + 1 || 1;
+      match.lang.forEach((l) => {
+        const langFilter = searchFilterActive.value?.lang;
+        if (initialCalc || !langFilter || langFilter.includes(l)) {
+          newStats.lang[l] = newStats.lang[l] + 1 || 1;
+        }
+      });
       newStats.samling[match.samling] =
         newStats.samling[match.samling] + 1 || 1;
       newStats.predicate[match.predicate] =
         newStats.predicate[match.predicate] + 1 || 1;
+      newStats.matching[match.matching] =
+        newStats.matching[match.matching] + 1 || 1;
     } catch (e) {}
   });
   return newStats;
 }
 
 function resetStats(stats: SearchDataStats, deleteStats: boolean) {
-  let newStats: SearchDataStats = { lang: {}, samling: {}, predicate: {} };
+  let newStats: SearchDataStats = Object.keys(searchDataStats.value).reduce(
+    (o, category) => ({ ...o, [category]: {} }),
+    {}
+  );
   try {
-    if (deleteStats) {
-    } else {
+    if (!deleteStats) {
       Object.keys(stats).forEach((key) => {
         Object.keys(stats[key as keyof SearchDataStats]).forEach(
           (nestedKey) => {
@@ -185,7 +246,7 @@ function resetStats(stats: SearchDataStats, deleteStats: boolean) {
 <style>
 .tp-filter-btn {
   border: none;
-  width: 115px;
+  width: 400px;
   height: 40px;
   color: var(--tp-dark);
   background-color: var(--tp-light);

@@ -167,21 +167,16 @@ const displayInfo = computed(() => {
   };
 });
 
-async function fetchData() {
-  const data = await $fetch("/api/termjsonld", {
-    method: "post",
-    body: generateConceptQuery(samling, id),
-  });
-  return data;
-}
-
-async function getData() {
-  const fetched = await fetchData();
+async function fetchConceptData() {
+  const fetched = await fetchData(
+    generateConceptQuery(samling, id),
+    "application/ld+json"
+  );
   const compacted = await compactData(fetched);
   fetchedData.value = compacted;
 }
 
-getData();
+fetchConceptData();
 </script>
 
 <style></style>

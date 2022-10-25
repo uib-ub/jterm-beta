@@ -73,7 +73,8 @@ const samling = getSamlingFromParam();
 const uri = `${samling}-3A${samling}`;
 const samlingData = ref();
 const displayData = computed(() => {
-  return identifyData(samlingData.value?.["@graph"]);});
+  return identifyData(samlingData.value?.["@graph"]);
+});
 const uriData = computed(() => {
   return displayData.value?.[uri];
 });
@@ -93,13 +94,12 @@ function getSamlingFromParam() {
   }
 }
 
-async function fetchData() {
-  const data = await $fetch("/api/termjsonld", {
-    method: "post",
-    body: generateSamlingQuery(samling),
-  });
+async function fetchSamlingData() {
+  const data = await fetchData(
+    generateSamlingQuery(samling),
+    "application/ld+json"
+  );
   samlingData.value = await compactData(data);
 }
-
-fetchData();
+fetchSamlingData();
 </script>

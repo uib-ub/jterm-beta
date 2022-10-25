@@ -4,7 +4,7 @@
       <div class="container p-0 tp-language">
         <select
           class="form-select p-0 tp-language-dd"
-          v-model="searchLanguage"
+          v-model="searchOptions.searchLanguage"
           aria-label="search language"
         >
           <option value="">{{ $t("global.lang.all") }}</option>
@@ -38,6 +38,15 @@
             @focus="$event.target.select()"
             aria-label="searchfield"
           />
+          <div style="border-top: 1px solid; border-bottom: 1px solid; height: 45px;">
+            <button
+              type="button"
+              class="btn-close m-2"
+              aria-label="Clear searchfield"
+              v-on:click="clearText"
+            ></button>
+          </div>
+
           <button
             id="searchbutton"
             type="submit"
@@ -55,20 +64,29 @@
 <script setup>
 const route = useRoute();
 const router = useRouter();
+const searchOptions = useSearchOptions();
 const searchterm = useSearchterm();
-const searchLanguage = useSearchLanguage();
+const searchData = useSearchData();
+
+const clearText = () => {
+  searchterm.value = "";
+};
 
 function execSearch() {
-  let myparams = route.query;
-  myparams.q = searchterm.value;
-  console.log("Searching for: " + searchterm.value);
+  if (searchterm.value.length > -1) {
+    searchData.value = [];
+    let myparams = route.query;
+    searchOptions.value.searchTerm = searchterm.value;
+    myparams.q = searchOptions.value.searchTerm;
+    router.push({
+      path: "/search",
+      force: true,
+      query: myparams,
+    });
+    fetchSearchData(searchData);
+  }
   searchbutton.focus();
   searchfield.focus();
-  router.push({
-    path: "/search",
-    force: true,
-    query: myparams,
-  });
 }
 </script>
 
@@ -108,13 +126,15 @@ function execSearch() {
   height: 45px;
   text-indent: 5px;
   border: 1px solid var(--tp-blue-4);
+  border-right: 0px;
   border-radius: 0px 3px 3px 0px;
 }
 
 .tp-search input:focus {
   text-indent: 4px;
   box-shadow: none;
-  border: 2px solid var(--tp-blue-4);
+  border: 1px solid var(--tp-blue-4);
+  border-right: 0px
 }
 
 .tp-search-btn {

@@ -13,12 +13,12 @@
   ><br />
 </template>
 <script setup lang="ts">
-import { SearchDataStats } from '~~/composables/states';
+import { SearchDataStats } from "~~/composables/states";
 
 const searchFilterData = useSearchFilterData();
 const searchDataStats = useSearchDataStats();
 const props = defineProps({
   ftype: { type: String, required: true },
-  fvalue: {type: String, required: true},
+  fvalue: { type: String, required: true },
 });
 </script>

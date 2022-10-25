@@ -58,3 +58,21 @@ export function getNumberOfInstances(data: any, uri: string, property: string) {
     return 0;
   }
 }
+
+export function processBindings(binding) {
+  const link = binding.uri.value.split("/").at(-1).replace("-3A", "/");
+  const samling = binding.samling.value.split("/").at(-1).split("3A").at(-1);
+  const predicate = binding.predicate.value.replace(
+    "http://www.w3.org/2008/05/skos-xl#",
+    ""
+  );
+  return {
+    predicate: predicate,
+    label: binding.literal.value,
+    link: link,
+    lang: binding.lang.value.split(","),
+    samling: samling,
+    matching: binding.matching.value,
+    score: binding.score.value
+  };
+}
