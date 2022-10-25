@@ -11,11 +11,11 @@
           <div class="container p-0">
             <div v-if="item.predicate == 'prefLabel'">
               <div class="container p-0">
-                <b>{{ item.label }}</b>
+                <b v-html="item.label"></b>
               </div>
             </div>
             <div v-else>
-              <div class="container p-0">{{ item.label }}</div>
+              <div class="container p-0" v-html="item.label"></div>
             </div>
           </div>
 
