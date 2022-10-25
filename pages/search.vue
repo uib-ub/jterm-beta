@@ -20,7 +20,9 @@
           </div>
 
           <div class="container px-3">
-            {{ $t(`global.lang.${item.lang}`) }}
+            {{
+              item.lang.map((l: string) => $t(`global.lang.${l}`)).join(", ")
+            }}
           </div>
           <div class="container p-0">{{ item.samling }}</div>
         </div>

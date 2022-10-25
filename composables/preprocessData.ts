@@ -70,7 +70,7 @@ export function processBindings(binding) {
     predicate: predicate,
     label: binding.term.value,
     link: link,
-    lang: binding.term["xml:lang"],
+    lang: binding.lang.value.split(","),
     samling: samling,
     matching: binding.matching.value,
   };
