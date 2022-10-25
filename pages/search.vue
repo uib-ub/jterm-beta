@@ -4,7 +4,7 @@
     <div class="list-group">
       <NuxtLink
         class="list-group-item list-group-item-action"
-        v-for="item in searchDataFiltered"
+        v-for="item in searchDataFiltered.slice(0, 50)"
         :to="`/${item.link}`"
       >
         <div class="d-flex flex-lg-row">
@@ -25,13 +25,14 @@
             }}
           </div>
           <div class="container p-0">{{ item.samling }}</div>
+          <div class="container p-0">{{ item.score }}</div>
         </div>
       </NuxtLink>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const searchDataFiltered = useSearchDataFiltered();
 </script>
 
