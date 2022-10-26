@@ -49,8 +49,8 @@ export function useSearchQuery(
     },
     "subWord-ci": {
       score: 100,
-      where: `{ (?label ?sc ?lit) text:query ("${searchStarred}" "${queryHighlight}" {language}) }`,
-      filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchOptions.searchTerm}")) ).`,
+      where: `{ (?label ?sc ?lit) text:query ("${searchStarred}" "${queryHighlight}" {language}). }`,
+      filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
     },
   };
 
