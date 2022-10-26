@@ -67,16 +67,42 @@ export function useSearchQuery(
   const subqueryArray: string[] = [];
   matching.forEach((match) => {
     const whereArray: string[] = [];
+    const langfilterArray: string[] = [];
+    if (match == "contains-ci") {
+      whereArray.push(content["contains-ci"].where);
+    }
     language.forEach((lang) => {
-      if (!lang) {
-        whereArray.push(content[match].where.replace("{language}", ""));
+      if (match == "contains-ci") {
+        if (lang) {
+          langfilterArray.push(
+            content["contains-ci"].langfilter.replace("{language}", `"${lang}"`)
+          );
+        }
       } else {
-        whereArray.push(
-          content[match].where.replace("{language}", `"lang:${lang}"`)
-        );
+        if (!lang) {
+          whereArray.push(content[match].where.replace("{language}", ""));
+        } else {
+          whereArray.push(
+            content[match].where.replace("{language}", `"lang:${lang}"`)
+          );
+        }
       }
     });
     const where = whereArray.join("\n            UNION\n            ");
+    const langfilter = langfilterArray.join(` || \n${" ".repeat(23)}`);
+    let filter = "";
+    if (match == "contains-ci") {
+      if (language[0]) {
+        filter = content[match].filter.replace(
+          "{langfilter}",
+          ` &&\n${" ".repeat(21)}( ${langfilter} )`
+        );
+      } else {
+        filter = content[match].filter.replace("{langfilter}", "");
+      }
+    } else {
+      filter = content[match].filter;
+    }
 
     const subqueryTemplate = `
         {
