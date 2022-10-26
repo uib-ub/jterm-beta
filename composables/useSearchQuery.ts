@@ -31,7 +31,7 @@ export function useSearchQuery(
 
   const content = {
     "full-cs": {
-      score : 400,
+      score: 400,
       where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" "${queryHighlight}" {language}). }`,
       filter: `FILTER ( str(?lit) = "${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}" ).`,
     },
