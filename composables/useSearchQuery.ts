@@ -102,7 +102,7 @@ export function useSearchQuery(
     }
   }
   GROUP BY ?uri ?predicate ?literal ?samling ?score ?matching
-  ORDER BY DESC(?score) lcase(?literal)
+  ORDER BY DESC(?score) lcase(?literal) DESC(?predicate)
   LIMIT ${searchOptions.searchLimit}`;
 
   return query;
