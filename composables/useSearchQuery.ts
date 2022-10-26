@@ -38,7 +38,7 @@ export function useSearchQuery(
     "full-ci": {
       score: 300,
       where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" "${queryHighlight}" {language}). }`,
-      filter: `FILTER ( lcase(str(?lit)) = lcase("${htmlHighlightOpen}${searchTerm}") &&
+      filter: `FILTER ( lcase(str(?lit)) = lcase("${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}") &&
                      str(?lit) != "${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}" ).`,
     },
     "startsWith-ci": {
