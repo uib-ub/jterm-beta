@@ -52,6 +52,16 @@ export function useSearchQuery(
       where: `{ (?label ?sc ?lit) text:query ("${searchStarred}" "${queryHighlight}" {language}). }`,
       filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
     },
+    "contains-ci": {
+      score: 0,
+      where: `{ ?label skosxl:literalForm ?lit
+              NOT EXISTS {
+                ?label text:query ("${searchStarred}")
+              }
+            }`,
+      filter: `FILTER ( contains(lcase(?lit), lcase("${searchTerm}")){langfilter} ).`,
+      langfilter: `LANGMATCHES(LANG(?lit), {language})`,
+    },
   };
 
   const subqueryArray: string[] = [];
