@@ -28,7 +28,7 @@ export const useSearchOptions = () =>
     searchTerm: "",
     searchBase: NaN,
     searchLanguage: "",
-    searchMatching: ["full-cs", "full-ci", "startsWith-ci", "subWord-ci"],
+    searchMatching: ["full-cs", "full-ci", "startsWith-ci", "subWord-ci", "contains-ci"],
     searchLimit: 100,
     searchOffset: 0,
   }));
