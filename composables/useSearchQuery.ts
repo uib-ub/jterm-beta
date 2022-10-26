@@ -106,11 +106,15 @@ export function useSearchQuery(
 
     const subqueryTemplate = `
         {
-          SELECT ?label (?sc + ${content[match].score} as ?score) (str(?lit) as ?literal) ?l ("${match}" as ?matching)
+          SELECT ?label ?score ?l
+                 ?literal
+                 ("${match}" as ?matching)
           WHERE {
             ${where}
-            ${content[match].filter}
-            BIND (lang(?lit) as ?l).
+            ${filter}
+            BIND ( lang(?lit) as ?l ).
+            BIND ( IF ("${match}" = "contains-ci", replace(str(?lit), "${searchTerm}", "${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}"), str(?lit)) as ?literal)
+            BIND ( coalesce(?sc, 1) + ${content[match].score} as ?score ).
           }
           ORDER BY DESC(?score) lcase(?literal)
           LIMIT ${searchOptions.searchLimit}
