@@ -1,6 +1,12 @@
 import { SearchDataEntry } from "./states";
 
-const matching = ["full-cs", "full-ci", "startsWith-ci", "subWord-ci", "contains-ci"];
+const matching = [
+  "full-cs",
+  "full-ci",
+  "startsWith-ci",
+  "subWord-ci",
+  "contains-ci",
+];
 let lastFetch = NaN;
 
 export async function fetchData(query: string, accept?: string) {
@@ -12,7 +18,6 @@ export async function fetchData(query: string, accept?: string) {
       "Content-type": "application/sparql-query",
       Referer: "https://term.uib.no/",
       Accept: accept || "application/json",
-
     },
   });
 }
@@ -42,12 +47,15 @@ export async function fetchSearchData(dataState: SearchDataEntry[]) {
   searchDataPending.value = true;
   const fetchTime = Date.now();
   lastFetch = fetchTime;
-
+  let searchMatching = ["all"];
+  if (searchOptions.value.searchTerm.length > 0) {
+    searchMatching = matching;
+  }
   if (searchOptions.value.searchOffset > 0) {
-    await fetchSearchDataMatching(matching, dataState, append, fetchTime);
+    await fetchSearchDataMatching(searchMatching, dataState, append, fetchTime);
   } else {
-    for (const m of matching) {
-      if (searchOptions.value.searchMatching.includes(m)) {
+    for (const m of searchMatching) {
+      if (m == "all" || searchOptions.value.searchMatching.includes(m)) {
         await fetchSearchDataMatching([m], dataState, append, fetchTime);
         append = true;
         if (fetchTime != lastFetch) {
