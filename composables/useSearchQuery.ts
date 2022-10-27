@@ -34,6 +34,17 @@ export function useSearchQuery(
   })();
 
   const content = {
+    all: {
+      score: 0,
+      where: `{ SELECT ?label ?lit (0 as ?sc)
+                WHERE {
+                  ?label skosxl:literalForm ?lit.
+                {languageFilter}
+                }
+                LIMIT ${searchOptions.searchLimit}
+            }`,
+      filter: "",
+    },
     "full-cs": {
       score: 400,
       where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" "${queryHighlight}" {language}). }`,
