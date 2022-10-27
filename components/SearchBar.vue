@@ -38,7 +38,13 @@
             @focus="$event.target.select()"
             aria-label="searchfield"
           />
-          <div style="border-top: 1px solid; border-bottom: 1px solid; height: 45px;">
+          <div
+            style="
+              border-top: 1px solid;
+              border-bottom: 1px solid;
+              height: 45px;
+            "
+          >
             <button
               type="button"
               class="btn-close m-2"
@@ -73,18 +79,16 @@ const clearText = () => {
 };
 
 function execSearch() {
-  if (searchterm.value.length > -1) {
-    searchData.value = [];
-    let myparams = route.query;
-    searchOptions.value.searchTerm = searchterm.value;
-    myparams.q = searchOptions.value.searchTerm;
-    router.push({
-      path: "/search",
-      force: true,
-      query: myparams,
-    });
-    fetchSearchData(searchData);
-  }
+  searchData.value = [];
+  let myparams = route.query;
+  searchOptions.value.searchTerm = searchterm.value;
+  myparams.q = searchOptions.value.searchTerm;
+  router.push({
+    path: "/search",
+    force: true,
+    query: myparams,
+  });
+  fetchSearchData(searchData);
   searchbutton.focus();
   searchfield.focus();
 }
@@ -134,7 +138,7 @@ function execSearch() {
   text-indent: 4px;
   box-shadow: none;
   border: 1px solid var(--tp-blue-4);
-  border-right: 0px
+  border-right: 0px;
 }
 
 .tp-search-btn {
