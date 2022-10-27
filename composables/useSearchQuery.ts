@@ -13,6 +13,10 @@ export function useSearchQuery(
     .split(" ")
     .map((t) => t + "*")
     .join(" AND ");
+  const searchDoubleStarred = searchTerm
+    .split(" ")
+    .map((t) => "*" + t + "*")
+    .join(" AND ");
 
   let graph = "GRAPH <urn:x-arq:UnionGraph>";
   if (Array.isArray(searchOptions.searchBase)) {
@@ -54,13 +58,8 @@ export function useSearchQuery(
     },
     "contains-ci": {
       score: 0,
-      where: `{ ?label skosxl:literalForm ?lit
-              NOT EXISTS {
-                ?label text:query ("${searchStarred}")
-              }
-            }`,
-      filter: `FILTER ( contains(lcase(?lit), lcase("${searchTerm}")){langfilter} ).`,
-      langfilter: `LANGMATCHES(LANG(?lit), {language})`,
+      where: `{ (?label ?sc ?lit) text:query ("(${searchDoubleStarred}) NOT (${searchStarred})" "${queryHighlight}" {language}). }`,
+      filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
     },
   };
 
@@ -68,14 +67,17 @@ export function useSearchQuery(
   matching.forEach((match) => {
     const whereArray: string[] = [];
     const langfilterArray: string[] = [];
-    if (match == "contains-ci") {
-      whereArray.push(content["contains-ci"].where);
-    }
+
     language.forEach((lang) => {
-      if (match == "contains-ci") {
-        if (lang) {
-          langfilterArray.push(
-            content["contains-ci"].langfilter.replace("{language}", `"${lang}"`)
+      if (match == "all") {
+        if (!lang) {
+          whereArray.push(content[match].where.replace("{languageFilter}", ""));
+        } else {
+          whereArray.push(
+            content[match].where.replace(
+              "{languageFilter}",
+              `FILTER ( langmatches(lang(?lit), "${lang}") )`
+            )
           );
         }
       } else {
@@ -89,32 +91,16 @@ export function useSearchQuery(
       }
     });
     const where = whereArray.join("\n            UNION\n            ");
-    const langfilter = langfilterArray.join(` || \n${" ".repeat(23)}`);
-    let filter = "";
-    if (match == "contains-ci") {
-      if (language[0]) {
-        filter = content[match].filter.replace(
-          "{langfilter}",
-          ` &&\n${" ".repeat(21)}( ${langfilter} )`
-        );
-      } else {
-        filter = content[match].filter.replace("{langfilter}", "");
-      }
-    } else {
-      filter = content[match].filter;
-    }
 
     const subqueryTemplate = `
         {
-          SELECT ?label ?score ?l
-                 ?literal
+          SELECT ?label ?literal ?l (?sc + ${content[match].score} as ?score)
                  ("${match}" as ?matching)
           WHERE {
             ${where}
-            ${filter}
+            ${content[match].filter}
             BIND ( lang(?lit) as ?l ).
-            BIND ( IF ("${match}" = "contains-ci", replace(str(?lit), "${searchTerm}", "${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}"), str(?lit)) as ?literal)
-            BIND ( coalesce(?sc, 1) + ${content[match].score} as ?score ).
+            BIND ( str(?lit) as ?literal )
           }
           ORDER BY DESC(?score) lcase(?literal)
           LIMIT ${searchOptions.searchLimit}
