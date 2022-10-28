@@ -2,6 +2,7 @@ import { SearchOptions } from "./states";
 
 export function useSearchQuery(
   searchOptions: SearchOptions,
+  queryType: string,
   matching: string[]
 ) {
   const htmlHighlightOpen = "<span class='searchHighlight'>";
@@ -28,6 +29,7 @@ export function useSearchQuery(
       .join("");
     graph = `VALUES (?G) {${bases}} GRAPH ?G`;
   }
+
   const language = (() => {
     if (searchOptions.searchLanguage) {
       return [searchOptions.searchLanguage];
@@ -36,10 +38,12 @@ export function useSearchQuery(
     }
   })();
 
-  const content = {
-    all: {
-      score: 0,
-      where: `{ SELECT ?label ?lit (0 as ?sc)
+  const subqueries = (queryType: string, matching: string) => {
+    const content = {
+      entries: {
+        all: {
+          score: 0,
+          where: `{ SELECT ?label ?lit (0 as ?sc)
                 WHERE {
                   ?label skosxl:literalForm ?lit.
                 {languageFilter}
@@ -80,15 +84,15 @@ export function useSearchQuery(
   const subqueryArray: string[] = [];
   matching.forEach((match) => {
     const whereArray: string[] = [];
-    const langfilterArray: string[] = [];
-
     language.forEach((lang) => {
       if (match == "all") {
         if (!lang) {
-          whereArray.push(content[match].where.replace("{languageFilter}", ""));
+          whereArray.push(
+            subqueries(queryType, match).where.replace("{languageFilter}", "")
+          );
         } else {
           whereArray.push(
-            content[match].where.replace(
+            subqueries(queryType, match).where.replace(
               "{languageFilter}",
               `FILTER ( langmatches(lang(?lit), "${lang}") )`
             )
@@ -96,23 +100,32 @@ export function useSearchQuery(
         }
       } else {
         if (!lang) {
-          whereArray.push(content[match].where.replace("{language}", ""));
+          whereArray.push(
+            subqueries(queryType, match).where.replace("{language}", "")
+          );
         } else {
           whereArray.push(
-            content[match].where.replace("{language}", `"lang:${lang}"`)
+            subqueries(queryType, match).where.replace(
+              "{language}",
+              `"lang:${lang}"`
+            )
           );
         }
       }
     });
     const where = whereArray.join("\n            UNION\n            ");
 
-    const subqueryTemplate = `
+    const subqueryTemplate = (queryType: string) => {
+      const subquery = {
+        entries: `
         {
-          SELECT ?label ?literal ?l (?sc + ${content[match].score} as ?score)
+          SELECT ?label ?literal ?l (?sc + ${
+            subqueries(queryType, match).score
+          } as ?score)
                  ("${match}" as ?matching)
           WHERE {
             ${where}
-            ${content[match].filter}
+            ${subqueries(queryType, match).filter}
             BIND ( lang(?lit) as ?l ).
             BIND ( str(?lit) as ?literal )
           }
@@ -123,7 +136,7 @@ export function useSearchQuery(
   });
   const subquery = subqueryArray.join("\n        UNION\n");
 
-  let query = `
+  const queryEntries = () => `
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
   PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
   PREFIX text: <http://jena.apache.org/text#>
