@@ -1,6 +1,6 @@
 import { SearchDataEntry } from "./states";
 
-const matching = [
+const matchingOrder = [
   "full-cs",
   "full-ci",
   "startsWith-ci",
@@ -29,7 +29,9 @@ export async function fetchSearchDataMatching(
   tmpid: number
 ) {
   const searchOptions = useSearchOptions();
-  const data = await fetchData(useSearchQuery(searchOptions.value, "entries", matching));
+  const data = await fetchData(
+    useSearchQuery(searchOptions.value, "entries", matching)
+  );
   if (tmpid == lastFetch) {
     if (append) {
       dataState.value = dataState.value.concat(
@@ -48,14 +50,19 @@ async function fetchSearchDataCount(searchOptions, matching: string[]) {
 export async function fetchSearchData(dataState: SearchDataEntry[]) {
   const searchOptions = useSearchOptions();
   const searchDataPending = useSearchDataPending();
+  const searchDataCount = useSearchDataCount();
   let append = false;
   searchDataPending.value = true;
   const fetchTime = Date.now();
   lastFetch = fetchTime;
   let searchMatching = ["all"];
   if (searchOptions.value.searchTerm.length > 0) {
-    searchMatching = matching;
+    searchMatching = matchingOrder;
   }
+  searchDataCount.value = await fetchSearchDataCount(
+    searchOptions.value,
+    searchMatching
+  );
   if (searchOptions.value.searchOffset > 0) {
     await fetchSearchDataMatching(searchMatching, dataState, append, fetchTime);
   } else {

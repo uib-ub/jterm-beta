@@ -44,6 +44,7 @@ export const useSearchDataPending = () =>
   useState<boolean>("searchDataPending", () => false);
 export const useSearchDataFiltered = () =>
   useState<Array<SearchDataEntry>>("searchDataFiltered", () => []);
+export const useSearchDataCount = () => useState("searchDataCount", () => {})
 export const useSearchDataStats = () =>
   useState<SearchDataStats>("searchDataStats", () => ({
     lang: {},
