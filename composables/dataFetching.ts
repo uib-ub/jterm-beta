@@ -40,6 +40,11 @@ export async function fetchSearchDataMatching(
     }
   }
 }
+
+async function fetchSearchDataCount(searchOptions, matching: string[]) {
+  return await fetchData(useSearchQuery(searchOptions, "count", matching));
+}
+
 export async function fetchSearchData(dataState: SearchDataEntry[]) {
   const searchOptions = useSearchOptions();
   const searchDataPending = useSearchDataPending();
