@@ -73,6 +73,9 @@ export async function fetchSearchData(dataState: SearchDataEntry[]) {
         if (fetchTime != lastFetch) {
           break;
         }
+        if (dataState.value.length > searchOptions.value.searchLimit) {
+          break;
+        }
       }
     }
   }
