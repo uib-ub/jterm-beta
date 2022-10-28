@@ -226,5 +226,8 @@ export function useSearchQuery(
       return queryEntries();
     case "count":
       return queryCount();
+    default:
+      console.log("queryType not matched.");
+      return "";
   }
 }
