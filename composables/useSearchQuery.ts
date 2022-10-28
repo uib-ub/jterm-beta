@@ -81,6 +81,15 @@ export function useSearchQuery(
         },
       },
       count: {
+        all: {
+          where: `{ SELECT ?label
+              WHERE {
+                ?label skosxl:literalForm ?lit.
+              {languageFilter}
+              }
+          }`,
+          filter: "",
+        },
         "full-cs": {
           where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" {language}). }`,
           filter: `FILTER ( str(?lit) = "${searchTerm}" ).`,
@@ -88,7 +97,7 @@ export function useSearchQuery(
         "full-ci": {
           where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" {language}). }`,
           filter: `FILTER ( lcase(str(?lit)) = lcase("${searchTerm}") &&
-                     str(?lit) != "${searchTerm}" ).`
+                     str(?lit) != "${searchTerm}" ).`,
         },
         "startsWith-ci": {
           where: `{ (?label ?sc ?lit) text:query ("${searchStarred()}" {language}). }`,
@@ -210,8 +219,7 @@ export function useSearchQuery(
         ${subquery}
       }
     }
-  }`
-
+  }`;
 
   switch (queryType) {
     case "entries":
