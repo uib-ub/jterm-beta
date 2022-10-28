@@ -3,7 +3,7 @@
     <!--Filter-->
     <div class="d-flex justify-content-between align-items-center">
       <div class="container py-0">
-        {{ searchDataFiltered.length }} {{ $t("searchFilter.results") }}
+        {{ count }} {{ $t("searchFilter.results") }}
       </div>
 
       <div class="container"></div>
@@ -96,6 +96,17 @@ const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
 const searchDataPending = useSearchDataPending();
 let calcInitialState: boolean = false;
+const searchDataCount = useSearchDataCount();
+const count = computed(() => {
+  const countValues = searchDataCount.value?.results.bindings.map((binding) =>
+    parseInt(binding.count.value)
+  ) || [0];
+  if (countValues.includes(10000)) {
+    return "10000+";
+  } else {
+    return countValues.reduce((partial, current) => partial + current, 0);
+  }
+});
 
 interface SearchFilterActive {
   lang?: string[];
