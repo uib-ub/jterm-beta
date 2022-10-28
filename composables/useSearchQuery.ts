@@ -79,6 +79,33 @@ export function useSearchQuery(
           where: `{ (?label ?sc ?lit) text:query ("(${searchDoubleStarred()}) NOT (${searchStarred()})" "${queryHighlight()}" {language}). }`,
           filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
         },
+      },
+      count: {
+        "full-cs": {
+          where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" {language}). }`,
+          filter: `FILTER ( str(?lit) = "${searchTerm}" ).`,
+        },
+        "full-ci": {
+          where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" {language}). }`,
+          filter: `FILTER ( lcase(str(?lit)) = lcase("${searchTerm}") &&
+                     str(?lit) != "${searchTerm}" ).`
+        },
+        "startsWith-ci": {
+          where: `{ (?label ?sc ?lit) text:query ("${searchStarred()}" {language}). }`,
+          filter: `FILTER ( strstarts(lcase(?lit), lcase("${searchTerm}") ) &&
+                     lcase(str(?lit)) != lcase("${searchTerm}") ).`,
+        },
+        "subWord-ci": {
+          where: `{ (?label ?sc ?lit) text:query ("${searchStarred()}" {language}). }`,
+          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${searchTerm}")) ).`,
+        },
+        "contains-ci": {
+          where: `{ (?label ?sc ?lit) text:query ("(${searchDoubleStarred()}) NOT (${searchStarred()})" {language}). }`,
+          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${searchTerm}")) ).`,
+        },
+      },
+    };
+    return content[queryType][matching];
   };
 
   const subqueryArray: string[] = [];
@@ -131,8 +158,20 @@ export function useSearchQuery(
           }
           ORDER BY DESC(?score) lcase(?literal)
           LIMIT ${searchOptions.searchLimit}
-        }`;
-    subqueryArray.push(subqueryTemplate);
+        }`,
+        count: `
+        {
+          SELECT ("${match}" as ?matching) (count(?label) as ?count)
+          WHERE {
+            ${where}
+            ${subqueries(queryType, match).filter}
+          }
+        }`,
+      };
+      return subquery[queryType];
+    };
+
+    subqueryArray.push(subqueryTemplate(queryType));
   });
   const subquery = subqueryArray.join("\n        UNION\n");
 
@@ -158,5 +197,26 @@ export function useSearchQuery(
   ORDER BY DESC(?score) lcase(?literal) DESC(?predicate)
   LIMIT ${searchOptions.searchLimit}`;
 
-  return query;
+  const queryCount = () => `
+  PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
+  PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
+  PREFIX text: <http://jena.apache.org/text#>
+
+  SELECT ?matching ?count
+  WHERE {
+    ${graph}
+    {
+      {
+        ${subquery}
+      }
+    }
+  }`
+
+
+  switch (queryType) {
+    case "entries":
+      return queryEntries();
+    case "count":
+      return queryCount();
+  }
 }
