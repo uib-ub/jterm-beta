@@ -6,17 +6,20 @@ export function useSearchQuery(
 ) {
   const htmlHighlightOpen = "<span class='searchHighlight'>";
   const htmlHighlightClose = "</span>";
-  const queryHighlight = `highlight:s:${htmlHighlightOpen} | e:${htmlHighlightClose}`;
+  const queryHighlight = () =>
+    `highlight:s:${htmlHighlightOpen} | e:${htmlHighlightClose}`;
 
   let searchTerm = searchOptions.searchTerm;
-  const searchStarred = searchTerm
-    .split(" ")
-    .map((t) => t + "*")
-    .join(" AND ");
-  const searchDoubleStarred = searchTerm
-    .split(" ")
-    .map((t) => "*" + t + "*")
-    .join(" AND ");
+  const searchStarred = () =>
+    searchTerm
+      .split(" ")
+      .map((t) => t + "*")
+      .join(" AND ");
+  const searchDoubleStarred = () =>
+    searchTerm
+      .split(" ")
+      .map((t) => "*" + t + "*")
+      .join(" AND ");
 
   let graph = "GRAPH <urn:x-arq:UnionGraph>";
   if (Array.isArray(searchOptions.searchBase)) {
@@ -43,35 +46,35 @@ export function useSearchQuery(
                 }
                 LIMIT ${searchOptions.searchLimit}
             }`,
-      filter: "",
-    },
-    "full-cs": {
-      score: 400,
-      where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" "${queryHighlight}" {language}). }`,
-      filter: `FILTER ( str(?lit) = "${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}" ).`,
-    },
-    "full-ci": {
-      score: 300,
-      where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" "${queryHighlight}" {language}). }`,
-      filter: `FILTER ( lcase(str(?lit)) = lcase("${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}") &&
+          filter: "",
+        },
+        "full-cs": {
+          score: 400,
+          where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" "${queryHighlight()}" {language}). }`,
+          filter: `FILTER ( str(?lit) = "${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}" ).`,
+        },
+        "full-ci": {
+          score: 300,
+          where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" "${queryHighlight()}" {language}). }`,
+          filter: `FILTER ( lcase(str(?lit)) = lcase("${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}") &&
                      str(?lit) != "${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}" ).`,
-    },
-    "startsWith-ci": {
-      score: 200,
-      where: `{ (?label ?sc ?lit) text:query ("${searchStarred}" "${queryHighlight}" {language}). }`,
-      filter: `FILTER ( strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}") ) &&
+        },
+        "startsWith-ci": {
+          score: 200,
+          where: `{ (?label ?sc ?lit) text:query ("${searchStarred()}" "${queryHighlight()}" {language}). }`,
+          filter: `FILTER ( strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}") ) &&
                      lcase(str(?lit)) != lcase("${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}") ).`,
-    },
-    "subWord-ci": {
-      score: 100,
-      where: `{ (?label ?sc ?lit) text:query ("${searchStarred}" "${queryHighlight}" {language}). }`,
-      filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
-    },
-    "contains-ci": {
-      score: 0,
-      where: `{ (?label ?sc ?lit) text:query ("(${searchDoubleStarred}) NOT (${searchStarred})" "${queryHighlight}" {language}). }`,
-      filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
-    },
+        },
+        "subWord-ci": {
+          score: 100,
+          where: `{ (?label ?sc ?lit) text:query ("${searchStarred()}" "${queryHighlight()}" {language}). }`,
+          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
+        },
+        "contains-ci": {
+          score: 0,
+          where: `{ (?label ?sc ?lit) text:query ("(${searchDoubleStarred()}) NOT (${searchStarred()})" "${queryHighlight()}" {language}). }`,
+          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
+        },
   };
 
   const subqueryArray: string[] = [];
