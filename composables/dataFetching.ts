@@ -30,7 +30,7 @@ export async function fetchSearchDataMatching(
 ) {
   const searchOptions = useSearchOptions();
   const data = await fetchData(
-    useSearchQuery(searchOptions.value, "entries", matching)
+    genSearchQuery(searchOptions.value, "entries", matching)
   );
   if (tmpid == lastFetch) {
     if (append) {
@@ -44,7 +44,7 @@ export async function fetchSearchDataMatching(
 }
 
 async function fetchSearchDataCount(searchOptions, matching: string[]) {
-  return await fetchData(useSearchQuery(searchOptions, "count", matching));
+  return await fetchData(genSearchQuery(searchOptions, "count", matching));
 }
 
 export async function fetchSearchData(dataState: SearchDataEntry[]) {

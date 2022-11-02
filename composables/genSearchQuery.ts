@@ -60,7 +60,7 @@ function getLanguageData(language: string | string[]) {
   }
 }
 
-export function useSearchQuery(
+export function genSearchQuery(
   searchOptions: SearchOptions,
   queryType: string,
   matching: string[]
