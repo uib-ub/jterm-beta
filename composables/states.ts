@@ -17,7 +17,7 @@ export interface SearchDataStats {
 export interface SearchOptions {
   searchTerm: string;
   searchBase: number;
-  searchLanguage?: string;
+  searchLanguage: string;
   searchMatching: string[];
   searchLimit: number;
   searchOffset: number;
