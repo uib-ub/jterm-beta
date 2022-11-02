@@ -1,42 +1,73 @@
 import { SearchOptions } from "./states";
 
+const htmlHighlight = {
+  open: "<span class='searchHighlight'>",
+  close: "</span>",
+};
+
+function getTermData(term: string, highlight: { [key: string]: string }) {
+  return {
+    term: term,
+    sanitized: () =>
+      term
+        .replace(/\-|\(|\)|\<|\>|\[|\]|\/|,\s*$/g, " ")
+        .replace(/\s\s+/g, " ")
+        .trim(),
+    starred: function () {
+      return this.sanitized()
+        .split(/, | /)
+        .map((t: string) => t + "*")
+        .join(" AND ");
+    },
+    doubleStarred: function () {
+      return this.sanitized()
+        .split(/, | /)
+        .map((t: string) => "*" + t + "*")
+        .join(" AND ");
+    },
+    termHL: () =>
+      term.replace(/((?!, )[\p{Letter}\p{Mark}\d,])+/giu, function (x) {
+        return highlight.open + x + highlight.close;
+      }),
+    termHLstart: function () {
+      return this.termHL().slice(0, -7);
+    },
+    queryHighlight: () =>
+      `highlight:s:${highlight.open} | e:${highlight.close}`,
+  };
+}
+
+function getGraphData(graphNumber: number | number[]) {
+  let graph = "GRAPH <urn:x-arq:UnionGraph>";
+  if (Array.isArray(graphNumber)) {
+    const bases = graphNumber
+      .map((base) => `(<http://spraksamlingane.no/terminlogi/named/${base}>)`)
+      .join("");
+    graph = `VALUES (?G) {${bases}} GRAPH ?G`;
+  }
+  return graph;
+}
+
+function getLanguageData(language: string | string[]) {
+  if (Array.isArray(language)) {
+    return language
+  } else {
+    if (language) {
+      return [language];
+    } else {
+      return [""];
+    }
+  }
+}
+
 export function useSearchQuery(
   searchOptions: SearchOptions,
   queryType: string,
   matching: string[]
 ) {
-  const htmlHighlightOpen = "<span class='searchHighlight'>";
-  const htmlHighlightClose = "</span>";
-  const queryHighlight = () =>
-    `highlight:s:${htmlHighlightOpen} | e:${htmlHighlightClose}`;
-
-  let searchTerm = searchOptions.searchTerm;
-  const searchStarred = () =>
-    searchTerm
-      .split(" ")
-      .map((t) => t + "*")
-      .join(" AND ");
-  const searchDoubleStarred = () =>
-    searchTerm
-      .split(" ")
-      .map((t) => "*" + t + "*")
-      .join(" AND ");
-
-  let graph = "GRAPH <urn:x-arq:UnionGraph>";
-  if (Array.isArray(searchOptions.searchBase)) {
-    const bases = searchOptions.searchBase
-      .map((base) => `(<http://spraksamlingane.no/terminlogi/named/${base}>)`)
-      .join("");
-    graph = `VALUES (?G) {${bases}} GRAPH ?G`;
-  }
-
-  const language = (() => {
-    if (searchOptions.searchLanguage) {
-      return [searchOptions.searchLanguage];
-    } else {
-      return [""];
-    }
-  })();
+  const termData = getTermData(searchOptions.searchTerm, htmlHighlight);
+  const graph = getGraphData(searchOptions.searchBase);
+  const language = getLanguageData(searchOptions.searchLanguage);
 
   const subqueries = (queryType: string, matching: string) => {
     const content = {
@@ -54,30 +85,32 @@ export function useSearchQuery(
         },
         "full-cs": {
           score: 400,
-          where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" "${queryHighlight()}" {language}). }`,
-          filter: `FILTER ( str(?lit) = "${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}" ).`,
+          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" "${termData.queryHighlight()}" {language}). }`,
+          filter: `FILTER ( str(?lit) = "${termData.termHL()}" ).`,
+          //filter: ""
         },
         "full-ci": {
           score: 300,
-          where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" "${queryHighlight()}" {language}). }`,
-          filter: `FILTER ( lcase(str(?lit)) = lcase("${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}") &&
-                     str(?lit) != "${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}" ).`,
+          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" "${termData.queryHighlight()}" {language}). }`,
+          filter: `FILTER ( lcase(str(?lit)) = lcase("${termData.termHL()}") &&
+                     str(?lit) != "${termData.termHL()}" ).`,
         },
         "startsWith-ci": {
           score: 200,
-          where: `{ (?label ?sc ?lit) text:query ("${searchStarred()}" "${queryHighlight()}" {language}). }`,
-          filter: `FILTER ( strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}") ) &&
-                     lcase(str(?lit)) != lcase("${htmlHighlightOpen}${searchTerm}${htmlHighlightClose}") ).`,
+          where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" "${termData.queryHighlight()}" {language}). }`,
+          filter: `FILTER ( strstarts(lcase(?lit), lcase("${termData.termHLstart()}") ) &&
+                     lcase(str(?lit)) != lcase("${termData.termHL()}") ).`,
+          //filter: ""
         },
         "subWord-ci": {
           score: 100,
-          where: `{ (?label ?sc ?lit) text:query ("${searchStarred()}" "${queryHighlight()}" {language}). }`,
-          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
+          where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" "${termData.queryHighlight()}" {language}). }`,
+          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${termData.termHLstart()}")) ).`,
         },
         "contains-ci": {
           score: 0,
-          where: `{ (?label ?sc ?lit) text:query ("(${searchDoubleStarred()}) NOT (${searchStarred()})" "${queryHighlight()}" {language}). }`,
-          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${htmlHighlightOpen}${searchTerm}")) ).`,
+          where: `{ (?label ?sc ?lit) text:query ("(${termData.doubleStarred()}) NOT (${termData.starred()})" "${termData.queryHighlight()}" {language}). }`,
+          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${termData.termHLstart()}")) ).`,
         },
       },
       count: {
@@ -91,26 +124,26 @@ export function useSearchQuery(
           filter: "",
         },
         "full-cs": {
-          where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" {language}). }`,
-          filter: `FILTER ( str(?lit) = "${searchTerm}" ).`,
+          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.term}\\"" {language}). }`,
+          filter: `FILTER ( str(?lit) = "${termData.term}" ).`,
         },
         "full-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("\\"${searchTerm}\\"" {language}). }`,
-          filter: `FILTER ( lcase(str(?lit)) = lcase("${searchTerm}") &&
-                     str(?lit) != "${searchTerm}" ).`,
+          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.term}\\"" {language}). }`,
+          filter: `FILTER ( lcase(str(?lit)) = lcase("${termData.term}") &&
+                     str(?lit) != "${termData.term}" ).`,
         },
         "startsWith-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("${searchStarred()}" {language}). }`,
-          filter: `FILTER ( strstarts(lcase(?lit), lcase("${searchTerm}") ) &&
-                     lcase(str(?lit)) != lcase("${searchTerm}") ).`,
+          where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" {language}). }`,
+          filter: `FILTER ( strstarts(lcase(?lit), lcase("${termData.term}") ) &&
+                     lcase(str(?lit)) != lcase("${termData.term}") ).`,
         },
         "subWord-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("${searchStarred()}" {language}). }`,
-          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${searchTerm}")) ).`,
+          where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" {language}). }`,
+          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${termData.term}")) ).`,
         },
         "contains-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("(${searchDoubleStarred()}) NOT (${searchStarred()})" {language}). }`,
-          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${searchTerm}")) ).`,
+          where: `{ (?label ?sc ?lit) text:query ("(${termData.doubleStarred()}) NOT (${termData.starred()})" {language}). }`,
+          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${termData.term}")) ).`,
         },
       },
     };
@@ -120,6 +153,7 @@ export function useSearchQuery(
   const subqueryArray: string[] = [];
   matching.forEach((match) => {
     const whereArray: string[] = [];
+
     language.forEach((lang) => {
       if (match == "all") {
         if (!lang) {
