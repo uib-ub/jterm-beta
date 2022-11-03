@@ -16,7 +16,7 @@ export interface SearchDataStats {
 
 export interface SearchOptions {
   searchTerm: string;
-  searchBase: number;
+  searchBase: string;
   searchLanguage: string;
   searchMatching: string[];
   searchLimit: number;
@@ -26,7 +26,7 @@ export interface SearchOptions {
 export const useSearchOptions = () =>
   useState<SearchOptions>("searchOptions", () => ({
     searchTerm: "",
-    searchBase: NaN,
+    searchBase: "",
     searchLanguage: "",
     searchMatching: ["full-cs", "full-ci", "startsWith-ci", "subWord-ci", "contains-ci"],
     searchLimit: 100,
