@@ -33,17 +33,18 @@ describe("getTermData", () => {
 });
 
 describe("getGraphData", () => {
-  test("value is NaN", () => {
-    expect(getGraphData(NaN)).toBe("GRAPH <urn:x-arq:UnionGraph>");
+  test("value is 'all' string", () => {
+    expect(getGraphData("all")).toBe("GRAPH <urn:x-arq:UnionGraph>");
   });
-  test("value is list of number", () => {
-    expect(getGraphData([1])).toBe(
-      "VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/1>)} GRAPH ?G"
-    );
+  test("value is valid key string", () => {
+    expect(getGraphData("MRT")).toBe("VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/3000>)} GRAPH ?G");
   });
-  test("value is list of numbers", () => {
-    expect(getGraphData([1, 2])).toBe(
-      "VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/1>)(<http://spraksamlingane.no/terminlogi/named/2>)} GRAPH ?G"
+  test("value is list of empty string", () => {
+    expect(getGraphData([])).toBe("GRAPH <urn:x-arq:UnionGraph>");
+  });
+  test("value is list of valid keys", () => {
+    expect(getGraphData(["MRT", "MRT2"])).toBe(
+      "VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/3000>)(<http://spraksamlingane.no/terminlogi/named/3002>)} GRAPH ?G"
     );
   });
 });

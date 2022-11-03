@@ -5,6 +5,28 @@ const htmlHighlight = {
   close: "</span>",
 };
 
+const samlingMapping = {
+  MRT: 3000,
+  MRT2: 3002,
+  UHR: 3004,
+  ARTSDB: 3006,
+  EVERTEBRATER: 3008,
+  NHH: 3010,
+  NOJU: 3012,
+  NOT: 3014,
+  RTT: 3016,
+  SDIR: 3018,
+  TOLKING: 3022,
+  ROMFYS: 3024,
+  TUNDUIA: 3900,
+  KLIMA: 3802,
+  ASTRONOMI: 3804,
+  BIOLOGI: 3806,
+  LINGVISTIKK: 3808,
+  CMBIOLOGI: 3810,
+  KJEMI: 3812,
+};
+
 export function getTermData(
   term: string,
   highlight: { [key: string]: string }
@@ -40,15 +62,29 @@ export function getTermData(
   };
 }
 
-export function getGraphData(graphNumber: number | number[]) {
-  let graph = "GRAPH <urn:x-arq:UnionGraph>";
-  if (Array.isArray(graphNumber)) {
-    const bases = graphNumber
-      .map((base) => `(<http://spraksamlingane.no/terminlogi/named/${base}>)`)
-      .join("");
-    graph = `VALUES (?G) {${bases}} GRAPH ?G`;
+export function getGraphData(graphKey: string | string[]) {
+  const uniongraph = "GRAPH <urn:x-arq:UnionGraph>";
+  if (Array.isArray(graphKey)) {
+    if (graphKey.length > 0) {
+      const bases = graphKey
+        .map(
+          (key) =>
+            `(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[key]}>)`
+        )
+        .join("");
+      return `VALUES (?G) {${bases}} GRAPH ?G`;
+    } else {
+      return uniongraph;
+    }
+  } else if (graphKey != "all") {
+    return `VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>)} GRAPH ?G`;
+  } else {
+    if (graphKey) {
+      return uniongraph;
+    } else {
+      return uniongraph;
+    }
   }
-  return graph;
 }
 
 export function getLanguageData(language: string | string[]) {
