@@ -1,4 +1,26 @@
-export const predicateOrder = ["prefLabel", "altLabel", "hiddenLabel"]
+export const predicateOrder = ["prefLabel", "altLabel", "hiddenLabel"];
+export const samlingOrder = [
+  "all",
+  "MRT",
+  "MRT2",
+  "UHR",
+  "ARTSDB",
+  "EVERTEBRATER",
+  "NHH",
+  "NOJU",
+  "NOT",
+  "RTT",
+  "SDIR",
+  "TOLKING",
+  "ROMFYS",
+  "TUNDUIA",
+  "KLIMA",
+  "ASTRONOMI",
+  "BIOLOGI",
+  "LINGVISTIKK",
+  "CMBIOLOGI",
+  "KJEMI",
+];
 export const languageOrder = {
   nb: [
     "all",
