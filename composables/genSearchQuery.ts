@@ -261,7 +261,6 @@ export function genSearchQuery(
     case "count":
       return queryCount();
     default:
-      console.log("queryType not matched.");
-      return "";
+      throw new Error("queryType not matched");
   }
 }
