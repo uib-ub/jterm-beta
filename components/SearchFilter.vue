@@ -45,7 +45,10 @@
             Languages
             <div class="form-check">
               <FilterCheckbox
-                v-for="language in Object.keys(searchDataStats.lang)"
+                v-for="language in intersectUnique(
+                  languageOrder[$i18n.locale],
+                  Object.keys(searchDataStats.lang)
+                )"
                 ftype="lang"
                 :fvalue="language"
               />
@@ -55,7 +58,7 @@
             Samling
             <div class="form-check">
               <FilterCheckbox
-                v-for="samling in Object.keys(searchDataStats.samling)"
+                v-for="samling in Object.keys(searchDataStats.samling).sort()"
                 ftype="samling"
                 :fvalue="samling"
               />
@@ -65,7 +68,10 @@
             Label
             <div class="form-check">
               <FilterCheckbox
-                v-for="predicate in Object.keys(searchDataStats.predicate)"
+                v-for="predicate in intersectUnique(
+                  predicateOrder,
+                  Object.keys(searchDataStats.predicate)
+                )"
                 ftype="predicate"
                 :fvalue="predicate"
               />
