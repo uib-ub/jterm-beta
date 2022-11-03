@@ -5,7 +5,10 @@ const htmlHighlight = {
   close: "</span>",
 };
 
-function getTermData(term: string, highlight: { [key: string]: string }) {
+export function getTermData(
+  term: string,
+  highlight: { [key: string]: string }
+) {
   return {
     term: term,
     sanitized: () =>
@@ -37,7 +40,7 @@ function getTermData(term: string, highlight: { [key: string]: string }) {
   };
 }
 
-function getGraphData(graphNumber: number | number[]) {
+export function getGraphData(graphNumber: number | number[]) {
   let graph = "GRAPH <urn:x-arq:UnionGraph>";
   if (Array.isArray(graphNumber)) {
     const bases = graphNumber
@@ -48,9 +51,9 @@ function getGraphData(graphNumber: number | number[]) {
   return graph;
 }
 
-function getLanguageData(language: string | string[]) {
+export function getLanguageData(language: string | string[]) {
   if (Array.isArray(language)) {
-    return language
+    return language;
   } else {
     if (language) {
       return [language];
