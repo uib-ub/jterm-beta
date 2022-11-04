@@ -28,7 +28,7 @@ export const useSearchOptions = () =>
     searchTerm: "",
     searchBase: "all",
     searchLanguage: "all",
-    searchMatching: ["full-cs", "full-ci", "startsWith-ci", "subWord-ci", "contains-ci"],
+    searchMatching: ["full-cs", "full-ci", "startsWith-ci", "endsWith-ci", "subWord-ci", "contains-ci"],
     searchLimit: 100,
     searchOffset: 0,
   }));

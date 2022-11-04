@@ -1,12 +1,5 @@
 import { SearchDataEntry } from "./states";
 
-const matchingOrder = [
-  "full-cs",
-  "full-ci",
-  "startsWith-ci",
-  "subWord-ci",
-  "contains-ci",
-];
 let lastFetch = NaN;
 
 export async function fetchData(query: string, accept?: string) {

@@ -1,4 +1,12 @@
 export const predicateOrder = ["prefLabel", "altLabel", "hiddenLabel"];
+export const matchingOrder = [
+  "full-cs",
+  "full-ci",
+  "startsWith-ci",
+  "endsWith-ci",
+  "subWord-ci",
+  "contains-ci",
+];
 export const samlingOrder = [
   "all",
   "MRT",
