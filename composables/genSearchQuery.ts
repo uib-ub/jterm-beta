@@ -84,6 +84,10 @@ export function getGraphData(graphKey: string | string[]) {
     } else {
       return uniongraph;
     }
+  } else if (graphKey != "all") {
+    return `(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>)`;
+  } else {
+    return uniongraph;
   }
 }
 
@@ -91,7 +95,7 @@ export function getLanguageData(language: string | string[]) {
   if (Array.isArray(language)) {
     return language;
   } else {
-    if (language) {
+    if (language != "all") {
       return [language];
     } else {
       return [""];

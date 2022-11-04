@@ -26,8 +26,8 @@ export interface SearchOptions {
 export const useSearchOptions = () =>
   useState<SearchOptions>("searchOptions", () => ({
     searchTerm: "",
-    searchBase: "",
-    searchLanguage: "",
+    searchBase: "all",
+    searchLanguage: "all",
     searchMatching: ["full-cs", "full-ci", "startsWith-ci", "subWord-ci", "contains-ci"],
     searchLimit: 100,
     searchOffset: 0,
