@@ -4,7 +4,8 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "pa11y": "pa11y-ci"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.5.0",

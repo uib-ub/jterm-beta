@@ -1,0 +1,19 @@
+{
+  "defaults": {
+    "timeout": 10000,
+    "runners": [
+      "axe",
+      "htmlcs"
+    ],
+    "standard": "WCAG2AAA",
+    "includeWarnings": true,
+    "includeNotices": false
+  },
+  "urls": [
+    "localhost:3000",
+    "localhost:3000/about",
+    "localhost:3000/config",
+    "localhost:3000/search",
+    "localhost:3000/MRT"
+  ]
+}
