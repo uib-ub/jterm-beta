@@ -55,7 +55,10 @@ export function getTermData(
         return highlight.open + x + highlight.close;
       }),
     termHLstart: function () {
-      return this.termHL().slice(0, -7);
+      return this.termHL().slice(0, -highlight.close.length);
+    },
+    termHLend: function () {
+      return this.termHL().slice(highlight.open.length);
     },
     queryHighlight: () =>
       `highlight:s:${highlight.open} | e:${highlight.close}`,
@@ -123,33 +126,40 @@ export function genSearchQuery(
           filter: "",
         },
         "full-cs": {
-          score: 400,
+          score: 500,
           where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" "${termData.queryHighlight()}" {language}). }`,
           filter: `FILTER ( str(?lit) = "${termData.termHL()}" ).`,
           //filter: ""
         },
         "full-ci": {
-          score: 300,
+          score: 400,
           where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" "${termData.queryHighlight()}" {language}). }`,
           filter: `FILTER ( lcase(str(?lit)) = lcase("${termData.termHL()}") &&
                      str(?lit) != "${termData.termHL()}" ).`,
         },
         "startsWith-ci": {
-          score: 200,
+          score: 300,
           where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" "${termData.queryHighlight()}" {language}). }`,
-          filter: `FILTER ( strstarts(lcase(?lit), lcase("${termData.termHLstart()}") ) &&
+          filter: `FILTER ( strStarts(lcase(?lit), lcase("${termData.termHLstart()}") ) &&
                      lcase(str(?lit)) != lcase("${termData.termHL()}") ).`,
           //filter: ""
+        },
+        "endsWith-ci": {
+          score: 200,
+          where: `{ (?label ?sc ?lit) text:query ("${termData.doubleStarred()}" "${termData.queryHighlight()}" {language}). }`,
+          filter: `FILTER ( strEnds(lcase(?lit), lcase("${termData.termHLend()}") ) &&
+                     lcase(str(?lit)) != lcase("${termData.termHL()}") ).`,
         },
         "subWord-ci": {
           score: 100,
           where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" "${termData.queryHighlight()}" {language}). }`,
-          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${termData.termHLstart()}")) ).`,
+          filter: `FILTER ( !strStarts(lcase(?lit), lcase("${termData.termHLstart()}")) &&
+                     !strEnds(lcase(?lit), lcase("${termData.termHL()}")) ).`,
         },
         "contains-ci": {
           score: 0,
           where: `{ (?label ?sc ?lit) text:query ("(${termData.doubleStarred()}) NOT (${termData.starred()})" "${termData.queryHighlight()}" {language}). }`,
-          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${termData.termHLstart()}")) ).`,
+          filter:`FILTER ( !strEnds(lcase(?lit), lcase("${termData.termHLend()}")) ).`,
         },
       },
       count: {
@@ -173,16 +183,23 @@ export function genSearchQuery(
         },
         "startsWith-ci": {
           where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" {language}). }`,
-          filter: `FILTER ( strstarts(lcase(?lit), lcase("${termData.term}") ) &&
+          filter: `FILTER ( strStarts(lcase(?lit), lcase("${termData.term}") ) &&
+                     lcase(str(?lit)) != lcase("${termData.term}") ).`,
+        },
+        "endsWith-ci": {
+          where: `{ (?label ?sc ?lit) text:query ("${termData.doubleStarred()}" {language}). }`,
+          filter: `FILTER ( strEnds(lcase(?lit), lcase("${termData.term}") ) &&
                      lcase(str(?lit)) != lcase("${termData.term}") ).`,
         },
         "subWord-ci": {
           where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" {language}). }`,
-          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${termData.term}")) ).`,
+          filter: `FILTER ( !strStarts(lcase(?lit), lcase("${termData.term}")) &&
+                     !strEnds(lcase(?lit), lcase("${termData.term}")) ).`,
         },
         "contains-ci": {
           where: `{ (?label ?sc ?lit) text:query ("(${termData.doubleStarred()}) NOT (${termData.starred()})" {language}). }`,
-          filter: `FILTER ( !strstarts(lcase(?lit), lcase("${termData.term}")) ).`,
+          filter: `FILTER ( !strStarts(lcase(?lit), lcase("${termData.term}")) &&
+                     !strEnds(lcase(?lit), lcase("${termData.term}")) ).`,
         },
       },
     };
