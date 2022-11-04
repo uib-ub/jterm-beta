@@ -1,32 +1,7 @@
 <template>
   <div class="container py-1 px-0">
     <div class="d-flex justify-content-center align-items-center">
-      <div class="container p-0 tp-language">
-        <select
-          class="form-select p-0 tp-language-dd"
-          v-model="searchOptions.searchLanguage"
-          aria-label="search language"
-        >
-          <option value="">{{ $t("global.lang.all") }}</option>
-          <option value="nb">{{ $t("global.lang.nb") }}</option>
-          <option value="nn">{{ $t("global.lang.nn") }}</option>
-          <option value="en">{{ $t("global.lang.en") }}</option>
-          <option value="ar">{{ $t("global.lang.ar") }}</option>
-          <option value="da">{{ $t("global.lang.da") }}</option>
-          <option value="de">{{ $t("global.lang.de") }}</option>
-          <option value="es">{{ $t("global.lang.es") }}</option>
-          <option value="fi">{{ $t("global.lang.fi") }}</option>
-          <option value="fr">{{ $t("global.lang.fr") }}</option>
-          <option value="it">{{ $t("global.lang.it") }}</option>
-          <option value="la">{{ $t("global.lang.la") }}</option>
-          <option value="pl">{{ $t("global.lang.pl") }}</option>
-          <option value="ru">{{ $t("global.lang.ru") }}</option>
-          <option value="so">{{ $t("global.lang.so") }}</option>
-          <option value="sv">{{ $t("global.lang.sv") }}</option>
-          <option value="ti">{{ $t("global.lang.ti") }}</option>
-        </select>
-      </div>
-      <div class="container p-0">
+      <div class="container p-0 pb-2">
         <div class="input-group tp-search">
           <input
             id="searchfield"
@@ -64,6 +39,26 @@
         </div>
       </div>
     </div>
+    <div class="d-flex">
+      <select
+        class="form-select tp-searchbar-dd"
+        v-model="searchOptions.searchLanguage"
+        aria-label="search language"
+      >
+        <option v-for="lc in languageOrder[$i18n.locale]" :value=lc>
+          {{ $t("global.lang." + lc) }}
+        </option>
+      </select>
+      <select
+        class="form-select tp-searchbar-dd"
+        v-model="searchOptions.searchBase"
+        aria-label="search language"
+      >
+      <option v-for="samling in samlingOrder" :value=samling>
+          {{ $t("global.samling." + samling) }}
+        </option>
+      </select>
+    </div>
   </div>
 </template>
 
@@ -95,18 +90,20 @@ function execSearch() {
 </script>
 
 <style>
+.tp-searchbar-dd {
+  height: 45px;
+  width: 170px;
+  text-indent: 4px;
+}
+
 .tp-language {
   width: 116px;
 }
 
 .tp-language-dd {
   height: 45px;
-  width: 120px;
+  width: 150px;
   text-indent: 4px;
-  float: left;
-  border: 1px solid var(--tp-blue-4);
-  border-radius: 4px 0px 0px 4px;
-  box-shadow: 5px 5px 5px rgba(51, 51, 51, 0.1);
 }
 
 .tp-language-dd:focus {
