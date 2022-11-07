@@ -267,7 +267,11 @@ export function genSearchQuery(
           }
         }`,
       };
-      return subquery[queryType];
+      if (queryType == "count" && matching.length == 1) {
+        return subquery[queryType]  + "\n        UNION {}";
+      } else {
+        return subquery[queryType];
+      }
     };
 
     subqueryArray.push(subqueryTemplate(queryType));

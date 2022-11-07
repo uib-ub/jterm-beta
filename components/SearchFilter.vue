@@ -104,9 +104,13 @@ const searchDataPending = useSearchDataPending();
 let calcInitialState: boolean = false;
 const searchDataCount = useSearchDataCount();
 const count = computed(() => {
-  const countValues = searchDataCount.value?.results.bindings.map((binding) =>
-    parseInt(binding.count.value)
-  ) || [0];
+  const countValues = searchDataCount.value?.results.bindings.map((binding) => {
+    if (binding.count) {
+      return parseInt(binding.count.value);
+    } else {
+      return 0;
+    }
+  }) || [0];
   if (countValues.includes(10000)) {
     return "10000+";
   } else {
