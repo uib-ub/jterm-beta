@@ -114,35 +114,6 @@ const count = computed(() => {
   }
 });
 
-interface SearchFilterActive {
-  lang?: string[];
-  samling?: string[];
-  predicate?: string[];
-  matching?: string[];
-}
-
-const searchFilterActive: SearchFilterActive = computed(() => {
-  let filter: SearchFilterActive = {};
-  try {
-    Object.entries(searchFilterData.value).forEach(([k, v]) => {
-      const lenStats = Object.keys(
-        searchDataStats.value[k as keyof SearchDataStats]
-      ).length;
-      const lenFilter = v.length;
-      if (lenStats == lenFilter) {
-      } else {
-        if (filter) {
-          filter[k as keyof SearchFilterActive] = v;
-        } else {
-          filter = {};
-          filter[k as keyof SearchFilterActive] = v;
-        }
-      }
-    });
-  } catch (e) {}
-  return filter;
-});
-
 watch(searchData, () => {
   calcInitialState = true;
   searchDataStats.value = resetStats(searchDataStats.value, true);
@@ -158,18 +129,13 @@ watch([searchDataFiltered, searchDataPending], () => {
         calcInitialState
       );
       calcInitialState = false;
-      Object.keys(searchDataStats.value).forEach((category) => {
-        searchFilterData.value[category] = Object.keys(
-          searchDataStats.value[category as keyof SearchDataStats]
-        );
-      });
     }
-    searchDataStats.value = resetStats(searchDataStats.value, false);
-    searchDataStats.value = calcStatsSearchData(
-      searchDataFiltered.value,
-      searchDataStats.value
-    );
   }
+  searchDataStats.value = resetStats(searchDataStats.value, false);
+  searchDataStats.value = calcStatsSearchData(
+    searchDataFiltered.value,
+    searchDataStats.value
+  );
 });
 
 watch(
@@ -183,28 +149,28 @@ watch(
 );
 
 function filterData(match: SearchDataEntry) {
-  if (searchFilterActive) {
-    return Object.entries(searchFilterActive.value).every(
-      ([filter, filterValue]) => {
-        const matchValue = match[filter as keyof SearchFilterActive];
-        if (typeof matchValue == "string") {
-          if ((filterValue as string[]).includes(matchValue)) {
-            return true;
-          } else {
+  return Object.entries(searchFilterData.value).every(
+    ([filter, filterValue]) => {
+      if (!filterValue.length) {
+        return true;
+      } else {
+        const matchValue = match[filter];
+        if (Array.isArray(matchValue)) {
+          if (matchValue.every((v: string) => !filterValue.includes(v))) {
             return false;
+          } else {
+            return true;
           }
         } else {
-          if (matchValue.every((v) => !filterValue.includes(v))) {
-            return false;
-          } else {
+          if (filterValue.includes(matchValue)) {
             return true;
+          } else {
+            return false;
           }
         }
       }
-    );
-  } else {
-    return true;
-  }
+    }
+  );
 }
 
 function calcStatsSearchData(
@@ -222,8 +188,8 @@ function calcStatsSearchData(
   data.forEach((match) => {
     try {
       match.lang.forEach((l) => {
-        const langFilter = searchFilterActive.value?.lang;
-        if (initialCalc || !langFilter || langFilter.includes(l)) {
+        const langFilter = searchFilterData.value?.lang;
+        if (initialCalc || langFilter || langFilter.includes(l)) {
           newStats.lang[l] = newStats.lang[l] + 1 || 1;
         }
       });
