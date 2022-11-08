@@ -37,7 +37,7 @@ describe("getGraphData", () => {
     expect(getGraphData("all")).toBe("GRAPH <urn:x-arq:UnionGraph>");
   });
   test("value is valid key string", () => {
-    expect(getGraphData("MRT")).toBe("VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/3000>)} GRAPH ?G");
+    expect(getGraphData("MRT")).toBe("VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/3000>)}\n    GRAPH ?G");
   });
   test("value is list of empty string", () => {
     expect(getGraphData([])).toBe("GRAPH <urn:x-arq:UnionGraph>");

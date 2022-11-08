@@ -80,7 +80,7 @@ export function getGraphData(graphKey: string | string[]) {
       return uniongraph;
     }
   } else if (graphKey != "all") {
-    return `VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>)} GRAPH ?G`;
+    return `VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>)}\n    GRAPH ?G`;
   } else {
     if (graphKey) {
       return uniongraph;
@@ -159,7 +159,7 @@ export function genSearchQuery(
         "contains-ci": {
           score: 0,
           where: `{ (?label ?sc ?lit) text:query ("(${termData.doubleStarred()}) NOT (${termData.starred()})" "${termData.queryHighlight()}" {language}). }`,
-          filter:`FILTER ( !strEnds(lcase(?lit), lcase("${termData.termHLend()}")) ).`,
+          filter: `FILTER ( !strEnds(lcase(?lit), lcase("${termData.termHLend()}")) ).`,
         },
       },
       count: {
@@ -276,7 +276,7 @@ export function genSearchQuery(
 
     subqueryArray.push(subqueryTemplate(queryType));
   });
-  const subquery = subqueryArray.join("\n        UNION\n");
+  const subquery = subqueryArray.join("\n        UNION");
 
   const queryEntries = () => `
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
@@ -287,10 +287,8 @@ export function genSearchQuery(
          (group_concat( ?l; separator="," ) as ?lang)
          ?matching
   WHERE {
-    ${graph}
-    {
-      {
-        ${subquery}
+    ${graph} {
+      { ${subquery}
       }
       ?uri ?predicate ?label;
         skosp:memberOf ?samling.
@@ -307,10 +305,8 @@ export function genSearchQuery(
 
   SELECT ?matching ?count
   WHERE {
-    ${graph}
-    {
-      {
-        ${subquery}
+    ${graph} {
+      { ${subquery}
       }
     }
   }`;
