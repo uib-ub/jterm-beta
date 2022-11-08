@@ -52,6 +52,7 @@ export async function fetchSearchData(dataState: SearchDataEntry[]) {
   if (searchOptions.value.searchTerm.length > 0) {
     searchMatching = matchingOrder;
   }
+  searchDataCount.value = {results: {bindings: []}}
   searchDataCount.value = await fetchSearchDataCount(
     searchOptions.value,
     searchMatching
