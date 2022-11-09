@@ -173,11 +173,11 @@ export function genSearchQuery(
           filter: "",
         },
         "full-cs": {
-          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.term}\\"" {language}). }`,
+          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" {language}). }`,
           filter: `FILTER ( str(?lit) = "${termData.term}" ).`,
         },
         "full-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.term}\\"" {language}). }`,
+          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" {language}). }`,
           filter: `FILTER ( lcase(str(?lit)) = lcase("${termData.term}") &&
                      str(?lit) != "${termData.term}" ).`,
         },
