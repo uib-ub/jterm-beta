@@ -4,7 +4,9 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
-    "preview": "nuxt preview"
+    "preview": "nuxt preview",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.7.1",
@@ -17,6 +19,7 @@
     "@typescript-eslint/parser": "^5.42.1",
     "bootstrap": "^5.2.2",
     "eslint": "^8.27.0",
+    "@vitest/coverage-c8": "^0.25.1",
     "eslint-plugin-nuxt": "^4.0.0",
     "eslint-plugin-vue": "^9.7.0",
     "jsonld": "^8.1.0",
