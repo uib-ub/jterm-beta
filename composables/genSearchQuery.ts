@@ -75,12 +75,12 @@ export function getGraphData(graphKey: string | string[]) {
             `(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[key]}>)`
         )
         .join("");
-      return `VALUES (?G) {${bases}} GRAPH ?G`;
+      return `VALUES (?G) {${bases}}\n     GRAPH ?G`;
     } else {
       return uniongraph;
     }
   } else if (graphKey != "all") {
-    return `VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>)}\n    GRAPH ?G`;
+    return `VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>)}\n  GRAPH ?G`;
   } else {
     if (graphKey) {
       return uniongraph;
@@ -102,6 +102,38 @@ export function getLanguageData(language: string | string[]) {
   }
 }
 
+function getLanguageWhere(
+  subqueries,
+  queryTypeIn: string,
+  match: string,
+  lang: string
+) {
+  let queryType = queryTypeIn;
+  if (queryType == "aggregate") {
+    queryType = "count";
+  }
+
+  if (match == "all") {
+    if (!lang) {
+      return subqueries(queryType, match).where.replace("{languageFilter}", "");
+    } else {
+      return subqueries(queryType, match).where.replace(
+        "{languageFilter}",
+        `FILTER ( langmatches(lang(?lit), "${lang}") )`
+      );
+    }
+  } else {
+    if (!lang) {
+      return subqueries(queryType, match).where.replace("{language}", "");
+    } else {
+      return subqueries(queryType, match).where.replace(
+        "{language}",
+        `"lang:${lang}"`
+      );
+    }
+  }
+}
+
 export function genSearchQuery(
   searchOptions: SearchOptions,
   queryType: string,
@@ -110,8 +142,13 @@ export function genSearchQuery(
   const termData = getTermData(searchOptions.searchTerm, htmlHighlight);
   const graph = getGraphData(searchOptions.searchBase);
   const language = getLanguageData(searchOptions.searchLanguage);
+  const aggregateCategories = ["?lang", "?samling", "?predicate", "?matching"];
 
-  const subqueries = (queryType: string, matching: string) => {
+  const subqueries = (
+    queryType: string,
+    subEntry: string,
+    aggregateMatch?: string
+  ) => {
     const content = {
       entries: {
         all: {
@@ -172,6 +209,10 @@ export function genSearchQuery(
           }`,
           filter: "",
         },
+        allPatterns: {
+          where: `{ (?label ?sc ?lit) text:query ("${termData.doubleStarred()}" {language}).}`,
+          filter: "",
+        },
         "full-cs": {
           where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" {language}). }`,
           filter: `FILTER ( str(?lit) = "${termData.term}" ).`,
@@ -202,81 +243,134 @@ export function genSearchQuery(
                      !strEnds(lcase(?lit), lcase("${termData.term}")) ).`,
         },
       },
+      aggregate: {
+        lang: `BIND ( lang(?lit) as ?prop ).`,
+        samling: `?uri ?predicate ?label;
+                    skosp:memberOf ?s.
+                  BIND (replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?prop)`,
+        predicate: `?uri ?p ?label;
+               BIND (replace(str(?p), "http://www.w3.org/2008/05/skos-xl#", "") as ?prop)`,
+        matching: `BIND ("${aggregateMatch}" as ?prop)`,
+      },
     };
-    return content[queryType][matching];
+    return content[queryType][subEntry];
   };
 
-  const subqueryArray: string[] = [];
-  matching.forEach((match) => {
-    const whereArray: string[] = [];
-
-    language.forEach((lang) => {
-      if (match == "all") {
-        if (!lang) {
-          whereArray.push(
-            subqueries(queryType, match).where.replace("{languageFilter}", "")
-          );
-        } else {
-          whereArray.push(
-            subqueries(queryType, match).where.replace(
-              "{languageFilter}",
-              `FILTER ( langmatches(lang(?lit), "${lang}") )`
-            )
-          );
+  const subqueryTemplate = (
+    subqueries,
+    category: string,
+    queryType: string,
+    match: string,
+    where: string
+  ) => {
+    const subquery = {
+      entries: `
+      {
+        SELECT ?label ?literal ?l (?sc + ${
+          subqueries(queryType, match)?.score
+        } as ?score)
+               ("${match}" as ?matching)
+        WHERE {
+          ${where}
+          ${subqueries(queryType, match)?.filter}
+          BIND ( lang(?lit) as ?l ).
+          BIND ( str(?lit) as ?literal )
         }
-      } else {
-        if (!lang) {
-          whereArray.push(
-            subqueries(queryType, match).where.replace("{language}", "")
-          );
-        } else {
-          whereArray.push(
-            subqueries(queryType, match).where.replace(
-              "{language}",
-              `"lang:${lang}"`
-            )
-          );
+        ORDER BY DESC(?score) lcase(?literal)
+        LIMIT ${searchOptions.searchLimit}
+      }`,
+      count: `
+      {
+        SELECT ("${match}" as ?matching) (count(?label) as ?count)
+        WHERE {
+          ${where}
+          ${subqueries(queryType, match)?.filter}
         }
-      }
-    });
-    const where = whereArray.join("\n            UNION\n            ");
-
-    const subqueryTemplate = (queryType: string) => {
-      const subquery = {
-        entries: `
-        {
-          SELECT ?label ?literal ?l (?sc + ${
-            subqueries(queryType, match).score
-          } as ?score)
-                 ("${match}" as ?matching)
-          WHERE {
-            ${where}
-            ${subqueries(queryType, match).filter}
-            BIND ( lang(?lit) as ?l ).
-            BIND ( str(?lit) as ?literal )
-          }
-          ORDER BY DESC(?score) lcase(?literal)
-          LIMIT ${searchOptions.searchLimit}
-        }`,
-        count: `
-        {
-          SELECT ("${match}" as ?matching) (count(?label) as ?count)
-          WHERE {
-            ${where}
-            ${subqueries(queryType, match).filter}
-          }
-        }`,
-      };
-      if (queryType == "count" && matching.length == 1) {
-        return subquery[queryType]  + "\n        UNION {}";
-      } else {
-        return subquery[queryType];
-      }
+      }`,
+      aggregate: `
+              {
+                SELECT ?prop {
+                  ${where}
+                  ${subqueries("count", match)?.filter}
+                  ${subqueries(queryType, category, match)}
+                }
+              }`,
     };
 
-    subqueryArray.push(subqueryTemplate(queryType));
-  });
-  const subquery = subqueryArray.join("\n        UNION");
+    if (queryType == "count" && matching.length == 1) {
+      return subquery[queryType] + "\n        UNION {}";
+    } else {
+      return subquery[queryType];
+    }
+  };
+
+  const categoryTemplate = (category: string, subquery: string) => {
+    return `
+      {
+        SELECT (concat("{", group_concat(?propCount; SEPARATOR=", "), "}") as ${category})
+        WHERE {
+          {
+            SELECT ?prop (count(?prop) as ?pCount)
+            WHERE {
+            ${subquery}
+            }
+            GROUP BY ?prop
+          }
+        BIND (concat ('"', ?prop, '"', ': ', str(?pCount)) as ?propCount)
+        }
+      }`;
+  };
+
+  const categoriesArray: string[] = [];
+  for (const category of aggregateCategories) {
+    const subqueryArray: string[] = [];
+    for (const match of matching) {
+      const whereArray: string[] = [];
+      if (queryType == "aggregate" && matching.length == 7) {
+        language.forEach((lang) => {
+          whereArray.push(
+            getLanguageWhere(subqueries, queryType, "allPatterns", lang)
+          );
+        });
+        const where = whereArray.join("\n            UNION\n            ");
+
+        subqueryArray.push(
+          subqueryTemplate(
+            subqueries,
+            category.replace("?", ""),
+            queryType,
+            "allPatterns",
+            where
+          )
+        );
+        break;
+      } else {
+        language.forEach((lang) => {
+          whereArray.push(getLanguageWhere(subqueries, queryType, match, lang));
+        });
+        const where = whereArray.join("\n            UNION\n            ");
+
+        subqueryArray.push(
+          subqueryTemplate(
+            subqueries,
+            category.replace("?", ""),
+            queryType,
+            match,
+            where
+          )
+        );
+      }
+    }
+    const subquery = subqueryArray.join("\n        UNION");
+
+    if (queryType == "aggregate") {
+      categoriesArray.push(categoryTemplate(category, subquery));
+    } else {
+      categoriesArray.push(subquery);
+      break;
+    }
+  }
+  const outerSubquery = categoriesArray.join("\n      UNION");
 
   const queryEntries = () => `
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
@@ -288,10 +382,11 @@ export function genSearchQuery(
          ?matching
   WHERE {
     ${graph} {
-      { ${subquery}
+      { ${outerSubquery}
       }
       ?uri ?predicate ?label;
-        skosp:memberOf ?samling.
+        skosp:memberOf ?s.
+        BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling)
     }
   }
   GROUP BY ?uri ?predicate ?literal ?samling ?score ?matching
@@ -306,16 +401,33 @@ export function genSearchQuery(
   SELECT ?matching ?count
   WHERE {
     ${graph} {
-      { ${subquery}
+      { ${outerSubquery}
       }
     }
   }`;
+
+  const queryAggregate = () => `
+
+PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
+PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
+PREFIX text: <http://jena.apache.org/text#>
+
+SELECT ${aggregateCategories.join(" ")}
+WHERE {
+  ${graph} {
+    { ${outerSubquery}
+    }
+  }
+}
+  `;
 
   switch (queryType) {
     case "entries":
       return queryEntries();
     case "count":
       return queryCount();
+    case "aggregate":
+      return queryAggregate();
     default:
       throw new Error("queryType not matched");
   }
