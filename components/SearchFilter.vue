@@ -81,7 +81,10 @@
             Match
             <div class="form-check">
               <FilterCheckbox
-                v-for="matching in Object.keys(searchDataStats.matching)"
+                v-for="matching in intersectUnique(
+                  matchingOrder,
+                  Object.keys(searchDataStats.matching)
+                )"
                 ftype="matching"
                 :fvalue="matching"
               />
