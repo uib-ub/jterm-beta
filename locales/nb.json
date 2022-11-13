@@ -21,6 +21,7 @@
       "ti": "Tigrinja"
     },
     "samling": {
+      "all": "Alle termbaser",
       "ARTSDB": "ARTSDB",
       "ASTRONOMI": "Astronomi",
       "CMBIOLOGI": "Celle- og molekylærbiologi",
@@ -36,7 +37,10 @@
       "RTT": "RTT",
       "SDIR": "SDIR",
       "TOLKING": "TOLKING",
-      "UHR": "UHR"
+      "UHR": "UHR",
+      "TUNDUIA": "TUNDUIA",
+      "BIOLOGI": "BIOLOGI",
+      "KJEMI": "Kjemi"
     },
     "predicate": {
       "prefLabel": "Anbefalt term",

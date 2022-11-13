@@ -61,7 +61,6 @@ export function getNumberOfInstances(data: any, uri: string, property: string) {
 
 export function processBindings(binding) {
   const link = binding.uri.value.split("/").at(-1).replace("-3A", "/");
-  const samling = binding.samling.value.split("/").at(-1).split("3A").at(-1);
   const predicate = binding.predicate.value.replace(
     "http://www.w3.org/2008/05/skos-xl#",
     ""
@@ -71,7 +70,7 @@ export function processBindings(binding) {
     label: binding.literal.value,
     link: link,
     lang: binding.lang.value.split(","),
-    samling: samling,
+    samling: binding.samling.value,
     matching: binding.matching.value,
     score: binding.score.value
   };
