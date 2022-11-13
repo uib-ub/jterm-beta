@@ -95,6 +95,7 @@ const searchDataFiltered = useSearchDataFiltered();
 const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
 const searchDataPending = useSearchDataPending();
+const searchOptions = useSearchOptions();
 let calcInitialState: boolean = false;
 const searchDataCount = useSearchDataCount();
 const count = computed(() => {
@@ -114,34 +115,63 @@ const count = computed(() => {
 
 watch(searchData, () => {
   calcInitialState = true;
-  searchDataStats.value = resetStats(searchDataStats.value, true);
+  searchFilterData.value = {
+    lang: [],
+    samling: [],
+    predicate: [],
+    matching: [],
+  };
+  // searchDataStats.value = resetStats(searchDataStats.value, true);
   searchDataFiltered.value = searchData.value;
 });
 
+/*
 watch([searchDataFiltered, searchDataPending], () => {
   if (!searchDataPending.value) {
     if (calcInitialState) {
-      searchDataStats.value = calcStatsSearchData(
-        searchDataFiltered.value,
-        searchDataStats.value,
-        calcInitialState
-      );
+      const data = await fetchData(genSearchQuery())
+
+      //searchDataStats.value = calcStatsSearchData(
+      //  searchDataFiltered.value,
+      //  searchDataStats.value,
+      //  calcInitialState
+      //);
       calcInitialState = false;
     }
+    searchDataStats.value = resetStats(searchDataStats.value, false);
+    searchDataStats.value = calcStatsSearchData(
+      searchDataFiltered.value,
+      searchDataStats.value
+    );
   }
-  searchDataStats.value = resetStats(searchDataStats.value, false);
-  searchDataStats.value = calcStatsSearchData(
-    searchDataFiltered.value,
-    searchDataStats.value
-  );
 });
+*/
 
 watch(
   searchFilterData,
   () => {
-    searchDataFiltered.value = searchData.value.filter((match) =>
-      filterData(match)
-    );
+    if (calcInitialState) {
+      calcInitialState = false;
+    } else {
+      const newOptions = {
+        searchTerm: searchOptions.value.searchTerm,
+        searchBase:
+          searchFilterData.value.samling.length > 0
+            ? searchFilterData.value.samling
+            : searchOptions.value.searchBase,
+        searchLanguage:
+          searchFilterData.value.lang.length > 0
+            ? searchFilterData.value.lang
+            : searchOptions.value.searchLanguage,
+        searchMatching:
+          searchFilterData.value.matching.length > 0
+            ? searchFilterData.value.matching
+            : searchOptions.value.searchMatching,
+        searchLimit: searchOptions.value.searchLimit,
+        searchOffset: searchOptions.value.searchOffset,
+      };
+      fetchSearchData(newOptions, searchDataFiltered, true);
+    }
   },
   { deep: true }
 );
