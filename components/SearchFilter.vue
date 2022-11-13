@@ -30,16 +30,7 @@
       </button>
     </div>
     <div class="collapse mt-2" id="filterCard">
-      <div v-if="searchDataPending" class="card card-body text-center">
-        <div
-          class="spinner-border"
-          style="width: 1.75rem; height: 1.75rem"
-          role="status"
-        >
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-      <div v-else class="card card-body">
+      <div class="card card-body">
         <div class="row row-cols-4">
           <div class="col">
             Languages
