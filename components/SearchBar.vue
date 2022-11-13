@@ -83,7 +83,7 @@ function execSearch() {
     force: true,
     query: myparams,
   });
-  fetchSearchData(searchData);
+  fetchSearchData(searchOptions.value, searchData, false);
   searchbutton.focus();
   searchfield.focus();
 }
