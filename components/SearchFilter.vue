@@ -201,27 +201,6 @@ function calcStatsSearchData(
   });
   return newStats;
 }
-
-function resetStats(stats: SearchDataStats, deleteStats: boolean) {
-  let newStats: SearchDataStats = Object.keys(searchDataStats.value).reduce(
-    (o, category) => ({ ...o, [category]: {} }),
-    {}
-  );
-  try {
-    if (!deleteStats) {
-      Object.keys(stats).forEach((key) => {
-        Object.keys(stats[key as keyof SearchDataStats]).forEach(
-          (nestedKey) => {
-            newStats[key as keyof SearchDataStats][nestedKey] = 0;
-          }
-        );
-      });
-    }
-    return newStats;
-  } catch (e) {
-    return newStats;
-  }
-}
 </script>
 
 <style>
