@@ -3,7 +3,7 @@
     <!--Filter-->
     <div class="d-flex justify-content-between align-items-center">
       <div class="container py-0">
-        {{ searchDataFiltered.length }} {{ $t("searchFilter.results") }}
+        {{ count }} {{ $t("searchFilter.results") }}
       </div>
 
       <div class="container"></div>
@@ -30,22 +30,16 @@
       </button>
     </div>
     <div class="collapse mt-2" id="filterCard">
-      <div v-if="searchDataPending" class="card card-body text-center">
-        <div
-          class="spinner-border"
-          style="width: 1.75rem; height: 1.75rem"
-          role="status"
-        >
-          <span class="visually-hidden">Loading...</span>
-        </div>
-      </div>
-      <div v-else class="card card-body">
+      <div class="card card-body">
         <div class="row row-cols-4">
           <div class="col">
             Languages
             <div class="form-check">
               <FilterCheckbox
-                v-for="language in Object.keys(searchDataStats.lang)"
+                v-for="language in intersectUnique(
+                  languageOrder[$i18n.locale],
+                  Object.keys(searchDataStats.lang)
+                )"
                 ftype="lang"
                 :fvalue="language"
               />
@@ -55,7 +49,7 @@
             Samling
             <div class="form-check">
               <FilterCheckbox
-                v-for="samling in Object.keys(searchDataStats.samling)"
+                v-for="samling in Object.keys(searchDataStats.samling).sort()"
                 ftype="samling"
                 :fvalue="samling"
               />
@@ -65,7 +59,10 @@
             Label
             <div class="form-check">
               <FilterCheckbox
-                v-for="predicate in Object.keys(searchDataStats.predicate)"
+                v-for="predicate in intersectUnique(
+                  predicateOrder,
+                  Object.keys(searchDataStats.predicate)
+                )"
                 ftype="predicate"
                 :fvalue="predicate"
               />
@@ -75,7 +72,10 @@
             Match
             <div class="form-check">
               <FilterCheckbox
-                v-for="matching in Object.keys(searchDataStats.matching)"
+                v-for="matching in intersectUnique(
+                  matchingOrder,
+                  Object.keys(searchDataStats.matching)
+                )"
                 ftype="matching"
                 :fvalue="matching"
               />
@@ -95,57 +95,48 @@ const searchDataFiltered = useSearchDataFiltered();
 const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
 const searchDataPending = useSearchDataPending();
+const searchOptions = useSearchOptions();
 let calcInitialState: boolean = false;
-
-interface SearchFilterActive {
-  lang?: string[];
-  samling?: string[];
-  predicate?: string[];
-  matching?: string[];
-}
-
-const searchFilterActive: SearchFilterActive = computed(() => {
-  let filter: SearchFilterActive = {};
-  try {
-    Object.entries(searchFilterData.value).forEach(([k, v]) => {
-      const lenStats = Object.keys(
-        searchDataStats.value[k as keyof SearchDataStats]
-      ).length;
-      const lenFilter = v.length;
-      if (lenStats == lenFilter) {
-      } else {
-        if (filter) {
-          filter[k as keyof SearchFilterActive] = v;
-        } else {
-          filter = {};
-          filter[k as keyof SearchFilterActive] = v;
-        }
-      }
-    });
-  } catch (e) {}
-  return filter;
+const searchDataCount = useSearchDataCount();
+const count = computed(() => {
+  const countValues = searchDataCount.value?.results.bindings.map((binding) => {
+    if (binding.count) {
+      return parseInt(binding.count.value);
+    } else {
+      return 0;
+    }
+  }) || [0];
+  if (countValues.includes(10000)) {
+    return "10000+";
+  } else {
+    return countValues.reduce((partial, current) => partial + current, 0);
+  }
 });
 
 watch(searchData, () => {
   calcInitialState = true;
-  searchDataStats.value = resetStats(searchDataStats.value, true);
+  searchFilterData.value = {
+    lang: [],
+    samling: [],
+    predicate: [],
+    matching: [],
+  };
+  // searchDataStats.value = resetStats(searchDataStats.value, true);
   searchDataFiltered.value = searchData.value;
 });
 
+/*
 watch([searchDataFiltered, searchDataPending], () => {
   if (!searchDataPending.value) {
     if (calcInitialState) {
-      searchDataStats.value = calcStatsSearchData(
-        searchDataFiltered.value,
-        searchDataStats.value,
-        calcInitialState
-      );
+      const data = await fetchData(genSearchQuery())
+
+      //searchDataStats.value = calcStatsSearchData(
+      //  searchDataFiltered.value,
+      //  searchDataStats.value,
+      //  calcInitialState
+      //);
       calcInitialState = false;
-      Object.keys(searchDataStats.value).forEach((category) => {
-        searchFilterData.value[category] = Object.keys(
-          searchDataStats.value[category as keyof SearchDataStats]
-        );
-      });
     }
     searchDataStats.value = resetStats(searchDataStats.value, false);
     searchDataStats.value = calcStatsSearchData(
@@ -154,40 +145,60 @@ watch([searchDataFiltered, searchDataPending], () => {
     );
   }
 });
+*/
 
 watch(
   searchFilterData,
   () => {
-    searchDataFiltered.value = searchData.value.filter((match) =>
-      filterData(match)
-    );
+    if (calcInitialState) {
+      calcInitialState = false;
+    } else {
+      const newOptions = {
+        searchTerm: searchOptions.value.searchTerm,
+        searchBase:
+          searchFilterData.value.samling.length > 0
+            ? searchFilterData.value.samling
+            : searchOptions.value.searchBase,
+        searchLanguage:
+          searchFilterData.value.lang.length > 0
+            ? searchFilterData.value.lang
+            : searchOptions.value.searchLanguage,
+        searchMatching:
+          searchFilterData.value.matching.length > 0
+            ? searchFilterData.value.matching
+            : searchOptions.value.searchMatching,
+        searchLimit: searchOptions.value.searchLimit,
+        searchOffset: searchOptions.value.searchOffset,
+      };
+      fetchSearchData(newOptions, searchDataFiltered, true);
+    }
   },
   { deep: true }
 );
 
 function filterData(match: SearchDataEntry) {
-  if (searchFilterActive) {
-    return Object.entries(searchFilterActive.value).every(
-      ([filter, filterValue]) => {
-        const matchValue = match[filter as keyof SearchFilterActive];
-        if (typeof matchValue == "string") {
-          if ((filterValue as string[]).includes(matchValue)) {
-            return true;
-          } else {
+  return Object.entries(searchFilterData.value).every(
+    ([filter, filterValue]) => {
+      if (!filterValue.length) {
+        return true;
+      } else {
+        const matchValue = match[filter];
+        if (Array.isArray(matchValue)) {
+          if (matchValue.every((v: string) => !filterValue.includes(v))) {
             return false;
+          } else {
+            return true;
           }
         } else {
-          if (matchValue.every((v) => !filterValue.includes(v))) {
-            return false;
-          } else {
+          if (filterValue.includes(matchValue)) {
             return true;
+          } else {
+            return false;
           }
         }
       }
-    );
-  } else {
-    return true;
-  }
+    }
+  );
 }
 
 function calcStatsSearchData(
@@ -205,8 +216,8 @@ function calcStatsSearchData(
   data.forEach((match) => {
     try {
       match.lang.forEach((l) => {
-        const langFilter = searchFilterActive.value?.lang;
-        if (initialCalc || !langFilter || langFilter.includes(l)) {
+        const langFilter = searchFilterData.value?.lang;
+        if (initialCalc || langFilter || langFilter.includes(l)) {
           newStats.lang[l] = newStats.lang[l] + 1 || 1;
         }
       });
@@ -219,27 +230,6 @@ function calcStatsSearchData(
     } catch (e) {}
   });
   return newStats;
-}
-
-function resetStats(stats: SearchDataStats, deleteStats: boolean) {
-  let newStats: SearchDataStats = Object.keys(searchDataStats.value).reduce(
-    (o, category) => ({ ...o, [category]: {} }),
-    {}
-  );
-  try {
-    if (!deleteStats) {
-      Object.keys(stats).forEach((key) => {
-        Object.keys(stats[key as keyof SearchDataStats]).forEach(
-          (nestedKey) => {
-            newStats[key as keyof SearchDataStats][nestedKey] = 0;
-          }
-        );
-      });
-    }
-    return newStats;
-  } catch (e) {
-    return newStats;
-  }
 }
 </script>
 

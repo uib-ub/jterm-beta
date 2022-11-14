@@ -16,8 +16,8 @@ export interface SearchDataStats {
 
 export interface SearchOptions {
   searchTerm: string;
-  searchBase: number;
-  searchLanguage?: string;
+  searchBase: string;
+  searchLanguage: string;
   searchMatching: string[];
   searchLimit: number;
   searchOffset: number;
@@ -26,9 +26,9 @@ export interface SearchOptions {
 export const useSearchOptions = () =>
   useState<SearchOptions>("searchOptions", () => ({
     searchTerm: "",
-    searchBase: NaN,
-    searchLanguage: "",
-    searchMatching: ["full-cs", "full-ci", "startsWith-ci", "subWord-ci"],
+    searchBase: "all",
+    searchLanguage: "all",
+    searchMatching: ["full-cs", "full-ci", "startsWith-ci", "endsWith-ci", "subWord-ci", "contains-ci"],
     searchLimit: 100,
     searchOffset: 0,
   }));
@@ -44,6 +44,7 @@ export const useSearchDataPending = () =>
   useState<boolean>("searchDataPending", () => false);
 export const useSearchDataFiltered = () =>
   useState<Array<SearchDataEntry>>("searchDataFiltered", () => []);
+export const useSearchDataCount = () => useState("searchDataCount", () => {})
 export const useSearchDataStats = () =>
   useState<SearchDataStats>("searchDataStats", () => ({
     lang: {},
@@ -67,14 +68,12 @@ export const useDataDisplayLanguages = () =>
     "da",
     "de",
     "es",
-    "fa-af",
     "fi",
     "fr",
     "it",
     "la",
     "pl",
     "ru",
-    "smj",
     "so",
     "sv",
     "ti",

@@ -25,7 +25,6 @@
             }}
           </div>
           <div class="container p-0">{{ item.samling }}</div>
-          <div class="container p-0">{{ item.score }}</div>
         </div>
       </NuxtLink>
     </div>
