@@ -5,7 +5,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "pa11y": "pa11y-ci"
+    "pa11y": "pa11y-ci",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
