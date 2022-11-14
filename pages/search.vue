@@ -1,6 +1,10 @@
 <template>
   <div>
+    <Head>
+      <Title> {{ $t("search.title") }} | {{ $t("index.title") }} </Title>
+    </Head>
     <SearchFilter />
+    <h1>{{ $t("search.title") }}</h1>
     <div class="list-group">
       <NuxtLink
         class="list-group-item list-group-item-action"
