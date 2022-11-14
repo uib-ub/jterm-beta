@@ -14,7 +14,8 @@
     "localhost:3000",
     "localhost:3000/about",
     "localhost:3000/config",
-    "localhost:3000/search",
-    "localhost:3000/MRT"
+    "localhost:3000/MRT",
+    {"url": "localhost:3000/search",
+     "action": []}
   ]
 }
