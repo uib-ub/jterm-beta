@@ -7,7 +7,8 @@
     ],
     "standard": "WCAG2AAA",
     "includeWarnings": true,
-    "includeNotices": false
+    "includeNotices": true,
+    "reporters": ["pa11y-ci-reporter-html"]
   },
   "urls": [
     "localhost:3000",
