@@ -74,6 +74,8 @@
     "modified": "Modified",
     "note": "Note"
   },
-  "about": { "title": "About termportalen" },
+  "index": {"title": "Termportalen"},
+  "search": { "title": "Search Results" },
+  "about": { "title": "About Termportalen" },
   "config": { "title": "Settings", "dataDispLang": "Data display languages" }
 }

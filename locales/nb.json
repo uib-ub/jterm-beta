@@ -75,6 +75,8 @@
     "modified": "Sist oppdatert",
     "note": "Merknad"
   },
-  "about": { "title": "Om termportalen" },
+  "index": {"title": "Termportalen"},
+  "search": { "title": "Søkeresultater" },
+  "about": { "title": "Om Termportalen" },
   "config": { "title": "Inn­stillinger" }
 }
