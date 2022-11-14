@@ -1,6 +1,8 @@
 <template>
-  <div class="container py-1 px-0">
-    <div class="d-flex justify-content-center align-items-center">
+  <div class="container py-1 px-0" role="search">
+    <div
+      class="container py-1 px-0 d-flex justify-content-center align-items-center"
+    >
       <div class="container p-0 pb-2">
         <div class="input-group tp-search">
           <input
@@ -45,16 +47,16 @@
         v-model="searchOptions.searchLanguage"
         aria-label="search language"
       >
-        <option v-for="lc in languageOrder[$i18n.locale]" :value=lc>
+        <option v-for="lc in languageOrder[$i18n.locale]" :value="lc">
           {{ $t("global.lang." + lc) }}
         </option>
       </select>
       <select
         class="form-select tp-searchbar-dd"
         v-model="searchOptions.searchBase"
-        aria-label="search language"
+        aria-label="search termbase"
       >
-      <option v-for="samling in samlingOrder" :value=samling>
+        <option v-for="samling in samlingOrder" :value="samling">
           {{ $t("global.samling." + samling) }}
         </option>
       </select>
