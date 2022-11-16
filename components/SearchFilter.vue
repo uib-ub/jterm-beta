@@ -56,7 +56,7 @@
             </div>
           </div>
           <div class="col">
-            Label
+            Label [dummy]
             <div class="form-check">
               <FilterCheckbox
                 v-for="predicate in intersectUnique(
