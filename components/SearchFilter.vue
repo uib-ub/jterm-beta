@@ -31,7 +31,7 @@
     </div>
     <div class="collapse mt-2" id="filterCard">
       <div class="card card-body">
-        <div class="row row-cols-4">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div class="col">
             Languages
             <div class="form-check">
