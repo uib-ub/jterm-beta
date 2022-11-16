@@ -1,7 +1,7 @@
 import jsonld, { ContextDefinition } from "jsonld";
 
 const context: ContextDefinition = {
-  "@base": "http://wiki.terminologi.no/index.php/Special:URIResolver/",
+  "@base": "http://test.wiki.terminologi.no/index.php/Special:URIResolver/",
   rdfs: "http://www.w3.org/2000/01/rdf-schema#",
   skos: "http://www.w3.org/2004/02/skos/core#",
   xkos: "http://rdf-vocabulary.ddialliance.org/xkos#",

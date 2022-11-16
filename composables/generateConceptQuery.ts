@@ -11,7 +11,7 @@ export function generateConceptQuery(samling: string, begrep: string) {
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
     PREFIX skosno: <https://data.norge.no/vocabulary/skosno#>
-    PREFIX base: <http://wiki.terminologi.no/index.php/Special:URIResolver/>
+    PREFIX base: <http://test.wiki.terminologi.no/index.php/Special:URIResolver/>
     CONSTRUCT  {
       base:${samling}-3A${begrep} ?p ?o.
       ?o ?p2 ?o2.

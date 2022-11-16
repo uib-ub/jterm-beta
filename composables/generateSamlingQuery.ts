@@ -5,7 +5,7 @@ export function generateSamlingQuery(namespace: string) {
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
     PREFIX vcard: <http://www.w3.org/2006/vcard/ns#>
-    PREFIX base: <http://wiki.terminologi.no/index.php/Special:URIResolver/>
+    PREFIX base: <http://test.wiki.terminologi.no/index.php/Special:URIResolver/>
     CONSTRUCT  {
       base:${namespace}-3A${namespace} ?p ?o.
       ?o ?p2 ?o2.}
