@@ -66,26 +66,26 @@ export function getTermData(
 }
 
 export function getGraphData(graphKey: string | string[]) {
-  const uniongraph = "GRAPH <urn:x-arq:UnionGraph>";
+  const uniongraph = "<urn:x-arq:UnionGraph>";
   if (Array.isArray(graphKey)) {
     if (graphKey.length > 0) {
       const bases = graphKey
         .map(
           (key) =>
-            `(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[key]}>)`
+            `FROM NAMED <http://spraksamlingane.no/terminlogi/named/${samlingMapping[key]}>`
         )
-        .join("");
-      return `VALUES (?G) {${bases}}\n     GRAPH ?G`;
+        .join("\n");
+      return [bases, "?G"];
     } else {
-      return uniongraph;
+      return ["", uniongraph];
     }
   } else if (graphKey != "all") {
-    return `VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>)}\n  GRAPH ?G`;
+    return ["", `<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>`];
   } else {
     if (graphKey) {
-      return uniongraph;
+      return ["", uniongraph];
     } else {
-      return uniongraph;
+      return ["", uniongraph];
     }
   }
 }
@@ -201,7 +201,7 @@ export function genSearchQuery(
       },
       count: {
         all: {
-          where: `{ SELECT ?label
+          where: `{ SELECT ?label ?lit
               WHERE {
                 ?label skosxl:literalForm ?lit.
               {languageFilter}
@@ -380,8 +380,9 @@ export function genSearchQuery(
   SELECT DISTINCT ?uri ?predicate ?literal ?samling ?score
          (group_concat( ?l; separator="," ) as ?lang)
          ?matching
+  ${graph[0]}
   WHERE {
-    ${graph} {
+    GRAPH ${graph[1]} {
       { ${outerSubquery}
       }
       ?uri ?predicate ?label;
@@ -399,8 +400,9 @@ export function genSearchQuery(
   PREFIX text: <http://jena.apache.org/text#>
 
   SELECT ?matching ?count
+  ${graph[0]}
   WHERE {
-    ${graph} {
+    GRAPH ${graph[1]} {
       { ${outerSubquery}
       }
     }
@@ -413,8 +415,9 @@ PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
 PREFIX text: <http://jena.apache.org/text#>
 
 SELECT ${aggregateCategories.join(" ")}
+${graph[0]}
 WHERE {
-  ${graph} {
+  GRAPH ${graph[1]} {
     { ${outerSubquery}
     }
   }

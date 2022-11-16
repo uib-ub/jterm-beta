@@ -34,18 +34,22 @@ describe("getTermData", () => {
 
 describe("getGraphData", () => {
   test("value is 'all' string", () => {
-    expect(getGraphData("all")).toBe("GRAPH <urn:x-arq:UnionGraph>");
+    expect(getGraphData("all")).toStrictEqual(["", "<urn:x-arq:UnionGraph>"]);
   });
   test("value is valid key string", () => {
-    expect(getGraphData("MRT")).toBe("VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/3000>)}\n  GRAPH ?G");
+    expect(getGraphData("MRT")).toStrictEqual([
+      "FROM NAMED <http://spraksamlingane.no/terminlogi/named/3000>",
+      "?G",
+    ]);
   });
   test("value is list of empty string", () => {
-    expect(getGraphData([])).toBe("GRAPH <urn:x-arq:UnionGraph>");
+    expect(getGraphData([])).toStrictEqual(["", "<urn:x-arq:UnionGraph>"]);
   });
   test("value is list of valid keys", () => {
-    expect(getGraphData(["MRT", "MRT2"])).toBe(
-      "VALUES (?G) {(<http://spraksamlingane.no/terminlogi/named/3000>)(<http://spraksamlingane.no/terminlogi/named/3002>)}\n     GRAPH ?G"
-    );
+    expect(getGraphData(["MRT", "MRT2"])).toStrictEqual([
+      "FROM NAMED <http://spraksamlingane.no/terminlogi/named/3000>\nFROM NAMED <http://spraksamlingane.no/terminlogi/named/3002>",
+      "?G",
+    ]);
   });
 });
 
