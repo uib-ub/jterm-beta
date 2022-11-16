@@ -46,6 +46,14 @@
       "prefLabel": "Preferred label",
       "altLabel": "Alternative label",
       "hiddenLabel": "Hidden label "
+    },
+    "matching": {
+      "full-cs": "full, case sensitive",
+      "full-ci": "full, case insensitive",
+      "startsWith-ci": "starts with",
+      "endsWith-ci": "ends with",
+      "subWord-ci": "subword starts with",
+      "contains-ci": "contains"
     }
   },
 

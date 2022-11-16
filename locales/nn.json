@@ -46,6 +46,14 @@
       "prefLabel": "Anbefalt term",
       "altLabel": "Tillat term",
       "hiddenLabel": "Frarådet term"
+    },
+    "matching": {
+      "full-cs": "helt, versalfølsom",
+      "full-ci": "helt, versalufølsom",
+      "startsWith-ci": "begynner med",
+      "endsWith-ci": "endte med",
+      "subWord-ci": "underord begynner med",
+      "contains-ci": "inneholder"
     }
   },
   "navBar": { "about": "Om Termportalen", "config": "Inn­stillingar" },
