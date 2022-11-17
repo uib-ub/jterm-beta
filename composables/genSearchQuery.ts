@@ -80,7 +80,10 @@ export function getGraphData(graphKey: string | string[]) {
       return ["", uniongraph];
     }
   } else if (graphKey != "all") {
-    return ["", `<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>`];
+    return [
+      "",
+      `<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>`,
+    ];
   } else {
     if (graphKey) {
       return ["", uniongraph];
@@ -166,7 +169,6 @@ export function genSearchQuery(
           score: 500,
           where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" "${termData.queryHighlight()}" {language}). }`,
           filter: `FILTER ( str(?lit) = "${termData.termHL()}" ).`,
-          //filter: ""
         },
         "full-ci": {
           score: 400,
@@ -179,7 +181,6 @@ export function genSearchQuery(
           where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" "${termData.queryHighlight()}" {language}). }`,
           filter: `FILTER ( strStarts(lcase(?lit), lcase("${termData.termHLstart()}") ) &&
                      lcase(str(?lit)) != lcase("${termData.termHL()}") ).`,
-          //filter: ""
         },
         "endsWith-ci": {
           score: 200,
