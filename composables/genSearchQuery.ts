@@ -35,7 +35,7 @@ export function getTermData(
     term: term,
     sanitized: () =>
       term
-        .replace(/\-|\(|\)|\<|\>|\[|\]|\/|,\s*$|\*/g, " ")
+        .replace(/\-|\(|\)|\<|\>|\[|\]|\/|,\s*$|\*|\~|\_/g, " ")
         .replace(/\s\s+/g, " ")
         .trim(),
     starred: function () {
