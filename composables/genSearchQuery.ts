@@ -80,7 +80,10 @@ export function getGraphData(graphKey: string | string[]) {
       return ["", uniongraph];
     }
   } else if (graphKey != "all") {
-    return ["", `<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>`];
+    return [
+      "",
+      `<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>`,
+    ];
   } else {
     if (graphKey) {
       return ["", uniongraph];
