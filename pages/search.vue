@@ -4,7 +4,7 @@
       <Title> {{ $t("search.title") }} | {{ $t("index.title") }} </Title>
     </Head>
     <SearchFilter />
-    <div class="list-group">
+    <div class="list-group" ref="scrollComponent">
       <SearchResultEntry
         v-for="entry in searchDataFiltered"
         :entryData="entry"
