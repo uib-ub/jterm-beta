@@ -279,6 +279,7 @@ export function genSearchQuery(
         }
         ORDER BY DESC(?score) lcase(?literal)
         LIMIT ${searchOptions.searchLimit}
+        OFFSET ${searchOptions.searchOffset[match] || 0}
       }`,
       count: `
       {

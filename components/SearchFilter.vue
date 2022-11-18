@@ -109,7 +109,7 @@ const count = computed(() => {
   if (countValues.includes(10000)) {
     return "10000+";
   } else {
-    return countValues.reduce((partial, current) => partial + current, 0);
+    return sum(countValues);
   }
 });
 

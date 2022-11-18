@@ -16,11 +16,11 @@ export interface SearchDataStats {
 
 export interface SearchOptions {
   searchTerm: string;
-  searchBase: string;
-  searchLanguage: string;
+  searchBase: string | string[];
+  searchLanguage: string | string[];
   searchMatching: string[];
   searchLimit: number;
-  searchOffset: number;
+  searchOffset: number | {[key: string]: number};
 }
 
 export const useSearchOptions = () =>
@@ -29,7 +29,7 @@ export const useSearchOptions = () =>
     searchBase: "all",
     searchLanguage: "all",
     searchMatching: ["full-cs", "full-ci", "startsWith-ci", "endsWith-ci", "subWord-ci", "contains-ci"],
-    searchLimit: 100,
+    searchLimit: 30,
     searchOffset: 0,
   }));
 
