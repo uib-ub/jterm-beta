@@ -8,3 +8,4 @@ node_modules
 dist
 /pa11y-ci-report/
 /coverage/
+.unlighthouse

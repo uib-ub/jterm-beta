@@ -4,5 +4,6 @@
   "compilerOptions": {
     "strict": true,
     "forceConsistentCasingInFileNames": true,
+  //  "types": ["@unlighthouse/nuxt"]
   }
 }
