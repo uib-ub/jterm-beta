@@ -10,6 +10,16 @@
         :entryData="entry"
       />
     </div>
+    <div class="d-flex justify-content-center p-2">
+      <div
+        v-if="fetchFurtherPending"
+        class="spinner-border"
+        style="width: 1.75rem; height: 1.75rem"
+        role="status"
+      >
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
   </div>
 </template>
 
