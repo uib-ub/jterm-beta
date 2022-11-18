@@ -29,7 +29,7 @@ export const useSearchOptions = () =>
     searchBase: "all",
     searchLanguage: "all",
     searchMatching: ["full-cs", "full-ci", "startsWith-ci", "endsWith-ci", "subWord-ci", "contains-ci"],
-    searchLimit: 100,
+    searchLimit: 30,
     searchOffset: 0,
   }));
 
