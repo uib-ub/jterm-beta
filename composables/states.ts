@@ -16,11 +16,11 @@ export interface SearchDataStats {
 
 export interface SearchOptions {
   searchTerm: string;
-  searchBase: string;
-  searchLanguage: string;
+  searchBase: string | string[];
+  searchLanguage: string | string[];
   searchMatching: string[];
   searchLimit: number;
-  searchOffset: number;
+  searchOffset: number | {[key: string]: number};
 }
 
 export const useSearchOptions = () =>
