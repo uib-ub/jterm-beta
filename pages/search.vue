@@ -42,6 +42,14 @@ const count = computed(() => {
 
 const scrollComponent = ref(null);
 const fetchFurtherPending = ref(false);
+
+onMounted(() => {
+  window.addEventListener("scroll", fetchFurtherSearchData);
+});
+onUnmounted(() => {
+  window.removeEventListener("scroll", fetchFurtherSearchData);
+});
+
 const fetchFurtherSearchData = () => {
   let element = scrollComponent.value;
   if (count.value > countMatches.value && !fetchFurtherPending.value) {
