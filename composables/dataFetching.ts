@@ -20,12 +20,12 @@ export async function fetchSearchDataMatching(
   matching: string[],
   dataState: SearchDataEntry[],
   append: boolean,
-  tmpid: number
+  tmpid?: number
 ) {
   const data = await fetchData(
     genSearchQuery(searchOptions, "entries", matching)
   );
-  if (tmpid == lastFetch) {
+  if (!tmpid || tmpid == lastFetch) {
     if (append) {
       dataState.value = dataState.value.concat(
         data.results.bindings.map(processBindings)
