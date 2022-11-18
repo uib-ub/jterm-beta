@@ -38,8 +38,8 @@ describe("getGraphData", () => {
   });
   test("value is valid key string", () => {
     expect(getGraphData("MRT")).toStrictEqual([
-      "FROM NAMED <http://spraksamlingane.no/terminlogi/named/3000>",
-      "?G",
+      "",
+      "<http://spraksamlingane.no/terminlogi/named/3000>",
     ]);
   });
   test("value is list of empty string", () => {
