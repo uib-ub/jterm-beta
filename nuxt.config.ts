@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   meta: { title: "Termportalen" },
   css: ["~/assets/styles/main.scss"],
   modules: ["@nuxt/content"],
+  buildModules: ["@nuxtjs/html-validator", "@unlighthouse/nuxt"],
   content: {
     // https://content.nuxtjs.org/api/configuration
   },
@@ -18,5 +19,10 @@ export default defineNuxtConfig({
         ],
       }),
     ],
+  },
+  htmlValidator: {
+    usePrettier: true,
+    logLevel: "verbose",
+    failOnError: false,
   },
 });

@@ -7,17 +7,20 @@
     "preview": "nuxt preview",
     "pa11y": "pa11y-ci",
     "test": "vitest",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "lighthouse": "unlighthouse"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.8.0",
     "@nuxt/content": "^2.2.2",
     "@nuxt/test-utils-edge": "^3.0.1-rc.0-27810184.d991a55",
+    "@nuxtjs/html-validator": "^1.1.1",
     "@popperjs/core": "^2.11.6",
     "@types/bootstrap": "^5.2.6",
     "@types/jsonld": "^1.5.7",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
+    "@unlighthouse/nuxt": "^0.4.2",
     "@vitest/coverage-c8": "^0.25.2",
     "bootstrap": "^5.2.2",
     "eslint": "^8.27.0",
@@ -30,6 +33,7 @@
     "pa11y-ci-reporter-html": "^5.0.2",
     "prettier": "^2.7.1",
     "sass": "^1.56.1",
+    "unlighthouse": "^0.4.2",
     "vitest": "^0.25.2",
     "vue-i18n": "^9.2.2"
   }
