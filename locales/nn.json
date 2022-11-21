@@ -2,6 +2,7 @@
   "global": {
     "language": "Språk | Språk",
     "lang": {
+      "none": "Ingen språk",
       "all": "Alle språk",
       "ar": "Arabic",
       "da": "Dansk",
