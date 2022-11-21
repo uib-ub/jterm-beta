@@ -374,12 +374,20 @@ export function genSearchQuery(
   }
   const outerSubquery = categoriesArray.join("\n      UNION");
 
+  const translate = searchOptions.searchTranslate != "none" ? "?translate" : "";
+  const translateOptional =
+    searchOptions.searchTranslate != "none"
+      ? `OPTIONAL { ?uri skosxl:prefLabel ?label2 .
+    ?label2 skosxl:literalForm ?translate .
+    FILTER ( lang(?translate) = "${searchOptions.searchTranslate}" ) }`
+      : "";
+
   const queryEntries = () => `
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
   PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
   PREFIX text: <http://jena.apache.org/text#>
 
-  SELECT DISTINCT ?uri ?predicate ?literal ?samling ?score
+  SELECT DISTINCT ?uri ?predicate ?literal ?samling ?score ${translate}
          (group_concat( ?l; separator="," ) as ?lang)
          ?matching
   ${graph[0]}
@@ -389,10 +397,11 @@ export function genSearchQuery(
       }
       ?uri ?predicate ?label;
         skosp:memberOf ?s.
-        BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling)
+      ${translateOptional}
+      BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling)
     }
   }
-  GROUP BY ?uri ?predicate ?literal ?samling ?score ?matching
+  GROUP BY ?uri ?predicate ?literal ?samling ?score ?matching ${translate}
   ORDER BY DESC(?score) lcase(?literal) DESC(?predicate)
   LIMIT ${searchOptions.searchLimit}`;
 

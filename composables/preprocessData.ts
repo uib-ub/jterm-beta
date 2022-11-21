@@ -72,6 +72,7 @@ export function processBindings(binding) {
     lang: binding.lang.value.split(","),
     samling: binding.samling.value,
     matching: binding.matching.value,
-    score: binding.score.value
+    score: binding.score.value,
+    translate: binding?.translate?.value || ""
   };
 }

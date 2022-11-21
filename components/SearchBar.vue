@@ -47,6 +47,21 @@
         v-model="searchOptions.searchLanguage"
         aria-label="search language"
       >
+        <option value="all">
+          {{ $t("global.lang.all") }}
+        </option>
+        <option v-for="lc in languageOrder[$i18n.locale]" :value="lc">
+          {{ $t("global.lang." + lc) }}
+        </option>
+      </select>
+      <select
+        class="form-select tp-searchbar-dd"
+        v-model="searchOptions.searchTranslate"
+        aria-label="translation language"
+      >
+        <option value="none">
+          {{ $t("global.lang.none") }}
+        </option>
         <option v-for="lc in languageOrder[$i18n.locale]" :value="lc">
           {{ $t("global.lang." + lc) }}
         </option>

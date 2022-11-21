@@ -19,12 +19,16 @@
           entryData.lang.map((l: string) => $t(`global.lang.${l}`)).join(", ")
         }}
       </div>
+      <div v-if="searchOptions.searchTranslate != 'none'" class="container p-0">
+        <b v-html="entryData.translate"></b>
+      </div>
       <div class="container p-0">{{ entryData.samling }}</div>
     </div>
   </NuxtLink>
 </template>
 
 <script setup lang="ts">
+const searchOptions = useSearchOptions();
 interface Props {
   entryData: {
     link: string;
@@ -32,6 +36,7 @@ interface Props {
     label: string;
     lang: string[];
     samling: string;
+    translate?: string;
   };
 }
 
