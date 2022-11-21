@@ -5,6 +5,7 @@ export interface SearchDataEntry {
   lang: string[];
   samling: string;
   matching: string;
+  translate?: string;
 }
 
 export interface SearchDataStats {
@@ -18,6 +19,7 @@ export interface SearchOptions {
   searchTerm: string;
   searchBase: string | string[];
   searchLanguage: string | string[];
+  searchTranslate: string;
   searchMatching: string[];
   searchLimit: number;
   searchOffset: number | {[key: string]: number};
@@ -28,6 +30,7 @@ export const useSearchOptions = () =>
     searchTerm: "",
     searchBase: "all",
     searchLanguage: "all",
+    searchTranslate: "none",
     searchMatching: ["full-cs", "full-ci", "startsWith-ci", "endsWith-ci", "subWord-ci", "contains-ci"],
     searchLimit: 30,
     searchOffset: 0,
