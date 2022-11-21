@@ -63,7 +63,7 @@ onUnmounted(() => {
 const fetchFurtherSearchData = () => {
   let element = scrollComponent.value;
   if (count.value > countMatches.value && !fetchFurtherPending.value) {
-    if (element.getBoundingClientRect().bottom < window.innerHeight) {
+    if (element.getBoundingClientRect().bottom * 0.75 < window.innerHeight) {
       fetchFurtherPending.value = true;
 
       let newOffsetCalc;
