@@ -31,7 +31,6 @@ export const samlingOrder = [
 ];
 export const languageOrder = {
   nb: [
-    "all",
     "nb",
     "nn",
     "en",
@@ -50,7 +49,6 @@ export const languageOrder = {
     "de",
   ],
   nn: [
-    "all",
     "nb",
     "nn",
     "en",
@@ -69,7 +67,6 @@ export const languageOrder = {
     "de",
   ],
   en: [
-    "all",
     "nb",
     "nn",
     "en",
