@@ -48,7 +48,7 @@
               <!--Languages-->
               <DataRow
                 v-if="uriData?.language"
-                :data="uriData.language.map((lang: string) => $t('global.lang.' + lang)) .join(', ')"
+                :data="intersectUnique(languageOrder[$i18n.locale as keyof typeof languageOrder], uriData.language).map((lang: string) => $t('global.lang.' + lang)) .join(', ')"
                 thClass="col-3"
                 :label="$t('global.language', 1)"
               />
