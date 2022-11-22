@@ -1,5 +1,8 @@
 <template>
   <div>
+    <Head>
+      <Title>{{ uriData?.label[0]["@value"] }} | Termportalen</Title>
+    </Head>
     <h1 class="py-3">
       {{ uriData?.label[0]["@value"] || uriData?.label[0] }}
     </h1>
