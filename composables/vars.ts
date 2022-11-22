@@ -49,8 +49,8 @@ export const languageOrder = {
     "de",
   ],
   nn: [
-    "nb",
     "nn",
+    "nb",
     "en",
     "ar",
     "da",
@@ -67,9 +67,9 @@ export const languageOrder = {
     "de",
   ],
   en: [
+    "en",
     "nb",
     "nn",
-    "en",
     "ar",
     "da",
     "fi",
