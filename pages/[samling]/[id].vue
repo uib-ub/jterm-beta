@@ -1,11 +1,19 @@
 <template>
   <div class="container row px-0 py-3">
-    <div v-if="searchDataFiltered.length > 0" class="d-md-none d-lg-block col-3" style="height: calc(100vh * 0.9 - 220px); overflow:auto;">
-      <div class="list-group" ref="scrollComponent">
-        <SearchResultEntryShort
-          v-for="entry in searchDataFiltered"
-          :entryData="entry"
-        />
+    <div
+      v-if="searchDataFiltered.length > 0"
+      class="d-md-none d-lg-block col-3"
+    >
+      <div class="container pb-3">
+        <NuxtLink to="/search">{{ $t("id.tilbake") }}</NuxtLink>
+      </div>
+      <div style="height: calc(100vh * 0.9 - 220px); overflow: auto">
+        <div class="list-group" ref="scrollComponent">
+          <SearchResultEntryShort
+            v-for="entry in searchDataFiltered"
+            :entryData="entry"
+          />
+        </div>
       </div>
     </div>
     <div class="col px-3">
