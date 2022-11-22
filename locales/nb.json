@@ -82,7 +82,8 @@
     "subject": "Fagområde",
     "domain": "Domene",
     "modified": "Sist oppdatert",
-    "note": "Merknad"
+    "note": "Merknad",
+    "tilbake": "Tilbake til søkeresultater"
   },
   "index": { "title": "Termportalen" },
   "search": { "title": "Søkeresultater" },

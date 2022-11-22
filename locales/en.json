@@ -81,7 +81,8 @@
     "subject": "Subject",
     "domain": "Domain",
     "modified": "Modified",
-    "note": "Note"
+    "note": "Note",
+    "tilbake": "Back to search results"
   },
   "index": {"title": "Termportalen"},
   "search": { "title": "Search Results" },
