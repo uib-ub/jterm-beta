@@ -1,4 +1,4 @@
-import { SearchOptions } from "./states";
+import { SearchOptions } from "../composables/states";
 
 const htmlHighlight = {
   open: "<span class='searchHighlight'>",
@@ -55,17 +55,25 @@ export function getTermData(
         return highlight.open + x + highlight.close;
       }),
     termHLstart: function () {
-      return this.termHL().slice(0, -highlight.close.length);
+      if (this.termHL().endsWith(highlight.close)) {
+        return this.termHL().slice(0, -highlight.close.length);
+      } else {
+        return this.termHL();
+      }
     },
     termHLend: function () {
-      return this.termHL().slice(highlight.open.length);
+      if (this.termHL().startsWith(highlight.open)) {
+        return this.termHL().slice(highlight.open.length);
+      } else {
+        return this.termHL();
+      }
     },
     queryHighlight: () =>
       `highlight:s:${highlight.open} | e:${highlight.close}`,
   };
 }
 
-export function getGraphData(graphKey: string | string[]) {
+export function getGraphData(graphKey: string | string[]): string[] {
   const uniongraph = "<urn:x-arq:UnionGraph>";
   if (Array.isArray(graphKey)) {
     if (graphKey.length > 0) {
@@ -93,7 +101,7 @@ export function getGraphData(graphKey: string | string[]) {
   }
 }
 
-export function getLanguageData(language: string | string[]) {
+export function getLanguageData(language: string | string[]): string[] {
   if (Array.isArray(language)) {
     return language;
   } else {
@@ -110,7 +118,7 @@ function getLanguageWhere(
   queryTypeIn: string,
   match: string,
   lang: string
-) {
+): string {
   let queryType = queryTypeIn;
   if (queryType == "aggregate") {
     queryType = "count";
@@ -141,7 +149,7 @@ export function genSearchQuery(
   searchOptions: SearchOptions,
   queryType: string,
   matching: string[]
-) {
+): string {
   const termData = getTermData(searchOptions.searchTerm, htmlHighlight);
   const graph = getGraphData(searchOptions.searchBase);
   const language = getLanguageData(searchOptions.searchLanguage);
