@@ -124,3 +124,31 @@ export function processBinding(binding: {
     translate: binding?.translate?.value || "",
   };
 }
+
+export function sumAggregateData(
+  obj: { [key: string]: { [key: string]: string } },
+  subObj: { [key: string]: { [key: string]: string } }
+) {
+  const category = Object.keys(subObj)[0];
+  if (Object.keys(obj).includes(category)) {
+    const newData: { [key: string]: string } = JSON.parse(
+      subObj[category].value
+    );
+    for (const entry of Object.entries(newData)) {
+      if (Object.keys(obj[category]).includes(entry[0])) {
+        obj[category][entry[0]] = obj[category][entry[0]] + entry[1];
+      } else {
+        obj[category][entry[0]] = entry[1];
+        console.log(obj);
+      }
+    }
+    return obj;
+  } else {
+    return {
+      ...obj,
+      ...{
+        [category]: JSON.parse(Object.values(subObj)[0].value),
+      },
+    };
+  }
+}
