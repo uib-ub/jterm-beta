@@ -1,4 +1,4 @@
-import { SearchDataStats } from "./states";
+import { SearchDataStats } from "../composables/states";
 
 export function resetStats(stats: SearchDataStats, deleteStats: boolean) {
   const newStats: SearchDataStats = Object.keys(stats).reduce(
