@@ -162,24 +162,26 @@ const searchDataFiltered = useSearchDataFiltered();
 const fetchedData = ref({});
 const data = computed(() => {
   const identified = identifyData(fetchedData.value?.["@graph"]);
-  const labeled = idLabelsWithLang(identified, uri, [
-    "prefLabel",
-    "altLabel",
-    "hiddenLabel",
-  ]);
+  const labeled = idLabelsWithLang(
+    identified,
+    [uri],
+    ["prefLabel", "altLabel", "hiddenLabel"]
+  );
   return labeled;
 });
 const displayInfo = computed(() => {
-  const conceptLanguages = getConceptLanguages(data.value, uri);
+  const conceptLanguages = getConceptLanguages(data.value[uri]);
   const displayLanguages = dataDisplayLanguages.value.filter((language) =>
     Array.from(conceptLanguages).includes(language)
   );
-  const prefLabelLength = getNumberOfInstances(data.value, uri, "prefLabel");
-  const altLabelLength = getNumberOfInstances(data.value, uri, "altLabel");
-  const hiddenLabelLength = getNumberOfInstances(
-    data.value,
-    uri,
-    "hiddenLabel"
+  const prefLabelLength = getMaxNumberOfInstances(
+    data.value?.[uri]?.["prefLabel"]
+  );
+  const altLabelLength = getMaxNumberOfInstances(
+    data.value?.[uri]?.["altLabel"]
+  );
+  const hiddenLabelLength = getMaxNumberOfInstances(
+    data.value?.[uri]?.["hiddenLabel"]
   );
   return {
     conceptLanguages,

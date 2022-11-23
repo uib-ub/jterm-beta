@@ -28,10 +28,10 @@ export async function fetchSearchDataMatching(
   if (!tmpid || tmpid == lastFetch) {
     if (append) {
       dataState.value = dataState.value.concat(
-        data.results.bindings.map(processBindings)
+        data.results.bindings.map(processBinding)
       );
     } else {
-      dataState.value = data.results.bindings.map(processBindings);
+      dataState.value = data.results.bindings.map(processBinding);
     }
   }
 }
