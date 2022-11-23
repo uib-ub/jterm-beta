@@ -1,5 +1,5 @@
 
-export function generateConceptQuery(samling: string, begrep: string) {
+export function genConceptQuery(samling: string, begrep: string): string {
   const query = `
     PREFIX dc: <http://purl.org/dc/elements/1.1/>
     PREFIX dcterms: <http://purl.org/dc/terms/>

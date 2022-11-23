@@ -192,7 +192,7 @@ const displayInfo = computed(() => {
 
 async function fetchConceptData() {
   const fetched = await fetchData(
-    generateConceptQuery(samling, id),
+    genConceptQuery(samling, id),
     "application/ld+json"
   );
   const compacted = await compactData(fetched);
