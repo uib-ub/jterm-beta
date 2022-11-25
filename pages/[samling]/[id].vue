@@ -1,7 +1,7 @@
 <template>
   <div class="container row px-0 py-3">
     <div
-      v-if="searchDataFiltered.length > 0"
+      v-if="searchData.length > 0"
       class="d-md-none d-lg-block col-3"
     >
       <div class="container pb-3">
@@ -10,7 +10,7 @@
       <div style="height: calc(100vh * 0.9 - 220px); overflow: auto">
         <div class="list-group" ref="scrollComponent">
           <SearchResultEntryShort
-            v-for="entry in searchDataFiltered"
+            v-for="entry in searchData"
             :entryData="entry"
           />
         </div>
@@ -157,7 +157,7 @@ const id = route.params.id;
 const uri = `${samling}-3A${id}`;
 const dataDisplayLanguages = useDataDisplayLanguages();
 const conceptViewToggle = useConceptViewToggle();
-const searchDataFiltered = useSearchDataFiltered();
+const searchData = useSearchData();
 
 const fetchedData = ref({});
 const data = computed(() => {
