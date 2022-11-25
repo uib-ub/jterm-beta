@@ -7,7 +7,7 @@ export function intersectUnique(a: any[], b: any[]) {
   return Array.from(intersection);
 }
 
-export function sum(numbers: number[]) {
+export function sum(numbers: number[]): number {
   return numbers.reduce((a, b) => a + b, 0);
 }
 
