@@ -9,7 +9,7 @@
       <div class="container"></div>
       <div class="container">
         <div
-          v-if="searchDataPending"
+          v-if="pending"
           class="spinner-border"
           style="width: 1.75rem; height: 1.75rem"
           role="status"
@@ -91,38 +91,25 @@
 import { SearchDataEntry, SearchDataStats } from "~~/composables/states";
 
 const searchData = useSearchData();
-const searchDataFiltered = useSearchDataFiltered();
 const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
 const searchDataPending = useSearchDataPending();
 const searchOptions = useSearchOptions();
 let calcInitialState: boolean = false;
-const searchDataCount = useSearchDataCount();
+const pending = computed(() => {
+  return !Object.values(searchDataPending.value).every((el) => !el);
+});
 const count = computed(() => {
-  const countValues = searchDataCount.value?.results.bindings.map((binding) => {
-    if (binding.count) {
-      return parseInt(binding.count.value);
-    } else {
+  if (searchDataPending.value["aggregate"]) {
+    return countSearchEntries(searchData.value);
+  }
+  {
+    try {
+      return sum(Object.values(searchDataStats.value?.["matching"])) || 0;
+    } catch (e) {
       return 0;
     }
-  }) || [0];
-  if (countValues.includes(10000)) {
-    return "10000+";
-  } else {
-    return sum(countValues);
   }
-});
-
-watch(searchData, () => {
-  calcInitialState = true;
-  searchFilterData.value = {
-    lang: [],
-    samling: [],
-    predicate: [],
-    matching: [],
-  };
-  // searchDataStats.value = resetStats(searchDataStats.value, true);
-  searchDataFiltered.value = searchData.value;
 });
 
 /*
@@ -170,7 +157,7 @@ watch(
         searchLimit: searchOptions.value.searchLimit,
         searchOffset: searchOptions.value.searchOffset,
       };
-      fetchSearchData(newOptions, searchDataFiltered, true);
+      useFetchSearchData(newOptions, "filter");
     }
   },
   { deep: true }
