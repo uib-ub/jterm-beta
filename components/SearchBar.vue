@@ -100,7 +100,7 @@ function execSearch() {
     force: true,
     query: myparams,
   });
-  fetchSearchData(searchOptions.value, searchData, false);
+  useFetchSearchData(searchOptions.value, "initial");
   searchbutton.focus();
   searchfield.focus();
 }
