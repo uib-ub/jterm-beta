@@ -6,6 +6,7 @@ export interface SearchDataEntry {
   samling: string;
   matching: string;
   translate?: string;
+  score?: string;
 }
 
 export interface SearchDataStats {
@@ -20,9 +21,9 @@ export interface SearchOptions {
   searchBase: string | string[];
   searchLanguage: string | string[];
   searchTranslate: string;
-  searchMatching: string[];
+  searchMatching: any[];
   searchLimit: number;
-  searchOffset: number | {[key: string]: number};
+  searchOffset: number | { [key: string]: number };
 }
 
 export const useSearchOptions = () =>
@@ -31,7 +32,13 @@ export const useSearchOptions = () =>
     searchBase: "all",
     searchLanguage: "all",
     searchTranslate: "none",
-    searchMatching: ["full-cs", "full-ci", "startsWith-ci", "endsWith-ci", "subWord-ci", "contains-ci"],
+    searchMatching: [
+      ["full-cs", "full-ci"],
+      "startsWith-ci",
+      "endsWith-ci",
+      "subWord-ci",
+      "contains-ci",
+    ],
     searchLimit: 30,
     searchOffset: 0,
   }));
@@ -44,10 +51,11 @@ export const useSearchTermbase = () =>
 export const useSearchData = () =>
   useState<Array<SearchDataEntry>>("searchData", () => []);
 export const useSearchDataPending = () =>
-  useState<boolean>("searchDataPending", () => false);
-export const useSearchDataFiltered = () =>
-  useState<Array<SearchDataEntry>>("searchDataFiltered", () => []);
-export const useSearchDataCount = () => useState("searchDataCount", () => {})
+  useState<{ [key: string]: boolean }>("searchDataPending", () => ({
+    aggregate: false,
+    entries: false,
+  }));
+export const useSearchDataCount = () => useState("searchDataCount", () => {});
 export const useSearchDataStats = () =>
   useState<SearchDataStats>("searchDataStats", () => ({
     lang: {},
@@ -62,6 +70,8 @@ export const useSearchFilterData = () =>
     predicate: [],
     matching: [],
   }));
+export const useSearchFetchLatest = () =>
+  useState<number>("searchFetchLatest", () => NaN);
 export const useDataDisplayLanguages = () =>
   useState<Array<string>>("dataDisplayLanguages", () => [
     "nb",
