@@ -1,4 +1,4 @@
-export function generateSamlingQuery(namespace: string) {
+export function genSamlingQuery(namespace: string): string {
   const query = `
     PREFIX dcterms: <http://purl.org/dc/terms/>
     PREFIX skos: <http://www.w3.org/2004/02/skos/core#>

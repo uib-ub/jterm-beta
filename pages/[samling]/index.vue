@@ -98,10 +98,7 @@ function getSamlingFromParam() {
 }
 
 async function fetchSamlingData() {
-  const data = await fetchData(
-    generateSamlingQuery(samling),
-    "application/ld+json"
-  );
+  const data = await fetchData(genSamlingQuery(samling), "application/ld+json");
   samlingData.value = await compactData(data);
 }
 fetchSamlingData();

@@ -1,7 +1,7 @@
 <template>
   <div class="container row px-0 py-3">
     <div
-      v-if="searchDataFiltered.length > 0"
+      v-if="searchData.length > 0"
       class="d-md-none d-lg-block col-3"
     >
       <div class="container pb-3">
@@ -10,7 +10,7 @@
       <div style="height: calc(100vh * 0.9 - 220px); overflow: auto">
         <div class="list-group" ref="scrollComponent">
           <SearchResultEntryShort
-            v-for="entry in searchDataFiltered"
+            v-for="entry in searchData"
             :entryData="entry"
           />
         </div>
@@ -157,29 +157,31 @@ const id = route.params.id;
 const uri = `${samling}-3A${id}`;
 const dataDisplayLanguages = useDataDisplayLanguages();
 const conceptViewToggle = useConceptViewToggle();
-const searchDataFiltered = useSearchDataFiltered();
+const searchData = useSearchData();
 
 const fetchedData = ref({});
 const data = computed(() => {
   const identified = identifyData(fetchedData.value?.["@graph"]);
-  const labeled = idLabelsWithLang(identified, uri, [
-    "prefLabel",
-    "altLabel",
-    "hiddenLabel",
-  ]);
+  const labeled = idLabelsWithLang(
+    identified,
+    [uri],
+    ["prefLabel", "altLabel", "hiddenLabel"]
+  );
   return labeled;
 });
 const displayInfo = computed(() => {
-  const conceptLanguages = getConceptLanguages(data.value, uri);
+  const conceptLanguages = getConceptLanguages(data.value[uri]);
   const displayLanguages = dataDisplayLanguages.value.filter((language) =>
     Array.from(conceptLanguages).includes(language)
   );
-  const prefLabelLength = getNumberOfInstances(data.value, uri, "prefLabel");
-  const altLabelLength = getNumberOfInstances(data.value, uri, "altLabel");
-  const hiddenLabelLength = getNumberOfInstances(
-    data.value,
-    uri,
-    "hiddenLabel"
+  const prefLabelLength = getMaxNumberOfInstances(
+    data.value?.[uri]?.["prefLabel"]
+  );
+  const altLabelLength = getMaxNumberOfInstances(
+    data.value?.[uri]?.["altLabel"]
+  );
+  const hiddenLabelLength = getMaxNumberOfInstances(
+    data.value?.[uri]?.["hiddenLabel"]
   );
   return {
     conceptLanguages,
@@ -192,7 +194,7 @@ const displayInfo = computed(() => {
 
 async function fetchConceptData() {
   const fetched = await fetchData(
-    generateConceptQuery(samling, id),
+    genConceptQuery(samling, id),
     "application/ld+json"
   );
   const compacted = await compactData(fetched);

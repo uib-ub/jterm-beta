@@ -9,7 +9,7 @@
       <div class="container"></div>
       <div class="container">
         <div
-          v-if="searchDataPending"
+          v-if="pending"
           class="spinner-border"
           style="width: 1.75rem; height: 1.75rem"
           role="status"
@@ -88,41 +88,28 @@
 </template>
 
 <script setup lang="ts">
-import { SearchDataEntry, SearchDataStats } from "~~/composables/states";
+import { SearchOptions } from "~~/composables/states";
 
 const searchData = useSearchData();
-const searchDataFiltered = useSearchDataFiltered();
 const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
 const searchDataPending = useSearchDataPending();
 const searchOptions = useSearchOptions();
-let calcInitialState: boolean = false;
-const searchDataCount = useSearchDataCount();
+const searchFetchInitial = useSearchFetchInitial();
+const pending = computed(() => {
+  return !Object.values(searchDataPending.value).every((el) => !el);
+});
 const count = computed(() => {
-  const countValues = searchDataCount.value?.results.bindings.map((binding) => {
-    if (binding.count) {
-      return parseInt(binding.count.value);
-    } else {
+  if (searchDataPending.value["aggregate"]) {
+    return countSearchEntries(searchData.value);
+  }
+  {
+    try {
+      return sum(Object.values(searchDataStats.value?.["matching"])) || 0;
+    } catch (e) {
       return 0;
     }
-  }) || [0];
-  if (countValues.includes(10000)) {
-    return "10000+";
-  } else {
-    return sum(countValues);
   }
-});
-
-watch(searchData, () => {
-  calcInitialState = true;
-  searchFilterData.value = {
-    lang: [],
-    samling: [],
-    predicate: [],
-    matching: [],
-  };
-  // searchDataStats.value = resetStats(searchDataStats.value, true);
-  searchDataFiltered.value = searchData.value;
 });
 
 /*
@@ -150,10 +137,10 @@ watch([searchDataFiltered, searchDataPending], () => {
 watch(
   searchFilterData,
   () => {
-    if (calcInitialState) {
-      calcInitialState = false;
+    if (searchFetchInitial.value) {
+      searchFetchInitial.value = false;
     } else {
-      const newOptions = {
+      const newOptions: SearchOptions = {
         searchTerm: searchOptions.value.searchTerm,
         searchBase:
           searchFilterData.value.samling.length > 0
@@ -163,6 +150,7 @@ watch(
           searchFilterData.value.lang.length > 0
             ? searchFilterData.value.lang
             : searchOptions.value.searchLanguage,
+        searchTranslate: searchOptions.value.searchTranslate,
         searchMatching:
           searchFilterData.value.matching.length > 0
             ? searchFilterData.value.matching
@@ -170,19 +158,20 @@ watch(
         searchLimit: searchOptions.value.searchLimit,
         searchOffset: searchOptions.value.searchOffset,
       };
-      fetchSearchData(newOptions, searchDataFiltered, true);
+      useFetchSearchData(newOptions, "filter");
     }
   },
   { deep: true }
 );
 
+/*
 function filterData(match: SearchDataEntry) {
   return Object.entries(searchFilterData.value).every(
     ([filter, filterValue]) => {
       if (!filterValue.length) {
         return true;
       } else {
-        const matchValue = match[filter];
+        const matchValue = match[filter as keyof SearchFilterData];
         if (Array.isArray(matchValue)) {
           if (matchValue.every((v: string) => !filterValue.includes(v))) {
             return false;
@@ -200,7 +189,9 @@ function filterData(match: SearchDataEntry) {
     }
   );
 }
+*/
 
+/*
 function calcStatsSearchData(
   data: SearchDataEntry[],
   stats: SearchDataStats,
@@ -231,6 +222,7 @@ function calcStatsSearchData(
   });
   return newStats;
 }
+*/
 </script>
 
 <style>

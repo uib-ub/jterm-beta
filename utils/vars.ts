@@ -1,5 +1,39 @@
-export const predicateOrder = ["prefLabel", "altLabel", "hiddenLabel"];
-export const matchingOrder = [
+export type LocalLangCode = "en" | "nb" | "nn";
+
+export type LangCode =
+  | "ar"
+  | "da"
+  | "de"
+  | "en"
+  | "fi"
+  | "fr"
+  | "it"
+  | "la"
+  | "nb"
+  | "nn"
+  | "pl"
+  | "ru"
+  | "so"
+  | "es"
+  | "sv"
+  | "ti";
+
+export type LabelPredicate = "prefLabel" | "altLabel" | "hiddenLabel";
+export type MatchingNested = Matching | Matching[];
+export type Matching =
+  | "full-cs"
+  | "full-ci"
+  | "startsWith-ci"
+  | "endsWith-ci"
+  | "subWord-ci"
+  | "contains-ci";
+
+export const predicateOrder: LabelPredicate[] = [
+  "prefLabel",
+  "altLabel",
+  "hiddenLabel",
+];
+export const matchingOrder: Matching[] | Matching[][] = [
   "full-cs",
   "full-ci",
   "startsWith-ci",
@@ -85,3 +119,5 @@ export const languageOrder = {
     "ti",
   ],
 };
+
+export type QueryType = "entries" | "aggregate" | "count";

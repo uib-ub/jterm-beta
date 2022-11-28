@@ -27,6 +27,9 @@ describe("getTermData", () => {
       "(<open>æbc<close>)-<<open>def<close>>-[<open>ghj<close>]-<open>1,2,"
     );
   });
+  test("termHLend", () => {
+    expect(tD.termHLend()).toBe("(<open>æbc<close>)-<<open>def<close>>-[<open>ghj<close>]-<open>1,2,<close>")
+  })
   test("queryhighlight", () => {
     expect(tD.queryHighlight()).toBe("highlight:s:<open> | e:<close>");
   });
