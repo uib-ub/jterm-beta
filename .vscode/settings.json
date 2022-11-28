@@ -1,0 +1,8 @@
+{
+  "eslint.validate": ["javascript", "javascriptreact", "vue"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "testing.automaticallyOpenPeekView": "never"
+}
