@@ -95,7 +95,7 @@ const searchDataStats = useSearchDataStats();
 const searchFilterData = useSearchFilterData();
 const searchDataPending = useSearchDataPending();
 const searchOptions = useSearchOptions();
-let calcInitialState: boolean = false;
+const searchFetchInitial = useSearchFetchInitial();
 const pending = computed(() => {
   return !Object.values(searchDataPending.value).every((el) => !el);
 });
@@ -137,8 +137,8 @@ watch([searchDataFiltered, searchDataPending], () => {
 watch(
   searchFilterData,
   () => {
-    if (calcInitialState) {
-      calcInitialState = false;
+    if (searchFetchInitial.value) {
+      searchFetchInitial.value = false;
     } else {
       const newOptions = {
         searchTerm: searchOptions.value.searchTerm,

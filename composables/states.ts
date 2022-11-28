@@ -50,6 +50,8 @@ export const useSearchTermbase = () =>
   useState<Array<string>>("searchTermbase", () => []);
 export const useSearchData = () =>
   useState<Array<SearchDataEntry>>("searchData", () => []);
+export const useSearchFetchInitial = () =>
+  useState<boolean>("serchFetchInitial", () => false);
 export const useSearchDataPending = () =>
   useState<{ [key: string]: boolean }>("searchDataPending", () => ({
     aggregate: false,

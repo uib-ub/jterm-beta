@@ -65,6 +65,7 @@ export async function useFetchSearchData(
   const searchFetchLatest = useSearchFetchLatest();
   const searchDataPending = useSearchDataPending();
   const searchFilterData = useSearchFilterData();
+  const searchFetchInitial = useSearchFetchInitial();
   let append = false;
   const fetchTime = Date.now();
   searchFetchLatest.value = fetchTime;
@@ -75,6 +76,7 @@ export async function useFetchSearchData(
   }
 
   if (fetchType == "initial") {
+    searchFetchInitial.value = true;
     searchFilterData.value = {
       lang: [],
       samling: [],
