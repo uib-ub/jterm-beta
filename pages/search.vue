@@ -24,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+import { Matching } from "../utils/vars";
+import { SearchOptions } from "../composables/states";
 const searchData = useSearchData();
 const searchFilterData = useSearchFilterData();
 const searchDataStats = useSearchDataStats();
@@ -62,19 +64,19 @@ const fetchFurtherSearchData = () => {
       let newOffsetCalc;
       let oldOffsetCalc = countFetchedMatches.value;
       let fetchNextMatching = false;
-      const offset = {};
+      const offset: SearchOptions["searchOffset"] = {};
       for (const match of searchOptions.value.searchMatching.flat()) {
         if (Object.keys(searchDataStats.value.matching).includes(match)) {
-          const matchCount = searchDataStats.value.matching[match];
+          const matchCount = searchDataStats.value.matching[match as Matching];
           if (fetchNextMatching) {
-            offset[match] = 0;
+            offset[match as Matching] = 0;
           }
           if (oldOffsetCalc < 0) {
             break;
           }
           newOffsetCalc = oldOffsetCalc - matchCount;
           if (newOffsetCalc < 0) {
-            offset[match] = oldOffsetCalc;
+            offset[match as Matching] = oldOffsetCalc;
           }
           const nextfetchCalc = matchCount - oldOffsetCalc;
           if (
@@ -104,7 +106,7 @@ const fetchFurtherSearchData = () => {
       const fetchTime = Date.now();
       searchFetchLatest.value = fetchTime;
 
-      fetchSearchData(
+      useFetchSearchData(
         newOptions,
         "further",
         Object.keys(offset)

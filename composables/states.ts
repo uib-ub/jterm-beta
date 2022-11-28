@@ -1,3 +1,5 @@
+import { LabelPredicate, LangCode, Matching, MatchingNested } from "~~/utils/vars";
+
 export interface SearchDataEntry {
   predicate: string;
   label: string;
@@ -10,10 +12,10 @@ export interface SearchDataEntry {
 }
 
 export interface SearchDataStats {
-  lang: { [key: string]: number };
-  samling: { [key: string]: number };
-  predicate: { [key: string]: number };
-  matching: { [key: string]: number };
+  lang: { [key in LangCode]: number } | {};
+  samling: { [key: string]: number } | {};
+  predicate: { [key in LabelPredicate]: number } | {};
+  matching: { [key in Matching]: number } | {};
 }
 
 export interface SearchOptions {
@@ -21,9 +23,9 @@ export interface SearchOptions {
   searchBase: string | string[];
   searchLanguage: string | string[];
   searchTranslate: string;
-  searchMatching: any[];
+  searchMatching: MatchingNested[];
   searchLimit: number;
-  searchOffset: number | { [key: string]: number };
+  searchOffset?: { [key in Matching]: number } | number;
 }
 
 export const useSearchOptions = () =>
@@ -57,6 +59,7 @@ export const useSearchDataPending = () =>
     aggregate: false,
     entries: false,
   }));
+
 export const useSearchDataCount = () => useState("searchDataCount", () => {});
 export const useSearchDataStats = () =>
   useState<SearchDataStats>("searchDataStats", () => ({
@@ -65,6 +68,13 @@ export const useSearchDataStats = () =>
     predicate: {},
     matching: {},
   }));
+
+export interface SearchFilterData {
+  lang: LangCode[];
+  samling: string[];
+  predicate: LabelPredicate[];
+  matching: Matching[];
+}
 export const useSearchFilterData = () =>
   useState<{ [key: string]: string[] }>("searchFilterData", () => ({
     lang: [],

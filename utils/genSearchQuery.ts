@@ -1,4 +1,5 @@
 import { SearchOptions } from "../composables/states";
+import { QueryType } from "../utils/vars";
 
 const htmlHighlight = {
   open: "<span class='searchHighlight'>",
@@ -147,7 +148,7 @@ function getLanguageWhere(
 
 export function genSearchQuery(
   searchOptions: SearchOptions,
-  queryType: string,
+  queryType: QueryType,
   matching: string[]
 ): string {
   const termData = getTermData(searchOptions.searchTerm, htmlHighlight);
@@ -310,7 +311,7 @@ export function genSearchQuery(
     if (queryType == "count" && matching.length == 1) {
       return subquery[queryType] + "\n        UNION {}";
     } else {
-      return subquery[queryType];
+      return subquery[queryType as QueryType];
     }
   };
 

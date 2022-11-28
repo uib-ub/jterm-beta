@@ -1,4 +1,8 @@
-import { SearchDataEntry, SearchDataStats, SearchOptions } from "./states";
+import {
+  SearchDataEntry,
+  SearchDataStats,
+  SearchOptions,
+} from "./states";
 
 export async function fetchSearchDataMatching(
   searchOptions: SearchOptions,
@@ -25,7 +29,7 @@ export async function fetchSearchDataMatching(
 async function fetchSearchDataAggregate(
   searchOptions: SearchOptions,
   matching: string[],
-  type: string,
+  type: FetchType,
   currentFetch: number
 ) {
   const searchDataStats = useSearchDataStats();
@@ -54,11 +58,11 @@ async function fetchSearchDataAggregate(
   }
 }
 
-type FetchTypes = "initial" | "filter" | "further";
+type FetchType = "initial" | "filter" | "further";
 
 export async function useFetchSearchData(
   searchOptions: SearchOptions,
-  fetchType: FetchTypes,
+  fetchType: FetchType,
   matching?: string[]
 ) {
   const searchData = useSearchData();

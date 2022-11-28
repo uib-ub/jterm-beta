@@ -88,7 +88,7 @@
 </template>
 
 <script setup lang="ts">
-import { SearchDataEntry, SearchDataStats } from "~~/composables/states";
+import { SearchOptions } from "~~/composables/states";
 
 const searchData = useSearchData();
 const searchDataStats = useSearchDataStats();
@@ -140,7 +140,7 @@ watch(
     if (searchFetchInitial.value) {
       searchFetchInitial.value = false;
     } else {
-      const newOptions = {
+      const newOptions: SearchOptions = {
         searchTerm: searchOptions.value.searchTerm,
         searchBase:
           searchFilterData.value.samling.length > 0
@@ -150,6 +150,7 @@ watch(
           searchFilterData.value.lang.length > 0
             ? searchFilterData.value.lang
             : searchOptions.value.searchLanguage,
+        searchTranslate: searchOptions.value.searchTranslate,
         searchMatching:
           searchFilterData.value.matching.length > 0
             ? searchFilterData.value.matching
@@ -163,13 +164,14 @@ watch(
   { deep: true }
 );
 
+/*
 function filterData(match: SearchDataEntry) {
   return Object.entries(searchFilterData.value).every(
     ([filter, filterValue]) => {
       if (!filterValue.length) {
         return true;
       } else {
-        const matchValue = match[filter];
+        const matchValue = match[filter as keyof SearchFilterData];
         if (Array.isArray(matchValue)) {
           if (matchValue.every((v: string) => !filterValue.includes(v))) {
             return false;
@@ -187,7 +189,9 @@ function filterData(match: SearchDataEntry) {
     }
   );
 }
+*/
 
+/*
 function calcStatsSearchData(
   data: SearchDataEntry[],
   stats: SearchDataStats,
@@ -218,6 +222,7 @@ function calcStatsSearchData(
   });
   return newStats;
 }
+*/
 </script>
 
 <style>
