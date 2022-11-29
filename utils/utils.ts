@@ -4,8 +4,8 @@ import { SearchDataEntry } from "~~/composables/states";
  * Returns unique intersection of two Arrays, sorted by order of first.
  *
  * @remarks Uses Set.prototype.has() to check for existence.
- * @param a Array a
- * @param b Array b
+ * @param a - Array a
+ * @param b - Array b
  */
 export function intersectUnique(a: any[], b: any[]): any[] {
   var setA = new Set(a);
@@ -21,7 +21,7 @@ export function sum(numbers: number[]): number {
 /**
  * Returns real count of searchentries based on the length of their language properties if present.
  *
- * @param matches list of searchentries that contain languages as a list: {lang: ["nb", "nn"]}
+ * @param matches - list of searchentries that contain languages as a list: {lang: ["nb", "nn"]}
  */
 export function countSearchEntries(matches: SearchDataEntry[]): number {
   return sum(

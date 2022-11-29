@@ -3,7 +3,7 @@ import { SearchDataEntry } from "~~/composables/states";
 /**
  * Returns object where keys are "@id"s from objects
  *
- * @param graph List of objects to identity
+ * @param graph - List of objects to identity
  * @returns identified `graph`
  */
 export function identifyData(graph: Array<any>) {
@@ -16,7 +16,7 @@ export function identifyData(graph: Array<any>) {
 /**
  * Get set of language codes in labels of concept
  *
- * @param data Data that represents a concept with labels with language code
+ * @param data - Data that represents a concept with labels with language code
  * @returns Set of present language codes
  */
 export function getConceptLanguages(data: any): string[] {
@@ -33,9 +33,9 @@ export function getConceptLanguages(data: any): string[] {
 /**
  * Returns dataset where objects identified by uri are transformed to make labels accessible by lc.
  *
- * @param data Dataset that houses concept data
- * @param conceptUris Key for object that represents concept
- * @param labeltypes List of label types to identify with language code
+ * @param data - Dataset that houses concept data
+ * @param conceptUris - Key for object that represents concept
+ * @param labeltypes - List of label types to identify with language code
  * @returns Dataset where labels with same languagecode are grouped in object with lc as key
  */
 export function idLabelsWithLang(
@@ -56,9 +56,9 @@ export function idLabelsWithLang(
 /**
  * Returns new object with language as key for labels list.
  *
- * @param data Dataset that represents concepts and labels
- * @param conceptUri key for object that represents concept
- * @param labelType label type to update
+ * @param data - Dataset that represents concepts and labels
+ * @param conceptUri - key for object that represents concept
+ * @param labelType - label type to update
  * @returns object for labeltype with list for each language: e.g. {nb: [label1, label2]}
  */
 export function updateLabel(data: any, conceptUri: string, labelType: string) {
@@ -81,7 +81,7 @@ export function updateLabel(data: any, conceptUri: string, labelType: string) {
 /**
  * Get max length for object with list as value.
  *
- * @param data Object to be evluated. e.g. {key: [1], key2: ["a", "n"]}
+ * @param data - Object to be evluated. e.g. {key: [1], key2: ["a", "n"]}
  */
 export function getMaxNumberOfInstances(data: {
   [key: string]: any[];
@@ -103,7 +103,7 @@ export function getMaxNumberOfInstances(data: {
 /**
  * Return preprocessed search result
  *
- * @param binding Object that represents one match
+ * @param binding - Object that represents one match
  */
 export function processBinding(binding: {
   [key: string]: any;
