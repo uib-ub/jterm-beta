@@ -5,6 +5,6 @@
       <SearchBar />
       <slot />
     </main>
-    <Footer />
+    <FooterTP />
   </div>
 </template>
