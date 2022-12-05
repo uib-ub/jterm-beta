@@ -13,10 +13,10 @@
 
 <script setup lang="ts">
 const props = defineProps({
-  data: { type: String },
+  data: { type: String, default: "" },
   thClass: { type: String, default: "col" },
   label: { type: String, required: true },
-  to: String,
+  to: { type: String, default: "" },
   nuxtlink: Boolean,
 });
 </script>
