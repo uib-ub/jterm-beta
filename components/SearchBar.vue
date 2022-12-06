@@ -7,13 +7,13 @@
         <div class="input-group tp-search">
           <input
             id="searchfield"
+            v-model="searchterm"
             type="text"
             class="form-control"
-            v-model="searchterm"
             :placeholder="$t('searchBar.search')"
+            aria-label="searchfield"
             @keypress.enter="execSearch"
             @focus="$event.target.select()"
-            aria-label="searchfield"
           />
           <div
             style="
@@ -26,7 +26,7 @@
               type="button"
               class="btn-close m-2"
               aria-label="Clear searchfield"
-              v-on:click="clearText"
+              @click="clearText"
             ></button>
           </div>
 
@@ -43,35 +43,47 @@
     </div>
     <div class="d-flex">
       <select
-        class="form-select tp-searchbar-dd"
         v-model="searchOptions.searchLanguage"
+        class="form-select tp-searchbar-dd"
         aria-label="search language"
       >
         <option value="all">
           {{ $t("global.lang.all") }}
         </option>
-        <option v-for="lc in languageOrder[$i18n.locale]" :value="lc">
+        <option
+          v-for="lc in languageOrder[$i18n.locale]"
+          :key="'searchlang_' + lc"
+          :value="lc"
+        >
           {{ $t("global.lang." + lc) }}
         </option>
       </select>
       <select
-        class="form-select tp-searchbar-dd"
         v-model="searchOptions.searchTranslate"
+        class="form-select tp-searchbar-dd"
         aria-label="translation language"
       >
         <option value="none">
           {{ $t("global.lang.none") }}
         </option>
-        <option v-for="lc in languageOrder[$i18n.locale]" :value="lc">
+        <option
+          v-for="lc in languageOrder[$i18n.locale]"
+          :key="'translationlang_' + lc"
+          :value="lc"
+        >
           {{ $t("global.lang." + lc) }}
         </option>
       </select>
       <select
-        class="form-select tp-searchbar-dd"
         v-model="searchOptions.searchBase"
+        class="form-select tp-searchbar-dd"
         aria-label="search termbase"
       >
-        <option v-for="samling in samlingOrder" :value="samling">
+        <option
+          v-for="samling in samlingOrder"
+          :key="'searchsamling_' + samling"
+          :value="samling"
+        >
           {{ $t("global.samling." + samling) }}
         </option>
       </select>
@@ -92,7 +104,7 @@ const clearText = () => {
 
 function execSearch() {
   searchData.value = [];
-  let myparams = route.query;
+  const myparams = route.query;
   searchOptions.value.searchTerm = searchterm.value;
   myparams.q = searchOptions.value.searchTerm;
   router.push({
