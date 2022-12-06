@@ -1,8 +1,13 @@
 <template>
   <div class="container row px-0 py-3">
+    <h1 class="visually-hidden">{{$t("id.topheading")}}</h1>
     <div v-if="searchData.length > 0" class="d-md-none d-lg-block col-3">
-      <div class="container pb-3">
-        <NuxtLink to="/search">{{ $t("id.tilbake") }}</NuxtLink>
+      <div class="container p-0">
+        <div class="container pt-2 pb-2 px-2">
+          <NuxtLink to="/search">{{ $t("id.tilbake") }}</NuxtLink>
+        </div>
+
+        <h2 class="px-1">{{ $t("searchFilter.results-heading") }}</h2>
       </div>
       <div style="height: calc(100vh * 0.9 - 220px); overflow: auto">
         <div ref="scrollComponent" class="list-group">
@@ -15,7 +20,7 @@
       </div>
     </div>
     <div class="col px-3">
-      <div class="form-check">
+      <div class="form-check container py-2">
         <input
           id="viewToggle"
           v-model="conceptViewToggle"
@@ -24,10 +29,10 @@
         />
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
-      <h1>{{ data[uri]?.label }}</h1>
+      <h2>{{ data[uri]?.label }}</h2>
 
       <div v-if="conceptViewToggle">
-        <h2>{{ $t("id.languagedata") }}</h2>
+        <h3>{{ $t("id.languagedata") }}</h3>
         <table class="table table-sm table-hover table-borderless">
           <!--Header-->
           <thead>
@@ -99,7 +104,7 @@
         v-else
         :key="'disp_' + lang"
       >
-        <h2>{{ $t("global.lang." + lang) }}</h2>
+        <h3>{{ $t("global.lang." + lang) }}</h3>
         <table class="table table-sm table-hover table-borderless">
           <tbody>
             <!--Anbefalt term-->
@@ -130,7 +135,7 @@
         </table>
       </div>
 
-      <h2 v-if="data[uri]">{{ $t("id.general") }}</h2>
+      <h3 v-if="data[uri]">{{ $t("id.general") }}</h3>
       <table class="table table-sm table-hover table-borderless">
         <tbody>
           <!--Samling-->
