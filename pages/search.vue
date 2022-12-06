@@ -4,6 +4,7 @@
       <Title> {{ $t("search.title") }} | {{ $t("index.title") }} </Title>
     </Head>
     <SearchFilter />
+    <h2 class="px-1">{{ $t("searchFilter.results-heading") }}</h2>
     <div ref="scrollComponent" class="list-group">
       <SearchResultEntry
         v-for="entry in searchData"
