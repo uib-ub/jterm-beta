@@ -18,8 +18,28 @@ export type LangCode =
   | "sv"
   | "ti";
 
+export type Samling =
+  | "MRT"
+  | "MRT2"
+  | "UHR"
+  | "ARTSDB"
+  | "EVERTEBRATER"
+  | "NHH"
+  | "NOJU"
+  | "NOT"
+  | "RTT"
+  | "SDIR"
+  | "TOLKING"
+  | "ROMFYS"
+  | "TUNDUIA"
+  | "KLIMA"
+  | "ASTRONOMI"
+  | "BIOLOGI"
+  | "LINGVISTIKK"
+  | "CMBIOLOGI"
+  | "KJEMI";
+
 export type LabelPredicate = "prefLabel" | "altLabel" | "hiddenLabel";
-export type MatchingNested = Matching | Matching[];
 export type Matching =
   | "full-cs"
   | "full-ci"
@@ -27,6 +47,12 @@ export type Matching =
   | "endsWith-ci"
   | "subWord-ci"
   | "contains-ci";
+export type MatchingNested = Matching | Matching[];
+
+export type SearchQueryResponse = {
+  head: { vars: string[] };
+  results: { bindings: any[] };
+};
 
 export const predicateOrder: LabelPredicate[] = [
   "prefLabel",
