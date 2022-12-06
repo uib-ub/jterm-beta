@@ -1,5 +1,5 @@
 import { SearchOptions } from "../composables/states";
-import { QueryType } from "../utils/vars";
+import { Matching, QueryType, Samling } from "../utils/vars";
 
 const htmlHighlight = {
   open: "<span class='searchHighlight'>",
@@ -33,10 +33,10 @@ export function getTermData(
   highlight: { [key: string]: string }
 ) {
   return {
-    term: term,
+    term,
     sanitized: () =>
       term
-        .replace(/\-|\(|\)|\<|\>|\[|\]|\/|,\s*$|\*|\~|\_/g, " ")
+        .replace(/-|\(|\)|<|>|\[|\]|\/|,\s*$|\*|~|_/g, " ")
         .replace(/\s\s+/g, " ")
         .trim(),
     starred: function () {
@@ -81,36 +81,32 @@ export function getGraphData(graphKey: string | string[]): string[] {
       const bases = graphKey
         .map(
           (key) =>
-            `FROM NAMED <http://spraksamlingane.no/terminlogi/named/${samlingMapping[key]}>`
+            `FROM NAMED <http://spraksamlingane.no/terminlogi/named/${samlingMapping[key as Samling]}>`
         )
         .join("\n");
       return [bases, "?G"];
     } else {
       return ["", uniongraph];
     }
-  } else if (graphKey != "all") {
+  } else if (graphKey !== "all") {
     return [
       "",
-      `<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey]}>`,
+      `<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey as Samling]}>`,
     ];
+  } else if (graphKey) {
+    return ["", uniongraph];
   } else {
-    if (graphKey) {
-      return ["", uniongraph];
-    } else {
-      return ["", uniongraph];
-    }
+    return ["", uniongraph];
   }
 }
 
 export function getLanguageData(language: string | string[]): string[] {
   if (Array.isArray(language)) {
     return language;
+  } else if (language !== "all") {
+    return [language];
   } else {
-    if (language != "all") {
-      return [language];
-    } else {
-      return [""];
-    }
+    return [""];
   }
 }
 
@@ -121,11 +117,11 @@ function getLanguageWhere(
   lang: string
 ): string {
   let queryType = queryTypeIn;
-  if (queryType == "aggregate") {
+  if (queryType === "aggregate") {
     queryType = "count";
   }
 
-  if (match == "all") {
+  if (match === "all") {
     if (!lang) {
       return subqueries(queryType, match).where.replace("{languageFilter}", "");
     } else {
@@ -134,15 +130,13 @@ function getLanguageWhere(
         `FILTER ( langmatches(lang(?lit), "${lang}") )`
       );
     }
+  } else if (!lang) {
+    return subqueries(queryType, match).where.replace("{language}", "");
   } else {
-    if (!lang) {
-      return subqueries(queryType, match).where.replace("{language}", "");
-    } else {
-      return subqueries(queryType, match).where.replace(
-        "{language}",
-        `"lang:${lang}"`
-      );
-    }
+    return subqueries(queryType, match).where.replace(
+      "{language}",
+      `"lang:${lang}"`
+    );
   }
 }
 
@@ -157,7 +151,7 @@ export function genSearchQuery(
   const aggregateCategories = ["?lang", "?samling", "?predicate", "?matching"];
 
   const subqueries = (
-    queryType: string,
+    queryType: QueryType,
     subEntry: string,
     aggregateMatch?: string
   ) => {
@@ -288,7 +282,7 @@ export function genSearchQuery(
         }
         ORDER BY DESC(?score) lcase(?literal)
         LIMIT ${searchOptions.searchLimit}
-        OFFSET ${searchOptions.searchOffset[match] || 0}
+        OFFSET ${searchOptions.searchOffset?.[match as Matching] || 0}
       }`,
       count: `
       {
@@ -308,7 +302,7 @@ export function genSearchQuery(
               }`,
     };
 
-    if (queryType == "count" && matching.length == 1) {
+    if (queryType === "count" && matching.length === 1) {
       return subquery[queryType] + "\n        UNION {}";
     } else {
       return subquery[queryType as QueryType];
@@ -337,7 +331,7 @@ export function genSearchQuery(
     const subqueryArray: string[] = [];
     for (const match of matching) {
       const whereArray: string[] = [];
-      if (queryType == "aggregate" && matching.length == 7) {
+      if (queryType === "aggregate" && matching.length === 7) {
         language.forEach((lang) => {
           whereArray.push(
             getLanguageWhere(subqueries, queryType, "allPatterns", lang)
@@ -374,7 +368,7 @@ export function genSearchQuery(
     }
     const subquery = subqueryArray.join("\n        UNION");
 
-    if (queryType == "aggregate") {
+    if (queryType === "aggregate") {
       categoriesArray.push(categoryTemplate(category, subquery));
     } else {
       categoriesArray.push(subquery);
@@ -383,9 +377,10 @@ export function genSearchQuery(
   }
   const outerSubquery = categoriesArray.join("\n      UNION");
 
-  const translate = searchOptions.searchTranslate != "none" ? "?translate" : "";
+  const translate =
+    searchOptions.searchTranslate !== "none" ? "?translate" : "";
   const translateOptional =
-    searchOptions.searchTranslate != "none"
+    searchOptions.searchTranslate !== "none"
       ? `OPTIONAL { ?uri skosxl:prefLabel ?label2 .
     ?label2 skosxl:literalForm ?translate .
     FILTER ( lang(?translate) = "${searchOptions.searchTranslate}" ) }`
