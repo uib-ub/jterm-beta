@@ -1,6 +1,7 @@
 {
   "global": {
     "language": "Språk | Språk",
+    "termbase": "Termbase",
     "lang": {
       "none": "Ingen språk",
       "all": "Alle språk",
@@ -59,7 +60,14 @@
   },
   "navBar": { "about": "Om Termportalen", "config": "Inn­stillingar" },
   "searchBar": { "search": "Søk" },
-  "searchFilter": { "results": "resultater", "filter": "Filter" },
+  "searchFilter": {
+    "searchresults": "Søkeresultater",
+    "results": "resultater",
+    "results-heading": "Resultater",
+    "filter": "Filter",
+    "termproperty": "Egenskap",
+    "matching": "Matchende"
+  },
 
   "samling": {
     "organisation": "Organisajon",
@@ -71,6 +79,7 @@
     "startLang": "Opprinnelig språk"
   },
   "id": {
+    "topheading": "Konseptvisning",
     "tableview": "Tabellvisning",
     "languagedata": "Språkdata",
     "prefLabel": "Anbefalt term",
@@ -84,8 +93,13 @@
     "note": "Merknad",
     "tilbake": "Tilbake til søkeresultater"
   },
-  "index": {"title": "Termportalen"},
+  "index": { "title": "Termportalen" },
   "search": { "title": "Søkeresultater" },
   "about": { "title": "Om Termportalen" },
-  "config": { "title": "Inn­stillingar" }
+  "config": {
+    "title": "Inn­stillingar",
+    "global": "Global",
+    "conceptview": "Konseptvisning",
+    "dataDispLang": "Data viser språk"
+  }
 }
