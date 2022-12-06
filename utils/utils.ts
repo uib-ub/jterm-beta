@@ -8,9 +8,9 @@ import { SearchDataEntry } from "~~/composables/states";
  * @param b - Array b
  */
 export function intersectUnique(a: any[], b: any[]): any[] {
-  var setA = new Set(a);
-  var setB = new Set(b);
-  var intersection = new Set([...setA].filter((x) => setB.has(x)));
+  const setA = new Set(a);
+  const setB = new Set(b);
+  const intersection = new Set([...setA].filter((x) => setB.has(x)));
   return Array.from(intersection);
 }
 
@@ -21,7 +21,7 @@ export function sum(numbers: number[]): number {
 /**
  * Returns real count of searchentries based on the length of their language properties if present.
  *
- * @param matches - list of searchentries that contain languages as a list: {lang: ["nb", "nn"]}
+ * @param matches - list of searchentries that contain languages as a list
  */
 export function countSearchEntries(matches: SearchDataEntry[]): number {
   return sum(
