@@ -1,4 +1,4 @@
-import jsonld, { ContextDefinition } from "jsonld";
+import { ContextDefinition, compact } from "jsonld";
 
 const context: ContextDefinition = {
   "@base": "http://test.wiki.terminologi.no/index.php/Special:URIResolver/",
@@ -68,8 +68,6 @@ const context: ContextDefinition = {
 
 export async function compactData(data: any) {
   try {
-    return await jsonld.compact(data, context);
-  } catch (e) {
-    console.log(e);
-  }
+    return await compact(data, context);
+  } catch {}
 }

@@ -1,4 +1,10 @@
-import { LabelPredicate, LangCode, Matching, MatchingNested } from "~~/utils/vars";
+import {
+  LabelPredicate,
+  LangCode,
+  Samling,
+  Matching,
+  MatchingNested,
+} from "~~/utils/vars";
 
 export interface SearchDataEntry {
   predicate: string;
@@ -12,20 +18,20 @@ export interface SearchDataEntry {
 }
 
 export interface SearchDataStats {
-  lang: { [key in LangCode]: number } | {};
-  samling: { [key: string]: number } | {};
-  predicate: { [key in LabelPredicate]: number } | {};
-  matching: { [key in Matching]: number } | {};
+  lang?: { [key in LangCode]: number };
+  samling?: { [key in Samling]: number };
+  predicate?: { [key in LabelPredicate]: number };
+  matching?: { [key in Matching]: number };
 }
 
 export interface SearchOptions {
   searchTerm: string;
   searchBase: string | string[];
-  searchLanguage: string | string[];
-  searchTranslate: string;
-  searchMatching: MatchingNested[];
+  searchLanguage: LangCode | "all" | LangCode[];
+  searchTranslate: LangCode | "none";
+  searchMatching: Matching | MatchingNested[];
   searchLimit: number;
-  searchOffset?: { [key in Matching]: number } | number;
+  searchOffset?: { [key in Matching]: number };
 }
 
 export const useSearchOptions = () =>
@@ -42,7 +48,7 @@ export const useSearchOptions = () =>
       "contains-ci",
     ],
     searchLimit: 30,
-    searchOffset: 0,
+    searchOffset: undefined,
   }));
 
 export const useSearchterm = () => useState<string>("searchterm", () => "");
@@ -62,12 +68,7 @@ export const useSearchDataPending = () =>
 
 export const useSearchDataCount = () => useState("searchDataCount", () => {});
 export const useSearchDataStats = () =>
-  useState<SearchDataStats>("searchDataStats", () => ({
-    lang: {},
-    samling: {},
-    predicate: {},
-    matching: {},
-  }));
+  useState<SearchDataStats>("searchDataStats", () => ({}));
 
 export interface SearchFilterData {
   lang: LangCode[];
@@ -76,7 +77,7 @@ export interface SearchFilterData {
   matching: Matching[];
 }
 export const useSearchFilterData = () =>
-  useState<{ [key: string]: string[] }>("searchFilterData", () => ({
+  useState<SearchFilterData>("searchFilterData", () => ({
     lang: [],
     samling: [],
     predicate: [],

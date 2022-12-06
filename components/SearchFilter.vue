@@ -29,7 +29,7 @@
         Filter
       </button>
     </div>
-    <div class="collapse mt-2" id="filterCard">
+    <div id="filterCard" class="collapse mt-2">
       <div class="card card-body">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div class="col">
@@ -37,9 +37,10 @@
             <div class="form-check">
               <FilterCheckbox
                 v-for="language in intersectUnique(
-                  languageOrder[$i18n.locale],
-                  Object.keys(searchDataStats.lang)
+                  languageOrder[$i18n.locale as LocalLangCode],
+                  Object.keys(searchDataStats.lang || {})
                 )"
+                :key="language"
                 ftype="lang"
                 :fvalue="language"
               />
@@ -49,7 +50,10 @@
             Samling
             <div class="form-check">
               <FilterCheckbox
-                v-for="samling in Object.keys(searchDataStats.samling).sort()"
+                v-for="samling in Object.keys(
+                  searchDataStats.samling || {}
+                ).sort()"
+                :key="samling"
                 ftype="samling"
                 :fvalue="samling"
               />
@@ -61,8 +65,9 @@
               <FilterCheckbox
                 v-for="predicate in intersectUnique(
                   predicateOrder,
-                  Object.keys(searchDataStats.predicate)
+                  Object.keys(searchDataStats.predicate || {})
                 )"
+                :key="predicate"
                 ftype="predicate"
                 :fvalue="predicate"
               />
@@ -74,8 +79,9 @@
               <FilterCheckbox
                 v-for="matching in intersectUnique(
                   matchingOrder,
-                  Object.keys(searchDataStats.matching)
+                  Object.keys(searchDataStats.matching || {})
                 )"
+                :key="matching"
                 ftype="matching"
                 :fvalue="matching"
               />
@@ -89,6 +95,7 @@
 
 <script setup lang="ts">
 import { SearchOptions } from "~~/composables/states";
+import { LocalLangCode } from "~~/utils/vars";
 
 const searchData = useSearchData();
 const searchDataStats = useSearchDataStats();
@@ -100,15 +107,13 @@ const pending = computed(() => {
   return !Object.values(searchDataPending.value).every((el) => !el);
 });
 const count = computed(() => {
-  if (searchDataPending.value["aggregate"]) {
+  if (searchDataPending.value.aggregate) {
     return countSearchEntries(searchData.value);
   }
-  {
-    try {
-      return sum(Object.values(searchDataStats.value?.["matching"])) || 0;
-    } catch (e) {
-      return 0;
-    }
+  try {
+    return sum(Object.values(searchDataStats.value?.matching || []));
+  } catch (e) {
+    return 0;
   }
 });
 

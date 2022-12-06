@@ -4,10 +4,11 @@
       <Title> {{ $t("search.title") }} | {{ $t("index.title") }} </Title>
     </Head>
     <SearchFilter />
-    <div class="list-group" ref="scrollComponent">
+    <div ref="scrollComponent" class="list-group">
       <SearchResultEntry
         v-for="entry in searchData"
-        :entryData="entry"
+        :key="entry.link"
+        :entry-data="entry"
       />
     </div>
     <div class="d-flex justify-content-center p-2">
@@ -24,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { Matching } from "../utils/vars";
+import { Matching, MatchingNested } from "../utils/vars";
 import { SearchOptions } from "../composables/states";
 const searchData = useSearchData();
 const searchFilterData = useSearchFilterData();
@@ -35,7 +36,7 @@ const countFetchedMatches = computed(() => {
 const searchOptions = useSearchOptions();
 const count = computed(() => {
   try {
-    return sum(Object.values(searchDataStats.value?.["matching"])) || 0;
+    return sum(Object.values(searchDataStats.value?.matching || [])) || 0;
   } catch (e) {
     return 0;
   }
@@ -43,7 +44,7 @@ const count = computed(() => {
 
 const searchDataPending = useSearchDataPending();
 const pending = computed(() => {
-  return !Object.values(searchDataPending.value).every((el) => !el)
+  return !Object.values(searchDataPending.value).every((el) => !el);
 });
 
 const scrollComponent = ref(null);
@@ -57,17 +58,25 @@ onUnmounted(() => {
 
 const fetchFurtherSearchData = () => {
   const searchFetchLatest = useSearchFetchLatest();
-  let element = scrollComponent.value;
+  const element = scrollComponent.value;
   if (count.value > countFetchedMatches.value && !pending.value) {
     if (element.getBoundingClientRect().bottom * 0.75 < window.innerHeight) {
-
       let newOffsetCalc;
       let oldOffsetCalc = countFetchedMatches.value;
       let fetchNextMatching = false;
       const offset: SearchOptions["searchOffset"] = {};
-      for (const match of searchOptions.value.searchMatching.flat()) {
-        if (Object.keys(searchDataStats.value.matching).includes(match)) {
-          const matchCount = searchDataStats.value.matching[match as Matching];
+
+      let searchMatching: Matching[] | MatchingNested[];
+      if (typeof searchOptions.value.searchMatching === "string") {
+        searchMatching = [searchOptions.value.searchMatching];
+      } else {
+        searchMatching = searchOptions.value.searchMatching;
+      }
+
+      for (const match of searchMatching.flat()) {
+        if (Object.keys(searchDataStats.value.matching || []).includes(match)) {
+          const matchCount =
+            searchDataStats.value.matching?.[match as Matching] || 0;
           if (fetchNextMatching) {
             offset[match as Matching] = 0;
           }
@@ -106,11 +115,7 @@ const fetchFurtherSearchData = () => {
       const fetchTime = Date.now();
       searchFetchLatest.value = fetchTime;
 
-      useFetchSearchData(
-        newOptions,
-        "further",
-        Object.keys(offset)
-      );
+      useFetchSearchData(newOptions, "further", Object.keys(offset));
       /*
       fetchSearchDataMatching(
         newOptions,

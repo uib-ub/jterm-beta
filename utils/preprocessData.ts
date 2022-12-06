@@ -1,7 +1,7 @@
 import { SearchDataEntry } from "~~/composables/states";
 
 /**
- * Returns object where keys are "@id"s from objects
+ * Returns object where keys are "\@id"s from objects
  *
  * @param graph - List of objects to identity
  * @returns identified `graph`
@@ -59,7 +59,7 @@ export function idLabelsWithLang(
  * @param data - Dataset that represents concepts and labels
  * @param conceptUri - key for object that represents concept
  * @param labelType - label type to update
- * @returns object for labeltype with list for each language: e.g. {nb: [label1, label2]}
+ * @returns object for labeltype with list for each language
  */
 export function updateLabel(data: any, conceptUri: string, labelType: string) {
   const newLabels: { [key: string]: Array<string> } = {};
@@ -81,7 +81,7 @@ export function updateLabel(data: any, conceptUri: string, labelType: string) {
 /**
  * Get max length for object with list as value.
  *
- * @param data - Object to be evluated. e.g. {key: [1], key2: ["a", "n"]}
+ * @param data - Object to be evluated.
  */
 export function getMaxNumberOfInstances(data: {
   [key: string]: any[];
@@ -114,9 +114,9 @@ export function processBinding(binding: {
     ""
   );
   return {
-    predicate: predicate,
+    predicate,
     label: binding.literal.value,
-    link: link,
+    link,
     lang: binding.lang.value.split(","),
     samling: binding.samling.value,
     matching: binding.matching.value,
@@ -139,7 +139,6 @@ export function sumAggregateData(
         obj[category][entry[0]] = obj[category][entry[0]] + entry[1];
       } else {
         obj[category][entry[0]] = entry[1];
-        console.log(obj);
       }
     }
     return obj;

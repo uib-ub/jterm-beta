@@ -10,7 +10,10 @@
       <div class="row row-cols-1 row-cols-md-2">
         <!--Description-->
         <div class="col">
-          <p v-for="p in uriData?.description?.['@value'].split('\n\n')">
+          <p
+            v-for="p in uriData?.description?.['@value'].split('\n\n')"
+            :key="p"
+          >
             {{ p }}
           </p>
         </div>
@@ -22,14 +25,14 @@
               <DataRow
                 v-if="orgData?.label?.['@value']"
                 :data="orgData.label['@value']"
-                thClass="col-3"
+                th-class="col-3"
                 :label="$t('samling.organisation')"
               />
               <!--Organisation number-->
               <DataRow
                 v-if="orgData?.identifier"
                 :data="orgData.identifier"
-                thClass="col-3"
+                th-class="col-3"
                 :label="$t('samling.orgnr')"
               />
 
@@ -37,7 +40,7 @@
               <DataRow
                 v-if="contactData?.hasEmail"
                 :data="contactData.hasEmail.split(':')[1]"
-                thClass="col-3"
+                th-class="col-3"
                 :label="$t('samling.email')"
                 :to="contactData.hasEmail"
               />
@@ -45,21 +48,21 @@
               <DataRow
                 v-if="contactData?.hasTelephone"
                 :data="contactData?.hasTelephone"
-                thClass="col-3"
+                th-class="col-3"
                 :label="$t('samling.telephone')"
               />
               <!--Languages-->
               <DataRow
                 v-if="uriData?.language"
                 :data="intersectUnique(languageOrder[$i18n.locale as keyof typeof languageOrder], uriData.language).map((lang: string) => $t('global.lang.' + lang)) .join(', ')"
-                thClass="col-3"
+                th-class="col-3"
                 :label="$t('global.language', 1)"
               />
               <!--Starting languages-->
               <DataRow
                 v-if="uriData?.opprinneligSpraak"
                 :data="$t('global.lang.' + uriData.opprinneligSpraak)"
-                thClass="col-3"
+                th-class="col-3"
                 :label="$t('samling.startLang')"
               />
             </tbody>

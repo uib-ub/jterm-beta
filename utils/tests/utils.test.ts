@@ -1,5 +1,12 @@
 import { describe, test, expect } from "vitest";
-import { intersectUnique } from "../utils";
+import { intersectUnique, sum, } from "../utils";
+
+describe("sum" , () => {
+test("empty list", () => {
+  expect(sum([])).toBe(0)
+})
+
+})
 
 describe("intersectUnique", () => {
   test("order any[]", () => {
