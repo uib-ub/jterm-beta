@@ -1,6 +1,7 @@
 {
   "global": {
     "language": "Language | Languages",
+    "termbase": "Termbase",
     "lang": {
       "none": "No translation language",
       "all": "All languages",
@@ -60,7 +61,14 @@
 
   "navBar": { "about": "About", "config": "Settings" },
   "searchBar": { "search": "Search" },
-  "searchFilter": { "results": "results", "filter": "Filter" },
+  "searchFilter": {
+    "searchresults": "Search results",
+    "results": "results",
+    "results-heading": "Results",
+    "filter": "Filter",
+    "termproperty": "Termproperty",
+    "matching": "Matching"
+  },
 
   "samling": {
     "organisation": "Organisation",
@@ -71,6 +79,7 @@
     "startLang": "Starting language"
   },
   "id": {
+    "topheading": "Concept view",
     "tableview": "Table view",
     "languagedata": "Language data",
     "prefLabel": "Preferred label",
@@ -84,8 +93,13 @@
     "note": "Note",
     "tilbake": "Back to search results"
   },
-  "index": {"title": "Termportalen"},
+  "index": { "title": "Termportalen" },
   "search": { "title": "Search Results" },
   "about": { "title": "About Termportalen" },
-  "config": { "title": "Settings", "dataDispLang": "Data display languages" }
+  "config": {
+    "title": "Settings",
+    "global": "Global",
+    "conceptview": "Conceot view",
+    "dataDispLang": "Data display languages"
+  }
 }
