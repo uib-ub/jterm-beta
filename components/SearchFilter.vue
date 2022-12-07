@@ -26,14 +26,15 @@
         aria-expanded="false"
         aria-controls="filterCard"
       >
-        Filter
+        {{ $t("searchFilter.filter") }}
       </button>
     </div>
     <div id="filterCard" class="collapse mt-2">
+      <h2>{{ $t("searchFilter.filter") }}</h2>
       <div class="card card-body">
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
           <div class="col">
-            Languages
+            <h3>{{ $t("global.language") }}</h3>
             <div class="form-check">
               <FilterCheckbox
                 v-for="language in intersectUnique(
@@ -47,7 +48,7 @@
             </div>
           </div>
           <div class="col">
-            Samling
+            <h3>{{ $t("global.termbase") }}</h3>
             <div class="form-check">
               <FilterCheckbox
                 v-for="samling in Object.keys(
@@ -60,7 +61,7 @@
             </div>
           </div>
           <div class="col">
-            Label [dummy]
+            <h3>{{ $t("searchFilter.termproperty") }}</h3>
             <div class="form-check">
               <FilterCheckbox
                 v-for="predicate in intersectUnique(
@@ -74,7 +75,7 @@
             </div>
           </div>
           <div class="col">
-            Match
+            <h3>{{ $t("searchFilter.matching") }}</h3>
             <div class="form-check">
               <FilterCheckbox
                 v-for="matching in intersectUnique(
