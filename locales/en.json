@@ -62,7 +62,6 @@
   "navBar": { "about": "About", "config": "Settings" },
   "searchBar": { "search": "Search" },
   "searchFilter": {
-    "searchresults": "Search results",
     "results": "results",
     "results-heading": "Results",
     "filter": "Filter",
