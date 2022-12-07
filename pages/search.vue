@@ -3,6 +3,7 @@
     <Head>
       <Title> {{ $t("search.title") }} | {{ $t("index.title") }} </Title>
     </Head>
+    <h1 class="visually-hidden">{{ $t("search.title") }}</h1>
     <SearchFilter />
     <h2 class="px-1">{{ $t("searchFilter.results-heading") }}</h2>
     <div ref="scrollComponent" class="list-group">
