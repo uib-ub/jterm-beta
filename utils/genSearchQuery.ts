@@ -248,13 +248,15 @@ export function genSearchQuery(
         },
       },
       aggregate: {
-        lang: `BIND ( lang(?lit) as ?prop ).`,
+        lang: `?uri ?predicate ?label
+              BIND ( lang(?lit) as ?prop ).`,
         samling: `?uri ?predicate ?label;
                     skosp:memberOf ?s.
                   BIND (replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?prop)`,
         predicate: `?uri ?p ?label;
                BIND (replace(str(?p), "http://www.w3.org/2008/05/skos-xl#", "") as ?prop)`,
-        matching: `BIND ("${aggregateMatch}" as ?prop)`,
+        matching: `?uri ?predicate ?label
+                  BIND ("${aggregateMatch}" as ?prop)`,
       },
     };
     return content[queryType][subEntry];
