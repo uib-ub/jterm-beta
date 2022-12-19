@@ -74,29 +74,16 @@ export function getTermData(
   };
 }
 
-export function getGraphData(graphKey: string | string[]): string[] {
-  const uniongraph = "<urn:x-arq:UnionGraph>";
-  if (Array.isArray(graphKey)) {
-    if (graphKey.length > 0) {
-      const bases = graphKey
-        .map(
-          (key) =>
-            `FROM NAMED <http://spraksamlingane.no/terminlogi/named/${samlingMapping[key as Samling]}>`
-        )
-        .join("\n");
-      return [bases, "?G"];
-    } else {
-      return ["", uniongraph];
-    }
-  } else if (graphKey !== "all") {
-    return [
-      "",
-      `<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey as Samling]}>`,
-    ];
-  } else if (graphKey) {
-    return ["", uniongraph];
+export function getGraphData(graphKey: string | string[]): string {
+  if (typeof graphKey === "string" && graphKey !== "all") {
+    return `FROM ns:${samlingMapping[graphKey as Samling]}`;
+  } else if (Array.isArray(graphKey) && graphKey.length > 0) {
+    const bases = graphKey
+      .map((key) => `FROM ns:${samlingMapping[key as Samling]}`)
+      .join("\n  ");
+    return bases;
   } else {
-    return ["", uniongraph];
+    return "FROM <urn:x-arq:UnionGraph>";
   }
 }
 
