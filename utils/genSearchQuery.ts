@@ -74,29 +74,16 @@ export function getTermData(
   };
 }
 
-export function getGraphData(graphKey: string | string[]): string[] {
-  const uniongraph = "<urn:x-arq:UnionGraph>";
-  if (Array.isArray(graphKey)) {
-    if (graphKey.length > 0) {
-      const bases = graphKey
-        .map(
-          (key) =>
-            `FROM NAMED <http://spraksamlingane.no/terminlogi/named/${samlingMapping[key as Samling]}>`
-        )
-        .join("\n");
-      return [bases, "?G"];
-    } else {
-      return ["", uniongraph];
-    }
-  } else if (graphKey !== "all") {
-    return [
-      "",
-      `<http://spraksamlingane.no/terminlogi/named/${samlingMapping[graphKey as Samling]}>`,
-    ];
-  } else if (graphKey) {
-    return ["", uniongraph];
+export function getGraphData(graphKey: string | string[]): string {
+  if (typeof graphKey === "string" && graphKey !== "all") {
+    return `FROM ns:${samlingMapping[graphKey as Samling]}`;
+  } else if (Array.isArray(graphKey) && graphKey.length > 0) {
+    const bases = graphKey
+      .map((key) => `FROM ns:${samlingMapping[key as Samling]}`)
+      .join("\n  ");
+    return bases;
   } else {
-    return ["", uniongraph];
+    return "FROM <urn:x-arq:UnionGraph>";
   }
 }
 
@@ -388,56 +375,49 @@ export function genSearchQuery(
     FILTER ( lang(?translate) = "${searchOptions.searchTranslate}" ) }`
       : "";
 
-  const queryEntries = () => `
+  const queryPrefix = () => `
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
   PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
   PREFIX text: <http://jena.apache.org/text#>
+  PREFIX ns: <http://spraksamlingane.no/terminlogi/named/>`;
+
+  const queryEntries = () => `
+  ${queryPrefix()}
 
   SELECT DISTINCT ?uri ?predicate ?literal ?samling ?score ${translate}
          (group_concat( ?l; separator="," ) as ?lang)
          ?matching
-  ${graph[0]}
+  ${graph}
   WHERE {
-    GRAPH ${graph[1]} {
-      { ${outerSubquery}
-      }
-      ?uri ?predicate ?label;
-        skosp:memberOf ?s.
-      ${translateOptional}
-      BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling)
+    { ${outerSubquery}
     }
+    ?uri ?predicate ?label;
+      skosp:memberOf ?s.
+    ${translateOptional}
+    BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling)
   }
   GROUP BY ?uri ?predicate ?literal ?samling ?score ?matching ${translate}
   ORDER BY DESC(?score) lcase(?literal) DESC(?predicate)
   LIMIT ${searchOptions.searchLimit}`;
 
   const queryCount = () => `
-  PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
-  PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
-  PREFIX text: <http://jena.apache.org/text#>
+  ${queryPrefix()}
 
   SELECT ?matching ?count
-  ${graph[0]}
+  ${graph}
   WHERE {
-    GRAPH ${graph[1]} {
-      { ${outerSubquery}
-      }
+    { ${outerSubquery}
     }
   }`;
 
   const queryAggregate = () => `
+  ${queryPrefix()}
 
-PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
-PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
-PREFIX text: <http://jena.apache.org/text#>
-
-SELECT ${aggregateCategories.join(" ")}
-${graph[0]}
-WHERE {
-  GRAPH ${graph[1]} {
+  SELECT ${aggregateCategories.join(" ")}
+  ${graph}
+  WHERE {
     { ${outerSubquery}
     }
-  }
 }
   `;
 
