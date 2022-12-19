@@ -375,56 +375,49 @@ export function genSearchQuery(
     FILTER ( lang(?translate) = "${searchOptions.searchTranslate}" ) }`
       : "";
 
-  const queryEntries = () => `
+  const queryPrefix = () => `
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
   PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
   PREFIX text: <http://jena.apache.org/text#>
+  PREFIX ns: <http://spraksamlingane.no/terminlogi/named/>`;
+
+  const queryEntries = () => `
+  ${queryPrefix()}
 
   SELECT DISTINCT ?uri ?predicate ?literal ?samling ?score ${translate}
          (group_concat( ?l; separator="," ) as ?lang)
          ?matching
-  ${graph[0]}
+  ${graph}
   WHERE {
-    GRAPH ${graph[1]} {
-      { ${outerSubquery}
-      }
-      ?uri ?predicate ?label;
-        skosp:memberOf ?s.
-      ${translateOptional}
-      BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling)
+    { ${outerSubquery}
     }
+    ?uri ?predicate ?label;
+      skosp:memberOf ?s.
+    ${translateOptional}
+    BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling)
   }
   GROUP BY ?uri ?predicate ?literal ?samling ?score ?matching ${translate}
   ORDER BY DESC(?score) lcase(?literal) DESC(?predicate)
   LIMIT ${searchOptions.searchLimit}`;
 
   const queryCount = () => `
-  PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
-  PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
-  PREFIX text: <http://jena.apache.org/text#>
+  ${queryPrefix()}
 
   SELECT ?matching ?count
-  ${graph[0]}
+  ${graph}
   WHERE {
-    GRAPH ${graph[1]} {
-      { ${outerSubquery}
-      }
+    { ${outerSubquery}
     }
   }`;
 
   const queryAggregate = () => `
+  ${queryPrefix()}
 
-PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
-PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
-PREFIX text: <http://jena.apache.org/text#>
-
-SELECT ${aggregateCategories.join(" ")}
-${graph[0]}
-WHERE {
-  GRAPH ${graph[1]} {
+  SELECT ${aggregateCategories.join(" ")}
+  ${graph}
+  WHERE {
     { ${outerSubquery}
     }
-  }
 }
   `;
 
