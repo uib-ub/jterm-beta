@@ -28,8 +28,10 @@ describe("getTermData", () => {
     );
   });
   test("termHLend", () => {
-    expect(tD.termHLend()).toBe("(<open>æbc<close>)-<<open>def<close>>-[<open>ghj<close>]-<open>1,2,<close>")
-  })
+    expect(tD.termHLend()).toBe(
+      "(<open>æbc<close>)-<<open>def<close>>-[<open>ghj<close>]-<open>1,2,<close>"
+    );
+  });
   test("queryhighlight", () => {
     expect(tD.queryHighlight()).toBe("highlight:s:<open> | e:<close>");
   });
@@ -37,22 +39,18 @@ describe("getTermData", () => {
 
 describe("getGraphData", () => {
   test("value is 'all' string", () => {
-    expect(getGraphData("all")).toStrictEqual(["", "<urn:x-arq:UnionGraph>"]);
+    expect(getGraphData("all")).toStrictEqual("FROM <urn:x-arq:UnionGraph>");
   });
   test("value is valid key string", () => {
-    expect(getGraphData("MRT")).toStrictEqual([
-      "",
-      "<http://spraksamlingane.no/terminlogi/named/3000>",
-    ]);
+    expect(getGraphData("MRT")).toStrictEqual("FROM ns:3000");
   });
   test("value is list of empty string", () => {
-    expect(getGraphData([])).toStrictEqual(["", "<urn:x-arq:UnionGraph>"]);
+    expect(getGraphData([])).toStrictEqual("FROM <urn:x-arq:UnionGraph>");
   });
   test("value is list of valid keys", () => {
-    expect(getGraphData(["MRT", "MRT2"])).toStrictEqual([
-      "FROM NAMED <http://spraksamlingane.no/terminlogi/named/3000>\nFROM NAMED <http://spraksamlingane.no/terminlogi/named/3002>",
-      "?G",
-    ]);
+    expect(getGraphData(["MRT", "MRT2"])).toStrictEqual(
+      "FROM ns:3000\n  FROM ns:3002"
+    );
   });
 });
 
