@@ -1,4 +1,5 @@
-import { SearchDataEntry } from "~~/composables/states";
+import { LabelPredicate, LangCode, Samling, Matching } from "./vars";
+import { SearchDataEntry, SearchDataStats } from "~~/composables/states";
 
 /**
  * Returns object where keys are "\@id"s from objects
@@ -125,29 +126,22 @@ export function processBinding(binding: {
   };
 }
 
-export function sumAggregateData(
-  obj: { [key: string]: { [key: string]: string } },
-  subObj: { [key: string]: { [key: string]: string } }
+type AggregateKeys = LangCode | Samling | LabelPredicate | Matching;
+export function parseAggregateData(
+  obj: {
+    [key in keyof SearchDataStats]: {
+      [key in keyof AggregateKeys]: string;
+    };
+  },
+  subObj: {
+    [key in keyof SearchDataStats]: { [key in keyof AggregateKeys]: string };
+  }
 ) {
   const category = Object.keys(subObj)[0];
-  if (Object.keys(obj).includes(category)) {
-    const newData: { [key: string]: string } = JSON.parse(
-      subObj[category].value
-    );
-    for (const entry of Object.entries(newData)) {
-      if (Object.keys(obj[category]).includes(entry[0])) {
-        obj[category][entry[0]] = obj[category][entry[0]] + entry[1];
-      } else {
-        obj[category][entry[0]] = entry[1];
-      }
-    }
-    return obj;
-  } else {
-    return {
-      ...obj,
-      ...{
-        [category]: JSON.parse(Object.values(subObj)[0].value),
-      },
-    };
-  }
+  return {
+    ...obj,
+    ...{
+      [category]: JSON.parse(Object.values(subObj)[0].value),
+    },
+  };
 }

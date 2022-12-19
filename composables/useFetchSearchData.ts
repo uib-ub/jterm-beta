@@ -37,7 +37,7 @@ async function fetchSearchDataAggregate(
     genSearchQuery(searchOptions, "aggregate", matching)
   );
   const newStats = data.results?.bindings.reduce(
-    (o, key) => sumAggregateData(o, key),
+    (o, key) => parseAggregateData(o, key),
     {}
   );
   if (currentFetch === searchFetchLatest.value) {
