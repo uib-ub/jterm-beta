@@ -62,7 +62,6 @@
   "navBar": { "about": "Om Termportalen", "config": "Inn­stillinger" },
   "searchBar": { "search": "Søk" },
   "searchFilter": {
-    "searchresults": "Søkeresultater",
     "results": "resultater",
     "results-heading": "Resultater",
     "filter": "Filter",
