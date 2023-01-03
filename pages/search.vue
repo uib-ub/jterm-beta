@@ -3,24 +3,30 @@
     <Head>
       <Title> {{ $t("search.title") }} | {{ $t("index.title") }} </Title>
     </Head>
-    <h1 class="visually-hidden">{{ $t("search.title") }}</h1>
+    <h1 class="sr-only">{{ $t("search.title") }}</h1>
     <SearchFilter />
-    <h2 class="px-1">{{ $t("searchFilter.results-heading") }}</h2>
-    <div ref="scrollComponent" class="list-group">
-      <SearchResultEntry
-        v-for="entry in searchData"
-        :key="entry.link"
-        :entry-data="entry"
-      />
+    <div>
+      <h2 id="resultsheading" class="py-3 text-2xl">{{ $t("searchFilter.results-heading") }}</h2>
+      <table v-if="searchData.length > 0" ref="scrollComponent" class="w-full table-auto" aria-labelledby="resultsheading">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="w-3/5 text-lg">term</th>
+            <th class="text-lg">lang</th>
+            <th class="text-lg">termbase</th>
+          </tr>
+        </thead>
+        <tbody>
+          <SearchResultEntry
+            v-for="entry in searchData"
+            :key="entry.link + '_' + entry.label"
+            :entry-data="entry"
+          />
+        </tbody>
+      </table>
     </div>
-    <div class="d-flex justify-content-center p-2">
-      <div
-        v-if="pending && countFetchedMatches > 30"
-        class="spinner-border"
-        style="width: 1.75rem; height: 1.75rem"
-        role="status"
-      >
-        <span class="visually-hidden">Loading...</span>
+    <div class="flex justify-center p-2">
+      <div v-if="pending && countFetchedMatches > 30" role="status">
+        <span class="">Loading...</span>
       </div>
     </div>
   </div>
