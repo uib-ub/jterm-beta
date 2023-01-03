@@ -1,25 +1,23 @@
 <template>
-  <div class="row row-cols-1 row-cols-md-2 p-3">
+  <div class="flex flex-wrap md:flex-row">
     <Head>
       <Title>{{ $t("index.title") }}</Title>
     </Head>
-    <ContentDoc class="col px-3" :path="`/welcome_${$i18n.locale}`">
+    <ContentDoc class="md:basis-3/5" :path="`/welcome_${$i18n.locale}`">
       <template #not-found> <h2>Velkommen</h2> </template>
     </ContentDoc>
-    <ContentDoc class="col px-3" :path="`/samlinger_${$i18n.locale}`">
+    <ContentDoc class="md:basis-2/5 py-6 md:py-0" :path="`/samlinger_${$i18n.locale}`">
       <template #not-found></template>
     </ContentDoc>
   </div>
 </template>
 
 <script setup>
-definePageMeta({
-  layout: "titlepage",
-});
+
 </script>
 
 <style>
-a {
-  color: black;
+h2 {
+  font-size: x-large;
 }
 </style>

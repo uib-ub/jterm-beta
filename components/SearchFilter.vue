@@ -1,92 +1,83 @@
 <template>
-  <div class="container py-2 p-0">
+  <div>
     <!--Filter-->
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="container py-0">
-        {{ count }} {{ $t("searchFilter.results") }}
+    <div class="flex h-8 justify-between text-lg">
+      <div class="flex w-48">
+        <div class="w-16 pr-1 text-right">{{ count }}</div>
+        <div>{{ $t("searchFilter.results") }}</div>
       </div>
-
-      <div class="container"></div>
-      <div class="container">
-        <div
-          v-if="pending"
-          class="spinner-border"
-          style="width: 1.75rem; height: 1.75rem"
-          role="status"
-        >
-          <span class="visually-hidden">Loading...</span>
+      <div v-if="pending">
+        <div role="status">
+          <span class="text-lg">Loading...</span>
         </div>
       </div>
-      <div class="container"></div>
-      <button
-        class="btn tp-filter-btn"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#filterCard"
-        aria-expanded="false"
-        aria-controls="filterCard"
-      >
-        {{ $t("searchFilter.filter") }}
-      </button>
+      <div>
+        <button
+          class="w-16 rounded border hover:bg-gray-100 border-solid border-gray-300 xs:w-32"
+          type="button"
+          @click="displayFilter = !displayFilter"
+        >
+          {{ $t("searchFilter.filter") }}
+        </button>
+      </div>
     </div>
-    <div id="filterCard" class="collapse mt-2">
+    <div v-if="displayFilter" id="filterCard" class="mt-2 transition-all">
       <h2>{{ $t("searchFilter.filter") }}</h2>
-      <div class="card card-body">
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
-          <div class="col">
-            <h3>{{ $t("global.language") }}</h3>
-            <div class="form-check">
-              <FilterCheckbox
-                v-for="language in intersectUnique(
-                  languageOrder[$i18n.locale as LocalLangCode],
-                  Object.keys(searchDataStats.lang || {})
-                )"
-                :key="language"
-                ftype="lang"
-                :fvalue="language"
-              />
-            </div>
+      <div class="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-4">
+        <div class="">
+          <h3 class="text-xl">{{ $t("global.language") }}</h3>
+          <div class="form-check">
+            <FilterCheckbox
+              v-for="language in intersectUnique(
+                    languageOrder[$i18n.locale as LocalLangCode],
+                    Object.keys(searchDataStats.lang || {})
+                  )"
+              :key="language"
+              ftype="lang"
+              :fvalue="language"
+            />
           </div>
-          <div class="col">
-            <h3>{{ $t("global.termbase") }}</h3>
-            <div class="form-check">
-              <FilterCheckbox
-                v-for="samling in Object.keys(
-                  searchDataStats.samling || {}
-                ).sort()"
-                :key="samling"
-                ftype="samling"
-                :fvalue="samling"
-              />
-            </div>
+        </div>
+
+        <div class="col">
+          <h3 class="text-xl">{{ $t("global.termbase") }}</h3>
+          <div class="form-check">
+            <FilterCheckbox
+              v-for="samling in Object.keys(
+                searchDataStats.samling || {}
+              ).sort()"
+              :key="samling"
+              ftype="samling"
+              :fvalue="samling"
+            />
           </div>
-          <div class="col">
-            <h3>{{ $t("searchFilter.termproperty") }}</h3>
-            <div class="form-check">
-              <FilterCheckbox
-                v-for="predicate in intersectUnique(
-                  predicateOrder,
-                  Object.keys(searchDataStats.predicate || {})
-                )"
-                :key="predicate"
-                ftype="predicate"
-                :fvalue="predicate"
-              />
-            </div>
+        </div>
+        <div class="col">
+          <h3 class="text-xl">{{ $t("searchFilter.termproperty") }}</h3>
+          <div class="form-check">
+            <FilterCheckbox
+              v-for="predicate in intersectUnique(
+                predicateOrder,
+                Object.keys(searchDataStats.predicate || {})
+              )"
+              :key="predicate"
+              ftype="predicate"
+              :fvalue="predicate"
+            />
           </div>
-          <div class="col">
-            <h3>{{ $t("searchFilter.matching") }}</h3>
-            <div class="form-check">
-              <FilterCheckbox
-                v-for="matching in intersectUnique(
-                  matchingOrder,
-                  Object.keys(searchDataStats.matching || {})
-                )"
-                :key="matching"
-                ftype="matching"
-                :fvalue="matching"
-              />
-            </div>
+        </div>
+        <div class="col">
+          <h3 class="text-xl">{{ $t("searchFilter.matching") }}</h3>
+          <div class="form-check">
+            <FilterCheckbox
+              v-for="matching in intersectUnique(
+                matchingOrder,
+                Object.keys(searchDataStats.matching || {})
+              )"
+              :key="matching"
+              ftype="matching"
+              :fvalue="matching"
+            />
           </div>
         </div>
       </div>
@@ -97,6 +88,8 @@
 <script setup lang="ts">
 import { SearchOptions } from "~~/composables/states";
 import { LocalLangCode } from "~~/utils/vars";
+
+const displayFilter = ref(false);
 
 const searchData = useSearchData();
 const searchDataStats = useSearchDataStats();
@@ -119,26 +112,26 @@ const count = computed(() => {
 });
 
 /*
-watch([searchDataFiltered, searchDataPending], () => {
-  if (!searchDataPending.value) {
-    if (calcInitialState) {
-      const data = await fetchData(genSearchQuery())
-
-      //searchDataStats.value = calcStatsSearchData(
-      //  searchDataFiltered.value,
-      //  searchDataStats.value,
-      //  calcInitialState
-      //);
-      calcInitialState = false;
+  watch([searchDataFiltered, searchDataPending], () => {
+    if (!searchDataPending.value) {
+      if (calcInitialState) {
+        const data = await fetchData(genSearchQuery())
+  
+        //searchDataStats.value = calcStatsSearchData(
+        //  searchDataFiltered.value,
+        //  searchDataStats.value,
+        //  calcInitialState
+        //);
+        calcInitialState = false;
+      }
+      searchDataStats.value = resetStats(searchDataStats.value, false);
+      searchDataStats.value = calcStatsSearchData(
+        searchDataFiltered.value,
+        searchDataStats.value
+      );
     }
-    searchDataStats.value = resetStats(searchDataStats.value, false);
-    searchDataStats.value = calcStatsSearchData(
-      searchDataFiltered.value,
-      searchDataStats.value
-    );
-  }
-});
-*/
+  });
+  */
 
 watch(
   searchFilterData,
@@ -171,72 +164,62 @@ watch(
 );
 
 /*
-function filterData(match: SearchDataEntry) {
-  return Object.entries(searchFilterData.value).every(
-    ([filter, filterValue]) => {
-      if (!filterValue.length) {
-        return true;
-      } else {
-        const matchValue = match[filter as keyof SearchFilterData];
-        if (Array.isArray(matchValue)) {
-          if (matchValue.every((v: string) => !filterValue.includes(v))) {
-            return false;
-          } else {
-            return true;
-          }
+  function filterData(match: SearchDataEntry) {
+    return Object.entries(searchFilterData.value).every(
+      ([filter, filterValue]) => {
+        if (!filterValue.length) {
+          return true;
         } else {
-          if (filterValue.includes(matchValue)) {
-            return true;
+          const matchValue = match[filter as keyof SearchFilterData];
+          if (Array.isArray(matchValue)) {
+            if (matchValue.every((v: string) => !filterValue.includes(v))) {
+              return false;
+            } else {
+              return true;
+            }
           } else {
-            return false;
+            if (filterValue.includes(matchValue)) {
+              return true;
+            } else {
+              return false;
+            }
           }
         }
       }
-    }
-  );
-}
-*/
+    );
+  }
+  */
 
 /*
-function calcStatsSearchData(
-  data: SearchDataEntry[],
-  stats: SearchDataStats,
-  initialCalc?: boolean
-) {
-  const newStats = {
-    lang: { ...stats.lang },
-    samling: { ...stats.samling },
-    predicate: { ...stats.predicate },
-    matching: { ...stats.matching },
-  };
-
-  data.forEach((match) => {
-    try {
-      match.lang.forEach((l) => {
-        const langFilter = searchFilterData.value?.lang;
-        if (initialCalc || langFilter || langFilter.includes(l)) {
-          newStats.lang[l] = newStats.lang[l] + 1 || 1;
-        }
-      });
-      newStats.samling[match.samling] =
-        newStats.samling[match.samling] + 1 || 1;
-      newStats.predicate[match.predicate] =
-        newStats.predicate[match.predicate] + 1 || 1;
-      newStats.matching[match.matching] =
-        newStats.matching[match.matching] + 1 || 1;
-    } catch (e) {}
-  });
-  return newStats;
-}
-*/
+  function calcStatsSearchData(
+    data: SearchDataEntry[],
+    stats: SearchDataStats,
+    initialCalc?: boolean
+  ) {
+    const newStats = {
+      lang: { ...stats.lang },
+      samling: { ...stats.samling },
+      predicate: { ...stats.predicate },
+      matching: { ...stats.matching },
+    };
+  
+    data.forEach((match) => {
+      try {
+        match.lang.forEach((l) => {
+          const langFilter = searchFilterData.value?.lang;
+          if (initialCalc || langFilter || langFilter.includes(l)) {
+            newStats.lang[l] = newStats.lang[l] + 1 || 1;
+          }
+        });
+        newStats.samling[match.samling] =
+          newStats.samling[match.samling] + 1 || 1;
+        newStats.predicate[match.predicate] =
+          newStats.predicate[match.predicate] + 1 || 1;
+        newStats.matching[match.matching] =
+          newStats.matching[match.matching] + 1 || 1;
+      } catch (e) {}
+    });
+    return newStats;
+  }
+  */
 </script>
-
-<style>
-.tp-filter-btn {
-  border: none;
-  width: 400px;
-  height: 40px;
-  color: var(--tp-dark);
-  background-color: var(--tp-light);
-}
-</style>

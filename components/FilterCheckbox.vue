@@ -6,7 +6,7 @@
     type="checkbox"
     :value="fvalue"
   />
-  <label :for="`filter-${ftype}-${fvalue}`"
+  <label class="px-1 py-1 text-lg" :for="`filter-${ftype}-${fvalue}`"
     >{{ $t("global." + ftype + "." + fvalue) }} ({{
       searchDataStats[ftype as keyof SearchDataStats][
         fvalue as LangCode | Samling | Matching | LabelPredicate

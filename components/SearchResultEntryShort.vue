@@ -1,21 +1,15 @@
 <template>
-  <NuxtLink
-    class="list-group-item list-group-item-action"
-    :to="`/${entryData.link}`"
-  >
-    <div class="d-flex flex-lg-row">
-      <div class="container p-0">
-        <div v-if="entryData.predicate == 'prefLabel'">
-          <div class="container p-0">
-            <b v-html="entryData.label"></b>
-          </div>
-        </div>
-        <div v-else>
-          <div class="container p-0" v-html="entryData.label"></div>
-        </div>
-      </div>
-    </div>
-  </NuxtLink>
+  <tr class="hover:bg-gray-100">
+    <td class="py-1">
+      <NuxtLink class="" :to="`/${entryData.link}`">
+        <b
+          v-if="entryData.predicate == 'prefLabel'"
+          v-html="entryData.label"
+        ></b>
+        <span v-else v-html="entryData.label"></span>
+      </NuxtLink>
+    </td>
+  </tr>
 </template>
 
 <script setup lang="ts">
@@ -33,9 +27,3 @@ interface Props {
 
 const props = defineProps<Props>();
 </script>
-
-<style>
-.searchHighlight {
-  background-color: var(--tp-blue-1);
-}
-</style>

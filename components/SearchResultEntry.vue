@@ -1,33 +1,34 @@
 <template>
-  <NuxtLink
-    class="list-group-item list-group-item-action"
-    :to="`/${entryData.link}`"
-  >
-    <div class="d-flex flex-lg-row">
-      <div class="container p-0">
-        <div v-if="entryData.predicate == 'prefLabel'">
-          <div class="container p-0">
-            <b v-html="entryData.label"></b>
-          </div>
-        </div>
-        <div v-else>
-          <div class="container p-0" v-html="entryData.label"></div>
-        </div>
-      </div>
-      <div class="container px-3">
+  <tr class="hover:bg-gray-100">
+    <td class="py-1 pr-5">
+      <NuxtLink class="" :to="`/${entryData.link}`">
+        <b
+          v-if="entryData.predicate == 'prefLabel'"
+          v-html="entryData.label"
+        ></b>
+        <span v-else v-html="entryData.label"></span>
+      </NuxtLink>
+    </td>
+    <td class="pr-5">
+      <NuxtLink class="" :to="`/${entryData.link}`">
         {{
           entryData.lang.map((l: string) => $t(`global.lang.${l}`)).join(", ")
         }}
-      </div>
-      <div v-if="searchOptions.searchTranslate != 'none'" class="container p-0">
-        <b v-html="entryData.translate"></b>
-      </div>
-      <div class="container p-0">{{ entryData.samling }}</div>
-    </div>
-  </NuxtLink>
+      </NuxtLink>
+    </td>
+    <td class="">
+      {{ entryData.samling }}
+    </td>
+  </tr>
 </template>
 
 <script setup lang="ts">
+/*<div class="flex">
+  <div v-if="searchOptions.searchTranslate != 'none'" class="container p-0">
+    <b v-html="entryData.translate"></b>
+  </div>
+</div>
+*/
 const searchOptions = useSearchOptions();
 interface Props {
   entryData: {
@@ -42,9 +43,3 @@ interface Props {
 
 const props = defineProps<Props>();
 </script>
-
-<style>
-.searchHighlight {
-  background-color: var(--tp-blue-1);
-}
-</style>

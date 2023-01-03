@@ -3,8 +3,8 @@
     <Head>
       <Title>{{ $t("config.title") }} | {{ $t("index.title") }}</Title>
     </Head>
-    <h1>{{ $t("config.title") }}</h1>
-    <h2>{{ $t("config.global") }}</h2>
+    <h1 class="text-3xl">{{ $t("config.title") }}</h1>
+    <h2 class="text-2xl">{{ $t("config.global") }}</h2>
     <form>
       <label for="locale-select">{{ $t("global.language") }}: </label>
       <select id="locale-select" v-model="$i18n.locale">
@@ -13,8 +13,8 @@
         <option value="en">{{ $t("global.lang.en") }}</option>
       </select>
     </form>
-    <h2>{{ $t("config.conceptview") }}</h2>
-    <h3>{{ $t("config.dataDispLang") }}</h3>
+    <h2 class="text-2xl pt-3">{{ $t("config.conceptview") }}</h2>
+    <h3 class="text-xl">{{ $t("config.dataDispLang") }}</h3>
     <div class="form-check">
       <input
         id="ddl-nb"
