@@ -1,22 +1,29 @@
 <template>
-  <div class="container row px-0 py-3">
-    <h1 class="visually-hidden">{{$t("id.topheading")}}</h1>
-    <div v-if="searchData.length > 0" class="d-md-none d-lg-block col-3">
-      <div class="container p-0">
-        <div class="container pt-2 pb-2 px-2">
-          <NuxtLink to="/search">{{ $t("id.tilbake") }}</NuxtLink>
+  <div class="flex">
+    <h1 class="sr-only">{{ $t("id.topheading") }}</h1>
+    <div v-if="searchData.length > 0">
+      <div class="container">
+        <div class="container h-8">
+          <NuxtLink class="text-lg" to="/search">{{ $t("id.tilbake") }}</NuxtLink>
         </div>
 
-        <h2 class="px-1">{{ $t("searchFilter.results-heading") }}</h2>
+        <h2 class="py-3 text-2xl">{{ $t("searchFilter.results-heading") }}</h2>
       </div>
-      <div style="height: calc(100vh * 0.9 - 220px); overflow: auto">
-        <div ref="scrollComponent" class="list-group">
-          <SearchResultEntryShort
-            v-for="entry in searchData"
-            :key="entry"
-            :entry-data="entry"
-          />
-        </div>
+      <div class="overflow-x-auto" style="height: calc(100vh * 0.9 - 220px)">
+        <table>
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="w-3/5 text-lg">term</th>
+            </tr>
+          </thead>
+          <tbody>
+            <SearchResultEntryShort
+              v-for="entry in searchData"
+              :key="entry"
+              :entry-data="entry"
+            />
+          </tbody>
+        </table>
       </div>
     </div>
     <div class="col px-3">
@@ -29,11 +36,11 @@
         />
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
-      <h2>{{ data[uri]?.label }}</h2>
+      <h2 class="text-4xl">{{ data[uri]?.label }}</h2>
 
       <div v-if="conceptViewToggle">
         <h3>{{ $t("id.languagedata") }}</h3>
-        <table class="table table-sm table-hover table-borderless">
+        <table class="table-auto">
           <!--Header-->
           <thead>
             <tr>
@@ -104,15 +111,14 @@
         v-else
         :key="'disp_' + lang"
       >
-        <h3>{{ $t("global.lang." + lang) }}</h3>
-        <table class="table table-sm table-hover table-borderless">
+        <h3 class="text-xl pt-3">{{ $t("global.lang." + lang) }}</h3>
+        <table class="table-auto">
           <tbody>
             <!--Anbefalt term-->
             <DataRow
               v-for="label in data[uri]?.prefLabel?.[lang]"
               :key="'prefLabel_' + label"
               :data="data[label]?.literalForm['@value']"
-              th-class="col-2"
               :label="$t('id.prefLabel')"
             />
             <!--AltLabel-->
@@ -120,7 +126,6 @@
               v-for="label in data[uri]?.altLabel?.[lang]"
               :key="'altLabel_' + label"
               :data="data[label]?.literalForm['@value']"
-              th-class="col-2"
               :label="$t('id.altLabel')"
             />
             <!--HiddenLabel-->
@@ -128,15 +133,14 @@
               v-for="label in data[uri]?.hiddenLabel?.[lang]"
               :key="'hiddenLabel_' + label"
               :data="data[label]?.literalForm['@value']"
-              th-class="col-2"
               :label="$t('id.hiddenLabel')"
             />
           </tbody>
         </table>
       </div>
 
-      <h3 v-if="data[uri]">{{ $t("id.general") }}</h3>
-      <table class="table table-sm table-hover table-borderless">
+      <h3 class="text-xl pt-3" v-if="data[uri]">{{ $t("id.general") }}</h3>
+      <table class="">
         <tbody>
           <!--Samling-->
           <DataRow
@@ -151,21 +155,18 @@
           <DataRow
             v-if="data[uri]?.domene"
             :data="data[uri]?.domene"
-            th-class="col-2"
             :label="$t('id.domain')"
           />
           <!--Bruksområde-->
           <DataRow
             v-if="data[uri]?.subject"
             :data="data[uri]?.subject.join(', ')"
-            th-class="col-2"
             :label="$t('id.subject')"
           />
           <!--Modified-->
           <DataRow
             v-if="data[uri]?.modified"
             :data="data[uri]?.modified['@value']"
-            th-class="col-2"
             :label="$t('id.modified')"
           />
           <!--Created-->
@@ -173,7 +174,7 @@
           <DataRow
             v-if="data[uri]?.scopeNote"
             :data="data[uri]?.scopeNote"
-            th-class="col-2"
+            th-class=""
             :label="$t('id.note')"
           />
         </tbody>
