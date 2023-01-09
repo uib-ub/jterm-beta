@@ -54,6 +54,29 @@ export type SearchQueryResponse = {
   results: { bindings: any[] };
 };
 
+export const domainNesting = {
+  humaniora: { bases: ["LINGVISTIKK"] },
+  naturvitenskap: {
+    bases: [
+      "NOT",
+      "MRT",
+      "MRT2",
+      "SDIR",
+      "ARTSDB",
+      "EVERTEBRATER",
+      "RTT",
+      "ROMFYS",
+      "KLIMA",
+      "ASTRONOMI",
+      "BIOLOGI",
+      "CMBIOLOGI",
+      "KJEMI",
+    ],
+  },
+  sammfunnsfag: { bases: ["NOJU", "TOLKING", "UHR"] },
+  okonomAdmin: { bases: ["NHH"] },
+};
+
 export const predicateOrder: LabelPredicate[] = [
   "prefLabel",
   "altLabel",
@@ -81,7 +104,6 @@ export const samlingOrder = [
   "SDIR",
   "TOLKING",
   "ROMFYS",
-  "TUNDUIA",
   "KLIMA",
   "ASTRONOMI",
   "BIOLOGI",
