@@ -87,7 +87,7 @@
           aria-label="search termbase"
         >
           <option
-            v-for="samling in samlingOrder"
+            v-for="samling in filteredTermbases"
             :key="'searchsamling_' + samling"
             :value="samling"
           >
@@ -105,6 +105,17 @@ const router = useRouter();
 const searchOptions = useSearchOptions();
 const searchterm = useSearchterm();
 const searchData = useSearchData();
+const filteredTermbases = computed(() => {
+  const topdomain = searchOptions.value.searchDomain[0];
+  if (topdomain === "all") {
+    return samlingOrder;
+  } else {
+    const termbases = ["all"].concat(
+      domainNesting[topdomain]?.bases
+    );
+    return intersectUnique(samlingOrder, termbases);
+  }
+});
 
 const clearText = () => {
   searchterm.value = "";
