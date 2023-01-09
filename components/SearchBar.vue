@@ -1,6 +1,7 @@
 <template>
   <div class="flex justify-center">
     <div class="grow">
+      <DomainTabs />
       <div
         class="input-group focus:border-tpblue-300 relative flex items-stretch rounded border border-solid border-gray-300"
       >
