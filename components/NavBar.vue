@@ -1,7 +1,7 @@
 <template>
   <nav class="bg-tpblue-400 flex" role="navigation">
     <div
-      class="mx-auto flex max-w-screen-lg grow justify-between p-2 text-white"
+      class="mx-auto flex max-w-screen-xl grow justify-between p-2 text-white"
     >
       <div>
         <NuxtLink
