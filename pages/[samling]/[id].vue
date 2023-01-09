@@ -1,19 +1,21 @@
 <template>
   <div class="flex">
     <h1 class="sr-only">{{ $t("id.topheading") }}</h1>
-    <div v-if="searchData.length > 0">
+    <div v-if="searchData.length > 0" class="hidden md:block md:w-60 lg:w-1/4">
       <div class="container">
         <div class="container h-8">
-          <NuxtLink class="text-lg" to="/search">{{ $t("id.tilbake") }}</NuxtLink>
+          <NuxtLink class="text-lg" to="/search">{{
+            $t("id.tilbake")
+          }}</NuxtLink>
         </div>
 
         <h2 class="py-3 text-2xl">{{ $t("searchFilter.results-heading") }}</h2>
       </div>
       <div class="overflow-x-auto" style="height: calc(100vh * 0.9 - 220px)">
-        <table>
+        <table class="w-full">
           <thead class="bg-gray-100">
             <tr>
-              <th class="w-3/5 text-lg">term</th>
+              <th class="text-lg">term</th>
             </tr>
           </thead>
           <tbody>
@@ -111,7 +113,7 @@
         v-else
         :key="'disp_' + lang"
       >
-        <h3 class="text-xl pt-3">{{ $t("global.lang." + lang) }}</h3>
+        <h3 class="pt-3 text-xl">{{ $t("global.lang." + lang) }}</h3>
         <table class="table-auto">
           <tbody>
             <!--Anbefalt term-->
@@ -139,7 +141,7 @@
         </table>
       </div>
 
-      <h3 class="text-xl pt-3" v-if="data[uri]">{{ $t("id.general") }}</h3>
+      <h3 class="pt-3 text-xl" v-if="data[uri]">{{ $t("id.general") }}</h3>
       <table class="">
         <tbody>
           <!--Samling-->
