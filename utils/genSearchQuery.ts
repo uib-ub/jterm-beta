@@ -1,5 +1,5 @@
 import { SearchOptions } from "../composables/states";
-import { Matching, QueryType, Samling } from "../utils/vars";
+import { Matching, QueryType, Samling, Domains } from "../utils/vars";
 
 const htmlHighlight = {
   open: "<span class='bg-tpblue-100'>",
