@@ -111,6 +111,7 @@ const fetchFurtherSearchData = () => {
           searchFilterData.value.samling.length > 0
             ? searchFilterData.value.samling
             : searchOptions.value.searchBase,
+        searchDomain: searchOptions.value.searchDomain,
         searchLanguage:
           searchFilterData.value.lang.length > 0
             ? searchFilterData.value.lang
