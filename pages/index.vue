@@ -3,12 +3,8 @@
     <Head>
       <Title>{{ $t("index.title") }}</Title>
     </Head>
-    <ContentDoc class="md:basis-3/5" :path="`/welcome_${$i18n.locale}`">
-      <template #not-found> <h2>Velkommen</h2> </template>
-    </ContentDoc>
-    <ContentDoc class="md:basis-2/5 py-6 md:py-0" :path="`/samlinger_${$i18n.locale}`">
-      <template #not-found></template>
-    </ContentDoc>
+    <WelcomeTP class="md:basis-3/5 md:pr-4"/>
+    <DomainOverview class="md:basis-2/5"/>
   </div>
 </template>
 
