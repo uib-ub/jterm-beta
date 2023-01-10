@@ -120,7 +120,7 @@ export async function useFetchSearchData(
     if (fetchTime !== searchFetchLatest.value) {
       break;
     }
-    if (searchData.value.length >= searchOptions.searchLimit) {
+    if (countSearchEntries(searchData.value) >= searchOptions.searchLimit) {
       break;
     }
   }
