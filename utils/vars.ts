@@ -19,6 +19,7 @@ export type LangCode =
   | "ti";
 
 export type Samling =
+  | "all"
   | "MRT"
   | "MRT2"
   | "UHR"
@@ -33,6 +34,7 @@ export type Samling =
   | "ROMFYS"
   | "TUNDUIA"
   | "KLIMA"
+  | "LINGVISTIKK"
   | "ASTRONOMI"
   | "BIOLOGI"
   | "LINGVISTIKK"
@@ -53,6 +55,12 @@ export type SearchQueryResponse = {
   head: { vars: string[] };
   results: { bindings: any[] };
 };
+
+export type Domains =
+  | "humaniora"
+  | "naturvitenskap"
+  | "sammfunnsfag"
+  | "okonomAdmin";
 
 export const domainNesting = {
   humaniora: { bases: ["LINGVISTIKK"] },
@@ -90,7 +98,7 @@ export const matchingOrder: Matching[] | Matching[][] = [
   "subWord-ci",
   "contains-ci",
 ];
-export const samlingOrder = [
+export const samlingOrder: Samling[] = [
   "all",
   "MRT",
   "MRT2",
