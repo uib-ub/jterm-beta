@@ -2,6 +2,13 @@
   "global": {
     "language": "Språk | Språk",
     "termbase": "Termbase",
+    "domain": {
+      "all": "Alle domener",
+      "humaniora": "Humaniora",
+      "naturvitenskap": "Naturvitenskap & Teknologi",
+      "sammfunnsfag": "Sammfunnsfag",
+      "okonomAdmin": "Økonomi & Administrasjon"
+    },
     "lang": {
       "none": "Ingen språk",
       "all": "Alle språk",
