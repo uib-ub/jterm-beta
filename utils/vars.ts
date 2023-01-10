@@ -19,6 +19,7 @@ export type LangCode =
   | "ti";
 
 export type Samling =
+  | "all"
   | "MRT"
   | "MRT2"
   | "UHR"
@@ -33,6 +34,7 @@ export type Samling =
   | "ROMFYS"
   | "TUNDUIA"
   | "KLIMA"
+  | "LINGVISTIKK"
   | "ASTRONOMI"
   | "BIOLOGI"
   | "LINGVISTIKK"
@@ -54,6 +56,35 @@ export type SearchQueryResponse = {
   results: { bindings: any[] };
 };
 
+export type Domains =
+  | "humaniora"
+  | "naturvitenskap"
+  | "sammfunnsfag"
+  | "okonomAdmin";
+
+export const domainNesting = {
+  humaniora: { bases: ["LINGVISTIKK"] },
+  naturvitenskap: {
+    bases: [
+      "NOT",
+      "MRT",
+      "MRT2",
+      "SDIR",
+      "ARTSDB",
+      "EVERTEBRATER",
+      "RTT",
+      "ROMFYS",
+      "KLIMA",
+      "ASTRONOMI",
+      "BIOLOGI",
+      "CMBIOLOGI",
+      "KJEMI",
+    ],
+  },
+  sammfunnsfag: { bases: ["NOJU", "TOLKING", "UHR"] },
+  okonomAdmin: { bases: ["NHH"] },
+};
+
 export const predicateOrder: LabelPredicate[] = [
   "prefLabel",
   "altLabel",
@@ -67,7 +98,7 @@ export const matchingOrder: Matching[] | Matching[][] = [
   "subWord-ci",
   "contains-ci",
 ];
-export const samlingOrder = [
+export const samlingOrder: Samling[] = [
   "all",
   "MRT",
   "MRT2",
@@ -81,7 +112,6 @@ export const samlingOrder = [
   "SDIR",
   "TOLKING",
   "ROMFYS",
-  "TUNDUIA",
   "KLIMA",
   "ASTRONOMI",
   "BIOLOGI",

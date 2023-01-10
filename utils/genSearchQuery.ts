@@ -1,5 +1,5 @@
 import { SearchOptions } from "../composables/states";
-import { Matching, QueryType, Samling } from "../utils/vars";
+import { Matching, QueryType, Samling, Domains } from "../utils/vars";
 
 const htmlHighlight = {
   open: "<span class='bg-tpblue-100'>",
@@ -74,16 +74,25 @@ export function getTermData(
   };
 }
 
-export function getGraphData(graphKey: string | string[]): string {
+export function getGraphData(
+  searchDomain: string[],
+  graphKey: string | string[]
+): string[] {
   if (typeof graphKey === "string" && graphKey !== "all") {
-    return `FROM ns:${samlingMapping[graphKey as Samling]}`;
+    return ["", `ns:${samlingMapping[graphKey as Samling]}`];
   } else if (Array.isArray(graphKey) && graphKey.length > 0) {
     const bases = graphKey
-      .map((key) => `FROM ns:${samlingMapping[key as Samling]}`)
+      .map((key) => `FROM NAMED ns:${samlingMapping[key as Samling]}`)
       .join("\n  ");
-    return bases;
+    return [`\n  ${bases}`, "?G"];
+  } else if (searchDomain[0] !== "all") {
+    const domainBases = domainNesting[searchDomain[0] as Domains].bases;
+    const mappedBases = domainBases
+      .map((key) => `FROM NAMED ns:${samlingMapping[key as Samling]}`)
+      .join("\n  ");
+    return [`\n  ${mappedBases}`, "?G"]
   } else {
-    return "FROM <urn:x-arq:UnionGraph>";
+    return ["", "<urn:x-arq:UnionGraph>"];
   }
 }
 
@@ -133,7 +142,10 @@ export function genSearchQuery(
   matching: string[]
 ): string {
   const termData = getTermData(searchOptions.searchTerm, htmlHighlight);
-  const graph = getGraphData(searchOptions.searchBase);
+  const graph = getGraphData(
+    searchOptions.searchDomain,
+    searchOptions.searchBase
+  );
   const language = getLanguageData(searchOptions.searchLanguage);
   const aggregateCategories = ["?lang", "?samling", "?predicate", "?matching"];
 
@@ -261,13 +273,16 @@ export function genSearchQuery(
       {
         SELECT ?label ?literal ?l (?sc + ${
           subqueries(queryType, match)?.score
-        } as ?score)
+        } as ?score) ?uri ?predicate ?samling
                ("${match}" as ?matching)
         WHERE {
           ${where}
           ${subqueries(queryType, match)?.filter}
+          ?uri ?predicate ?label;
+               skosp:memberOf ?s.
           BIND ( lang(?lit) as ?l ).
-          BIND ( str(?lit) as ?literal )
+          BIND ( str(?lit) as ?literal ).
+          BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling).
         }
         ORDER BY DESC(?score) lcase(?literal)
         LIMIT ${searchOptions.searchLimit}
@@ -283,10 +298,13 @@ export function genSearchQuery(
       }`,
       aggregate: `
               {
-                SELECT ?prop {
-                  ${where}
-                  ${subqueries("count", match)?.filter}
-                  ${subqueries(queryType, category, match)}
+                SELECT ?prop
+                WHERE {
+                  GRAPH ${graph[1]} {
+                    ${where}
+                    ${subqueries("count", match)?.filter}
+                    ${subqueries(queryType, category, match)}
+                  }
                 }
               }`,
     };
@@ -386,15 +404,13 @@ export function genSearchQuery(
 
   SELECT DISTINCT ?uri ?predicate ?literal ?samling ?score ${translate}
          (group_concat( ?l; separator="," ) as ?lang)
-         ?matching
-  ${graph}
+         ?matching ${graph[0]}
   WHERE {
-    { ${outerSubquery}
+    GRAPH ${graph[1]} {
+      { ${outerSubquery}
+      }
+      ${translateOptional}
     }
-    ?uri ?predicate ?label;
-      skosp:memberOf ?s.
-    ${translateOptional}
-    BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling)
   }
   GROUP BY ?uri ?predicate ?literal ?samling ?score ?matching ${translate}
   ORDER BY DESC(?score) lcase(?literal) DESC(?predicate)
@@ -403,10 +419,11 @@ export function genSearchQuery(
   const queryCount = () => `
   ${queryPrefix()}
 
-  SELECT ?matching ?count
-  ${graph}
+  SELECT ?matching ?count ${graph[0]}
   WHERE {
-    { ${outerSubquery}
+    GRAPH ${graph[1]} {
+      { ${outerSubquery}
+      }
     }
   }`;
 
@@ -414,12 +431,11 @@ export function genSearchQuery(
   ${queryPrefix()}
 
   SELECT ${aggregateCategories.join(" ")}
-  ${graph}
+  ${graph[0]}
   WHERE {
     { ${outerSubquery}
     }
-}
-  `;
+  }`;
 
   switch (queryType) {
     case "entries":

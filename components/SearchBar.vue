@@ -1,14 +1,15 @@
 <template>
   <div class="flex justify-center">
     <div class="grow">
+      <DomainTabs />
       <div
-        class="input-group focus:border-tpblue-300 relative flex items-stretch rounded border border-solid border-gray-300"
+        class="input-group relative flex items-stretch rounded border border-solid border-gray-300"
       >
         <input
           id="searchfield"
           v-model="searchterm"
           type="search"
-          class="form-control focus:border-tpblue-300 flex-auto rounded bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border focus:bg-white focus:text-gray-700 focus:outline-none"
+          class="form-control focus:border-tpblue-300 flex-auto rounded border border-white bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border focus:bg-white focus:text-gray-700 focus:outline-none"
           :placeholder="$t('searchBar.search')"
           aria-label="Searchfield"
           aria-describedby="searchbutton"
@@ -86,7 +87,7 @@
           aria-label="search termbase"
         >
           <option
-            v-for="samling in samlingOrder"
+            v-for="samling in filteredTermbases"
             :key="'searchsamling_' + samling"
             :value="samling"
           >
@@ -104,6 +105,17 @@ const router = useRouter();
 const searchOptions = useSearchOptions();
 const searchterm = useSearchterm();
 const searchData = useSearchData();
+const filteredTermbases = computed(() => {
+  const topdomain = searchOptions.value.searchDomain[0];
+  if (topdomain === "all") {
+    return samlingOrder;
+  } else {
+    const termbases = ["all"].concat(
+      domainNesting[topdomain]?.bases
+    );
+    return intersectUnique(samlingOrder, termbases);
+  }
+});
 
 const clearText = () => {
   searchterm.value = "";

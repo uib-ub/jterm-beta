@@ -27,6 +27,7 @@ export interface SearchDataStats {
 export interface SearchOptions {
   searchTerm: string;
   searchBase: string | string[];
+  searchDomain: string[];
   searchLanguage: LangCode | "all" | LangCode[];
   searchTranslate: LangCode | "none";
   searchMatching: Matching | MatchingNested[];
@@ -38,6 +39,7 @@ export const useSearchOptions = () =>
   useState<SearchOptions>("searchOptions", () => ({
     searchTerm: "",
     searchBase: "all",
+    searchDomain: ["all"],
     searchLanguage: "all",
     searchTranslate: "none",
     searchMatching: [

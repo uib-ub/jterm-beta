@@ -6,8 +6,15 @@
     <h1 class="sr-only">{{ $t("search.title") }}</h1>
     <SearchFilter />
     <div>
-      <h2 id="resultsheading" class="py-3 text-2xl">{{ $t("searchFilter.results-heading") }}</h2>
-      <table v-if="searchData.length > 0" ref="scrollComponent" class="w-full table-auto" aria-labelledby="resultsheading">
+      <h2 id="resultsheading" class="py-3 text-2xl">
+        {{ $t("searchFilter.results-heading") }}
+      </h2>
+      <table
+        v-if="searchData.length > 0"
+        ref="scrollComponent"
+        class="w-full table-auto"
+        aria-labelledby="resultsheading"
+      >
         <thead class="bg-gray-100">
           <tr>
             <th class="w-3/5 text-lg">term</th>
@@ -111,6 +118,7 @@ const fetchFurtherSearchData = () => {
           searchFilterData.value.samling.length > 0
             ? searchFilterData.value.samling
             : searchOptions.value.searchBase,
+        searchDomain: searchOptions.value.searchDomain,
         searchLanguage:
           searchFilterData.value.lang.length > 0
             ? searchFilterData.value.lang
