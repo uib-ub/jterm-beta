@@ -10,9 +10,6 @@ export default defineNuxtConfig({
   content: {
     // https://content.nuxtjs.org/api/configuration
   },
-  nitro: {
-    preset: "vercel-edge",
-  },
   vite: {
     plugins: [
       VueI18nVitePlugin({
