@@ -17,9 +17,20 @@
       >
         <thead class="bg-gray-100">
           <tr>
-            <th class="w-3/5 text-lg">term</th>
-            <th class="text-lg">lang</th>
-            <th class="text-lg">termbase</th>
+            <th class="text-lg">
+              {{ $t("search.term") }}
+              <span v-if="searchOptions.searchLanguage !== 'all'">{{
+                $t("global.lang." + searchOptions.searchLanguage)
+              }}</span>
+            </th>
+            <th v-if="searchOptions.searchLanguage === 'all'" class="text-lg">
+              {{ $t("search.language") }}
+            </th>
+            <th v-if="searchOptions.searchTranslate !== 'none'" class="text-lg">
+              {{ $t("search.term") }}
+              {{ $t("global.lang." + searchOptions.searchTranslate) }}
+            </th>
+            <th class="text-lg">{{ $t("search.termbase") }}</th>
           </tr>
         </thead>
         <tbody>
