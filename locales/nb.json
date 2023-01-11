@@ -67,7 +67,12 @@
   },
 
   "navBar": { "about": "Om Termportalen", "config": "Inn­stillinger" },
-  "searchBar": { "search": "Søk" },
+  "searchBar": {
+    "search": "Søk",
+    "searchLanguage": "Søkespråk",
+    "searchTranslate": "Oversettelsesspråk",
+    "searchBase": "Termbase"
+  },
   "searchFilter": {
     "results": "resultater",
     "results-heading": "Resultater",
