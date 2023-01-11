@@ -15,7 +15,12 @@
         <table class="w-full">
           <thead class="bg-gray-100">
             <tr>
-              <th class="text-lg">term</th>
+              <th class="text-lg">
+                {{ $t("search.term") }}
+                <span v-if="searchOptions.searchLanguage !== 'all'">{{
+                  $t("global.lang." + searchOptions.searchLanguage)
+                }}</span>
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -193,6 +198,7 @@ const uri = `${samling}-3A${id}`;
 const dataDisplayLanguages = useDataDisplayLanguages();
 const conceptViewToggle = useConceptViewToggle();
 const searchData = useSearchData();
+const searchOptions = useSearchOptions();
 
 const fetchedData = ref({});
 const data = computed(() => {
