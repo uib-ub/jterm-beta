@@ -48,12 +48,8 @@
           </svg>
         </button>
       </div>
-      <div class="flex flex-wrap py-2">
-        <select
-          v-model="searchOptions.searchLanguage"
-          class="form-select tp-search-dd"
-          aria-label="search language"
-        >
+      <div class="flex flex-wrap gap-x-3 py-2 pl-1">
+        <SearchBarDropdown dropdown="searchLanguage">
           <option value="all">
             {{ $t("global.lang.all") }}
           </option>
@@ -64,12 +60,8 @@
           >
             {{ $t("global.lang." + lc) }}
           </option>
-        </select>
-        <select
-          v-model="searchOptions.searchTranslate"
-          class="form-select tp-search-dd"
-          aria-label="translation language"
-        >
+        </SearchBarDropdown>
+        <SearchBarDropdown dropdown="searchTranslate">
           <option value="none">
             {{ $t("global.lang.none") }}
           </option>
@@ -80,12 +72,8 @@
           >
             {{ $t("global.lang." + lc) }}
           </option>
-        </select>
-        <select
-          v-model="searchOptions.searchBase"
-          class="form-select tp-search-dd"
-          aria-label="search termbase"
-        >
+        </SearchBarDropdown>
+        <SearchBarDropdown dropdown="searchBase">
           <option
             v-for="samling in filteredTermbases"
             :key="'searchsamling_' + samling"
@@ -93,7 +81,7 @@
           >
             {{ $t("global.samling." + samling) }}
           </option>
-        </select>
+        </SearchBarDropdown>
       </div>
     </div>
   </div>
@@ -110,9 +98,7 @@ const filteredTermbases = computed(() => {
   if (topdomain === "all") {
     return samlingOrder;
   } else {
-    const termbases = ["all"].concat(
-      domainNesting[topdomain]?.bases
-    );
+    const termbases = ["all"].concat(domainNesting[topdomain]?.bases);
     return intersectUnique(samlingOrder, termbases);
   }
 });
@@ -136,16 +122,3 @@ function execSearch() {
   searchfield.focus();
 }
 </script>
-
-<style scoped>
-.tp-search-dd {
-  margin-right: 7px;
-  margin-bottom: 7px;
-  padding: 7px;
-  background-color: white;
-  border: solid;
-  border-color: #d1d5db;
-  border-width: 1px;
-  border-radius: 4px;
-}
-</style>
