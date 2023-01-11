@@ -33,7 +33,7 @@
         </table>
       </div>
     </div>
-    <div class="col px-3">
+    <div class="col px-3 lg:w-3/4 lg:px-6">
       <div class="form-check container py-2">
         <input
           id="viewToggle"
