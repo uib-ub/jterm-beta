@@ -67,7 +67,12 @@
   },
 
   "navBar": { "about": "About", "config": "Settings" },
-  "searchBar": { "search": "Search" },
+  "searchBar": {
+    "search": "Search",
+    "searchLanguage": "Search language",
+    "searchTranslate": "Translation language",
+    "searchBase": "Termbase"
+  },
   "searchFilter": {
     "results": "results",
     "results-heading": "Results",
