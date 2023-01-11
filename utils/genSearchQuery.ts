@@ -90,7 +90,7 @@ export function getGraphData(
     const mappedBases = domainBases
       .map((key) => `FROM NAMED ns:${samlingMapping[key as Samling]}`)
       .join("\n  ");
-    return [`\n  ${mappedBases}`, "?G"]
+    return [`\n  ${mappedBases}`, "?G"];
   } else {
     return ["", "<urn:x-arq:UnionGraph>"];
   }
@@ -261,6 +261,15 @@ export function genSearchQuery(
     return content[queryType][subEntry];
   };
 
+  const translate =
+    searchOptions.searchTranslate !== "none" ? "?translate" : "";
+  const translateOptional =
+    searchOptions.searchTranslate !== "none"
+      ? `OPTIONAL { ?uri skosxl:prefLabel ?label2 .
+  ?label2 skosxl:literalForm ?translate .
+  FILTER ( lang(?translate) = "${searchOptions.searchTranslate}" ) }`
+      : "";
+
   const subqueryTemplate = (
     subqueries,
     category: string,
@@ -273,13 +282,14 @@ export function genSearchQuery(
       {
         SELECT ?label ?literal ?l (?sc + ${
           subqueries(queryType, match)?.score
-        } as ?score) ?uriEnc ?predicate ?samling
+        } as ?score) ?uriEnc ?predicate ?samling ${translate}
                ("${match}" as ?matching)
         WHERE {
           ${where}
           ${subqueries(queryType, match)?.filter}
           ?uri ?predicate ?label;
                skosp:memberOf ?s.
+          ${translateOptional}
           BIND ( replace(str(?uri), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/", "") as ?uriProc).
           BIND ( replace(?uriProc, "/", "%2F") as ?uriEnc).
           BIND ( lang(?lit) as ?l ).
@@ -386,15 +396,6 @@ export function genSearchQuery(
   }
   const outerSubquery = categoriesArray.join("\n      UNION");
 
-  const translate =
-    searchOptions.searchTranslate !== "none" ? "?translate" : "";
-  const translateOptional =
-    searchOptions.searchTranslate !== "none"
-      ? `OPTIONAL { ?uri skosxl:prefLabel ?label2 .
-    ?label2 skosxl:literalForm ?translate .
-    FILTER ( lang(?translate) = "${searchOptions.searchTranslate}" ) }`
-      : "";
-
   const queryPrefix = () => `
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
   PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
@@ -411,7 +412,6 @@ export function genSearchQuery(
     GRAPH ${graph[1]} {
       { ${outerSubquery}
       }
-      ${translateOptional}
     }
   }
   GROUP BY ?uriEnc ?predicate ?literal ?samling ?score ?matching ${translate}

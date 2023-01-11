@@ -10,7 +10,7 @@
       "okonomAdmin": "Economy & Administration"
     },
     "lang": {
-      "none": "No translation language",
+      "none": "None",
       "all": "All languages",
       "ar": "Arabic",
       "da": "Dansk",
@@ -105,7 +105,12 @@
     "tilbake": "Back to search results"
   },
   "index": { "title": "Termportalen" },
-  "search": { "title": "Search Results" },
+  "search": {
+    "title": "Search Results",
+    "term": "Term",
+    "language": "Språk",
+    "termbase": "Termbase"
+  },
   "about": { "title": "About Termportalen" },
   "config": {
     "title": "Settings",

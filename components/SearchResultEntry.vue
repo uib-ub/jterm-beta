@@ -9,26 +9,23 @@
         <span v-else v-html="entryData.label"></span>
       </NuxtLink>
     </td>
-    <td class="pr-5">
+    <td v-if="searchOptions.searchLanguage === 'all'" class="pr-5">
       <NuxtLink class="" :to="`/${entryData.link}`">
         {{
           entryData.lang.map((l: string) => $t(`global.lang.${l}`)).join(", ")
         }}
       </NuxtLink>
     </td>
+    <td v-if="searchOptions.searchTranslate !== 'none'">
+      <b v-html="entryData.translate"></b>
+    </td>
     <td class="">
-      {{ entryData.samling }}
+      {{ $t("global.samling." + entryData.samling) }}
     </td>
   </tr>
 </template>
 
 <script setup lang="ts">
-/*<div class="flex">
-  <div v-if="searchOptions.searchTranslate != 'none'" class="container p-0">
-    <b v-html="entryData.translate"></b>
-  </div>
-</div>
-*/
 const searchOptions = useSearchOptions();
 interface Props {
   entryData: {
