@@ -109,7 +109,9 @@ export function getMaxNumberOfInstances(data: {
 export function processBinding(binding: {
   [key: string]: any;
 }): SearchDataEntry {
-  const link = binding.uri.value.split("/").at(-1).replace("-3A", "/");
+  // const link = binding.uri.value.split("/").at(-1).replace("-3A", "/");
+  const link = binding.uriEnc.value.replace("-3A", "/")
+  // "http://test.wiki.terminologi.no/index.php/Special:URIResolver/TOLKING-3AMaktesløs/_maktesløshet"
   const predicate = binding.predicate.value.replace(
     "http://www.w3.org/2008/05/skos-xl#",
     ""
