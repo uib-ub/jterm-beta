@@ -1,6 +1,9 @@
 <template>
   <tr class="hover:bg-gray-100">
-    <td class="py-1">
+    <td
+      class="py-1"
+      :class="{ 'text-right': langRtoL(entryData.lang[0] as LangCode) }"
+    >
       <NuxtLink class="" :to="`/${entryData.link}`">
         <b
           v-if="entryData.predicate == 'prefLabel'"
@@ -13,7 +16,8 @@
 </template>
 
 <script setup lang="ts">
-const searchOptions = useSearchOptions();
+import { LangCode } from "../utils/vars";
+
 interface Props {
   entryData: {
     link: string;
