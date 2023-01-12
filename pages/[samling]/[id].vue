@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="col px-3 lg:w-3/4 lg:px-6">
-      <div class="form-check container py-2">
+      <div class="form-check container py-2 hidden">
         <input
           id="viewToggle"
           v-model="conceptViewToggle"
@@ -126,6 +126,7 @@
               v-for="label in data[uri]?.prefLabel?.[lang]"
               :key="'prefLabel_' + label"
               :data="data[label]?.literalForm['@value']"
+              :data-right-align=langRtoL(lang)
               :label="$t('id.prefLabel')"
             />
             <!--AltLabel-->
@@ -133,6 +134,7 @@
               v-for="label in data[uri]?.altLabel?.[lang]"
               :key="'altLabel_' + label"
               :data="data[label]?.literalForm['@value']"
+              :data-right-align=langRtoL(lang)
               :label="$t('id.altLabel')"
             />
             <!--HiddenLabel-->
@@ -140,6 +142,7 @@
               v-for="label in data[uri]?.hiddenLabel?.[lang]"
               :key="'hiddenLabel_' + label"
               :data="data[label]?.literalForm['@value']"
+              :data-right-align=langRtoL(lang)
               :label="$t('id.hiddenLabel')"
             />
           </tbody>
