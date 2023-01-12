@@ -147,138 +147,136 @@ export function genSearchQuery(
     searchOptions.searchBase
   );
   const language = getLanguageData(searchOptions.searchLanguage);
-  const aggregateCategories = ["?lang", "?samling", "?predicate", "?matching"];
+  if (matching[0] === "all" && queryType === "entries") {
+    return genSearchQueryAll(searchOptions, graph, language);
+  } else {
 
-  const subqueries = (
-    queryType: QueryType,
-    subEntry: string,
-    aggregateMatch?: string
-  ) => {
-    const content = {
-      entries: {
-        all: {
-          score: 0,
-          where: `{ SELECT ?label ?lit (0 as ?sc)
-                WHERE {
-                  ?label skosxl:literalForm ?lit.
-                {languageFilter}
-                }
-                LIMIT ${searchOptions.searchLimit}
-            }`,
-          filter: "",
-        },
-        "full-cs": {
-          score: 500,
-          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" "${termData.queryHighlight()}" {language}). }`,
-          filter: `FILTER ( str(?lit) = "${termData.termHL()}" ).`,
-        },
-        "full-ci": {
-          score: 400,
-          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" "${termData.queryHighlight()}" {language}). }`,
-          filter: `FILTER ( lcase(str(?lit)) = lcase("${termData.termHL()}") &&
+    const aggregateCategories = [
+      "?lang",
+      "?samling",
+      "?predicate",
+      "?matching",
+    ];
+
+    const subqueries = (
+      queryType: QueryType,
+      subEntry: string,
+      aggregateMatch?: string
+    ) => {
+      const content = {
+        entries: {
+          "full-cs": {
+            score: 500,
+            where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" "${termData.queryHighlight()}" {language}). }`,
+            filter: `FILTER ( str(?lit) = "${termData.termHL()}" ).`,
+          },
+          "full-ci": {
+            score: 400,
+            where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" "${termData.queryHighlight()}" {language}). }`,
+            filter: `FILTER ( lcase(str(?lit)) = lcase("${termData.termHL()}") &&
                      str(?lit) != "${termData.termHL()}" ).`,
-        },
-        "startsWith-ci": {
-          score: 300,
-          where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" "${termData.queryHighlight()}" {language}). }`,
-          filter: `FILTER ( strStarts(lcase(?lit), lcase("${termData.termHLstart()}") ) &&
+          },
+          "startsWith-ci": {
+            score: 300,
+            where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" "${termData.queryHighlight()}" {language}). }`,
+            filter: `FILTER ( strStarts(lcase(?lit), lcase("${termData.termHLstart()}") ) &&
                      lcase(str(?lit)) != lcase("${termData.termHL()}") ).`,
-        },
-        "endsWith-ci": {
-          score: 200,
-          where: `{ (?label ?sc ?lit) text:query ("${termData.doubleStarred()}" "${termData.queryHighlight()}" {language}). }`,
-          filter: `FILTER ( strEnds(lcase(?lit), lcase("${termData.termHLend()}") ) &&
+          },
+          "endsWith-ci": {
+            score: 200,
+            where: `{ (?label ?sc ?lit) text:query ("${termData.doubleStarred()}" "${termData.queryHighlight()}" {language}). }`,
+            filter: `FILTER ( strEnds(lcase(?lit), lcase("${termData.termHLend()}") ) &&
                      lcase(str(?lit)) != lcase("${termData.termHL()}") ).`,
-        },
-        "subWord-ci": {
-          score: 100,
-          where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" "${termData.queryHighlight()}" {language}). }`,
-          filter: `FILTER ( !strStarts(lcase(?lit), lcase("${termData.termHLstart()}")) &&
+          },
+          "subWord-ci": {
+            score: 100,
+            where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" "${termData.queryHighlight()}" {language}). }`,
+            filter: `FILTER ( !strStarts(lcase(?lit), lcase("${termData.termHLstart()}")) &&
                      !strEnds(lcase(?lit), lcase("${termData.termHL()}")) ).`,
+          },
+          "contains-ci": {
+            score: 0,
+            where: `{ (?label ?sc ?lit) text:query ("(${termData.doubleStarred()}) NOT (${termData.starred()})" "${termData.queryHighlight()}" {language}). }`,
+            filter: `FILTER ( !strEnds(lcase(?lit), lcase("${termData.termHLend()}")) ).`,
+          },
         },
-        "contains-ci": {
-          score: 0,
-          where: `{ (?label ?sc ?lit) text:query ("(${termData.doubleStarred()}) NOT (${termData.starred()})" "${termData.queryHighlight()}" {language}). }`,
-          filter: `FILTER ( !strEnds(lcase(?lit), lcase("${termData.termHLend()}")) ).`,
-        },
-      },
-      count: {
-        all: {
-          where: `{ SELECT ?label ?lit
+        count: {
+          all: {
+            where: `{ SELECT ?label ?lit
               WHERE {
                 ?label skosxl:literalForm ?lit.
               {languageFilter}
               }
           }`,
-          filter: "",
-        },
-        allPatterns: {
-          where: `{ (?label ?sc ?lit) text:query ("${termData.doubleStarred()}" {language}).}`,
-          filter: "",
-        },
-        "full-cs": {
-          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" {language}). }`,
-          filter: `FILTER ( str(?lit) = "${termData.term}" ).`,
-        },
-        "full-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" {language}). }`,
-          filter: `FILTER ( lcase(str(?lit)) = lcase("${termData.term}") &&
+            filter: "",
+          },
+          allPatterns: {
+            where: `{ (?label ?sc ?lit) text:query ("${termData.doubleStarred()}" {language}).}`,
+            filter: "",
+          },
+          "full-cs": {
+            where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" {language}). }`,
+            filter: `FILTER ( str(?lit) = "${termData.term}" ).`,
+          },
+          "full-ci": {
+            where: `{ (?label ?sc ?lit) text:query ("\\"${termData.sanitized()}\\"" {language}). }`,
+            filter: `FILTER ( lcase(str(?lit)) = lcase("${termData.term}") &&
                      str(?lit) != "${termData.term}" ).`,
-        },
-        "startsWith-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" {language}). }`,
-          filter: `FILTER ( strStarts(lcase(?lit), lcase("${termData.term}") ) &&
+          },
+          "startsWith-ci": {
+            where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" {language}). }`,
+            filter: `FILTER ( strStarts(lcase(?lit), lcase("${termData.term}") ) &&
                      lcase(str(?lit)) != lcase("${termData.term}") ).`,
-        },
-        "endsWith-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("${termData.doubleStarred()}" {language}). }`,
-          filter: `FILTER ( strEnds(lcase(?lit), lcase("${termData.term}") ) &&
+          },
+          "endsWith-ci": {
+            where: `{ (?label ?sc ?lit) text:query ("${termData.doubleStarred()}" {language}). }`,
+            filter: `FILTER ( strEnds(lcase(?lit), lcase("${termData.term}") ) &&
                      lcase(str(?lit)) != lcase("${termData.term}") ).`,
-        },
-        "subWord-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" {language}). }`,
-          filter: `FILTER ( !strStarts(lcase(?lit), lcase("${termData.term}")) &&
+          },
+          "subWord-ci": {
+            where: `{ (?label ?sc ?lit) text:query ("${termData.starred()}" {language}). }`,
+            filter: `FILTER ( !strStarts(lcase(?lit), lcase("${termData.term}")) &&
                      !strEnds(lcase(?lit), lcase("${termData.term}")) ).`,
-        },
-        "contains-ci": {
-          where: `{ (?label ?sc ?lit) text:query ("(${termData.doubleStarred()}) NOT (${termData.starred()})" {language}). }`,
-          filter: `FILTER ( !strStarts(lcase(?lit), lcase("${termData.term}")) &&
+          },
+          "contains-ci": {
+            where: `{ (?label ?sc ?lit) text:query ("(${termData.doubleStarred()}) NOT (${termData.starred()})" {language}). }`,
+            filter: `FILTER ( !strStarts(lcase(?lit), lcase("${termData.term}")) &&
                      !strEnds(lcase(?lit), lcase("${termData.term}")) ).`,
+          },
         },
-      },
-      aggregate: {
-        lang: `?uri ?predicate ?label
+        aggregate: {
+          lang: `?uri ?predicate ?label
               BIND ( lang(?lit) as ?prop ).`,
-        samling: `?uri ?predicate ?label;
+          samling: `?uri ?predicate ?label;
                     skosp:memberOf ?s.
                   BIND (replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?prop)`,
-        predicate: `?uri ?p ?label;
+          predicate: `?uri ?p ?label;
                BIND (replace(str(?p), "http://www.w3.org/2008/05/skos-xl#", "") as ?prop)`,
-        matching: `?uri ?predicate ?label
+          matching: `?uri ?predicate ?label
                   BIND ("${aggregateMatch}" as ?prop)`,
-      },
+        },
+      };
+      return content[queryType][subEntry];
     };
-    return content[queryType][subEntry];
-  };
 
-  const translate =
-    searchOptions.searchTranslate !== "none" ? "?translate" : "";
-  const translateOptional =
-    searchOptions.searchTranslate !== "none"
-      ? `OPTIONAL { ?uri skosxl:prefLabel ?label2 .
+    const translate =
+      searchOptions.searchTranslate !== "none" ? "?translate" : "";
+    const translateOptional =
+      searchOptions.searchTranslate !== "none"
+        ? `OPTIONAL { ?uri skosxl:prefLabel ?label2 .
   ?label2 skosxl:literalForm ?translate .
-  FILTER ( lang(?translate) = "${searchOptions.searchTranslate}" ) }`
-      : "";
+  FILTER ( langmatches(lang(?translate), "${searchOptions.searchTranslate}") ) }`
+        : "";
 
-  const subqueryTemplate = (
-    subqueries,
-    category: string,
-    queryType: string,
-    match: string,
-    where: string
-  ) => {
-    const subquery = {
-      entries: `
+    const subqueryTemplate = (
+      subqueries,
+      category: string,
+      queryType: string,
+      match: string,
+      where: string
+    ) => {
+      const subquery = {
+        entries: `
       {
         SELECT ?label ?literal ?l (?sc + ${
           subqueries(queryType, match)?.score
@@ -300,7 +298,7 @@ export function genSearchQuery(
         LIMIT ${searchOptions.searchLimit}
         OFFSET ${searchOptions.searchOffset?.[match as Matching] || 0}
       }`,
-      count: `
+        count: `
       {
         SELECT ("${match}" as ?matching) (count(?label) as ?count)
         WHERE {
@@ -308,7 +306,7 @@ export function genSearchQuery(
           ${subqueries(queryType, match)?.filter}
         }
       }`,
-      aggregate: `
+        aggregate: `
               {
                 SELECT ?prop
                 WHERE {
@@ -319,17 +317,17 @@ export function genSearchQuery(
                   }
                 }
               }`,
+      };
+
+      if (queryType === "count" && matching.length === 1) {
+        return subquery[queryType] + "\n        UNION {}";
+      } else {
+        return subquery[queryType as QueryType];
+      }
     };
 
-    if (queryType === "count" && matching.length === 1) {
-      return subquery[queryType] + "\n        UNION {}";
-    } else {
-      return subquery[queryType as QueryType];
-    }
-  };
-
-  const categoryTemplate = (category: string, subquery: string) => {
-    return `
+    const categoryTemplate = (category: string, subquery: string) => {
+      return `
       {
         SELECT (concat("{", group_concat(?propCount; SEPARATOR=", "), "}") as ${category})
         WHERE {
@@ -343,66 +341,68 @@ export function genSearchQuery(
         BIND (concat ('"', ?prop, '"', ': ', str(?pCount)) as ?propCount)
         }
       }`;
-  };
+    };
 
-  const categoriesArray: string[] = [];
-  for (const category of aggregateCategories) {
-    const subqueryArray: string[] = [];
-    for (const match of matching) {
-      const whereArray: string[] = [];
-      if (queryType === "aggregate" && matching.length === 7) {
-        language.forEach((lang) => {
-          whereArray.push(
-            getLanguageWhere(subqueries, queryType, "allPatterns", lang)
+    const categoriesArray: string[] = [];
+    for (const category of aggregateCategories) {
+      const subqueryArray: string[] = [];
+      for (const match of matching) {
+        const whereArray: string[] = [];
+        if (queryType === "aggregate" && matching.length === 7) {
+          language.forEach((lang) => {
+            whereArray.push(
+              getLanguageWhere(subqueries, queryType, "allPatterns", lang)
+            );
+          });
+          const where = whereArray.join("\n            UNION\n            ");
+
+          subqueryArray.push(
+            subqueryTemplate(
+              subqueries,
+              category.replace("?", ""),
+              queryType,
+              "allPatterns",
+              where
+            )
           );
-        });
-        const where = whereArray.join("\n            UNION\n            ");
+          break;
+        } else {
+          language.forEach((lang) => {
+            whereArray.push(
+              getLanguageWhere(subqueries, queryType, match, lang)
+            );
+          });
+          const where = whereArray.join("\n            UNION\n            ");
 
-        subqueryArray.push(
-          subqueryTemplate(
-            subqueries,
-            category.replace("?", ""),
-            queryType,
-            "allPatterns",
-            where
-          )
-        );
-        break;
+          subqueryArray.push(
+            subqueryTemplate(
+              subqueries,
+              category.replace("?", ""),
+              queryType,
+              match,
+              where
+            )
+          );
+        }
+      }
+      const subquery = subqueryArray.join("\n        UNION");
+
+      if (queryType === "aggregate") {
+        categoriesArray.push(categoryTemplate(category, subquery));
       } else {
-        language.forEach((lang) => {
-          whereArray.push(getLanguageWhere(subqueries, queryType, match, lang));
-        });
-        const where = whereArray.join("\n            UNION\n            ");
-
-        subqueryArray.push(
-          subqueryTemplate(
-            subqueries,
-            category.replace("?", ""),
-            queryType,
-            match,
-            where
-          )
-        );
+        categoriesArray.push(subquery);
+        break;
       }
     }
-    const subquery = subqueryArray.join("\n        UNION");
+    const outerSubquery = categoriesArray.join("\n      UNION");
 
-    if (queryType === "aggregate") {
-      categoriesArray.push(categoryTemplate(category, subquery));
-    } else {
-      categoriesArray.push(subquery);
-      break;
-    }
-  }
-  const outerSubquery = categoriesArray.join("\n      UNION");
-
-  const queryPrefix = () => `
+    const queryPrefix = () => `
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
   PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
   PREFIX text: <http://jena.apache.org/text#>
   PREFIX ns: <http://spraksamlingane.no/terminlogi/named/>`;
 
-  const queryEntries = () => `
+    const queryEntries = () => `
   ${queryPrefix()}
 
   SELECT DISTINCT ?uriEnc ?predicate ?literal ?samling ?score ${translate}
@@ -418,7 +418,7 @@ export function genSearchQuery(
   ORDER BY DESC(?score) lcase(?literal) DESC(?predicate)
   LIMIT ${searchOptions.searchLimit}`;
 
-  const queryCount = () => `
+    const queryCount = () => `
   ${queryPrefix()}
 
   SELECT ?matching ?count ${graph[0]}
@@ -429,7 +429,7 @@ export function genSearchQuery(
     }
   }`;
 
-  const queryAggregate = () => `
+    const queryAggregate = () => `
   ${queryPrefix()}
 
   SELECT ${aggregateCategories.join(" ")}
@@ -439,14 +439,15 @@ export function genSearchQuery(
     }
   }`;
 
-  switch (queryType) {
-    case "entries":
-      return queryEntries();
-    case "count":
-      return queryCount();
-    case "aggregate":
-      return queryAggregate();
-    default:
-      throw new Error("queryType not matched");
+    switch (queryType) {
+      case "entries":
+        return queryEntries();
+      case "count":
+        return queryCount();
+      case "aggregate":
+        return queryAggregate();
+      default:
+        throw new Error("queryType not matched");
+    }
   }
 }
