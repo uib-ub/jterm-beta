@@ -66,6 +66,7 @@
     }
   },
 
+  "domainOverview": {"domainsAndBases": "Domains & Termbases"},
   "navBar": { "about": "About", "config": "Settings" },
   "searchBar": {
     "search": "Search",

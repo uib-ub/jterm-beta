@@ -65,6 +65,7 @@
       "contains-ci": "inneholder"
     }
   },
+  "domainOverview": { "domainsAndBases": "Domener & termbaser" },
   "navBar": { "about": "Om Termportalen", "config": "Inn­stillingar" },
   "searchBar": {
     "search": "Søk",
