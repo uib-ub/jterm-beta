@@ -176,4 +176,6 @@ export const languageOrder = {
   ],
 };
 
+export const languageRtoL = new Set(['ar'])
+
 export type QueryType = "entries" | "aggregate" | "count";
