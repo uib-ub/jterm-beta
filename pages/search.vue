@@ -141,20 +141,7 @@ const fetchFurtherSearchData = () => {
       };
       const fetchTime = Date.now();
       searchFetchLatest.value = fetchTime;
-
       useFetchSearchData(newOptions, "further", Object.keys(offset));
-      /*
-      fetchSearchDataMatching(
-        newOptions,
-        Object.keys(offset),
-        searchDataFiltered,
-        true,
-        fetchTime
-      );
-      setTimeout(function () {
-        fetchFurtherPending.value = false;
-      }, 500);
-      */
     }
   }
 };
