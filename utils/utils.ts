@@ -1,3 +1,4 @@
+import { LangCode } from "./vars";
 import { SearchDataEntry } from "~~/composables/states";
 
 /**
@@ -33,4 +34,12 @@ export function countSearchEntries(matches: SearchDataEntry[]): number {
       }
     })
   );
+}
+
+export function langRtoL(languageCode: LangCode) {
+  if (languageRtoL.has(languageCode)) {
+    return true;
+  } else {
+    return false;
+  }
 }
