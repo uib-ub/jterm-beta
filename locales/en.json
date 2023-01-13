@@ -65,6 +65,9 @@
       "contains-ci": "contains"
     }
   },
+  "footer": {
+    "contact": "Concact us"
+  },
 
   "domainOverview": {"domainsAndBases": "Domains & Termbases"},
   "navBar": { "about": "About", "config": "Settings" },
