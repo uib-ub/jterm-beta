@@ -10,6 +10,12 @@ export default defineNuxtConfig({
   content: {
     // https://content.nuxtjs.org/api/configuration
   },
+  runtimeConfig: {
+    public: {
+      endpointUrl: "https://sparql.terminologi.no/termwiki_test/query",
+      base: "http://test.wiki.terminologi.no/index.php/Special:URIResolver/"
+    }
+  },
   vite: {
     plugins: [
       VueI18nVitePlugin({
