@@ -11,7 +11,7 @@
           >Termportalen.no</NuxtLink
         >
       </div>
-      <div class="">
+      <div class="text-lg text-white hover:text-gray-200">
         <div class="xs:hidden">
           <button
             class="ml-auto mr-0 flex rounded border border-white px-3 py-2 text-white hover:border-white hover:text-white"
@@ -32,10 +32,10 @@
           class="xs:flex xs:gap-3"
           :class="{ hidden: !navMenuExpanded }"
         >
-          <li class="text-lg text-white hover:text-gray-200">
+          <li>
             <NuxtLink to="/about"> {{ $t("navBar.about") }}</NuxtLink>
           </li>
-          <li class="text-lg text-white hover:text-gray-200">
+          <li>
             <NuxtLink to="/config"> {{ $t("navBar.config") }}</NuxtLink>
           </li>
         </ul>
