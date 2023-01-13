@@ -1,27 +1,46 @@
 <template>
   <div>
     <div v-if="$i18n.locale === 'nb'">
-      <h2 id="velkommen" class="text-2xl pb-2">
-        <NuxtLink to="#velkommen">Velkommen</NuxtLink>
+      <h2 id="velkommen" class="pb-3 text-2xl">
+        <NuxtLink to="#velkommen">Velkommen til Termportalen</NuxtLink>
       </h2>
-      <p class="pb-1">
-        Velkommen til Termportalen ved Språksamlingane – ein nasjonal portal for
-        terminologi!
-      </p>
-      <p>
-        Termportalen er ein fritt tilgjengeleg ressurs til norsk terminologi
-        innanfor ei lang rekkje fagområde, der det er mogleg å søkja på tvers av
-        termbasar og fag.
-      </p>
+      <div class="space-y-2">
+        <p>
+          Termportalen gir fri tilgang til norsk terminologi på en lang rekke
+          fagområder via én felles søkerute. Du kan søke etter termer på tvers
+          av domener, termbaser og språk. Termbasene er gruppert i overordnede
+          domener og du kan søke etter termer enten i hele Termportalen.no, på
+          ett spesifikt domene eller i et utvalg av termbasene. Forhåndsvalg av
+          søkespråk er også mulig. De fleste termbasene har terminologi på
+          bokmål, nynorsk og engelsk, mens en del termbaser også har terminologi
+          på andre språk.
+        </p>
+        <p>
+          I tillegg til søkesiden til Termportalen er det utviklet en
+          Redigeringsapplikasjon som kan brukes fritt til registrering av
+          terminologi. Ta kontakt med oss på
+          <a class="underline" href="mailto:termportalen@uib.no"
+            >termportalen@uib.no</a
+          >
+          dersom du ønsker å komme i gang med terminologiarbeid på ditt
+          fagområde.
+        </p>
+        <p>
+          Termportalen er en del av Språksamlingene ved Universitetet i Bergen,
+          og arbeidet med terminologi skjer i samråd med Språkrådet.
+          Termportalen er finansiert av Kunnskapsdepartementet og
+          Kulturdepartementet.
+        </p>
+      </div>
     </div>
     <div v-if="$i18n.locale === 'nn'">
-      <h2 id="velkommen" class="text-2xl">
-        <NuxtLink to="#velkommen">Velkommen</NuxtLink>
+      <h2 id="velkommen" class="pb-3 text-2xl">
+        <NuxtLink to="#velkommen"></NuxtLink>
       </h2>
     </div>
     <div v-if="$i18n.locale === 'en'">
-      <h2 id="velkommen" class="text-2xl">
-        <NuxtLink to="#velkommen">Velkommen</NuxtLink>
+      <h2 id="velkommen" class="pb-3 text-2xl">
+        <NuxtLink to="#velkommen"></NuxtLink>
       </h2>
     </div>
   </div>
