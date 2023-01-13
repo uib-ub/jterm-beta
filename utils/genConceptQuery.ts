@@ -1,5 +1,6 @@
 
 export function genConceptQuery(samling: string, begrep: string): string {
+  const runtimeConfig = useRuntimeConfig()
   const query = `
     PREFIX dc: <http://purl.org/dc/elements/1.1/>
     PREFIX dcterms: <http://purl.org/dc/terms/>
@@ -11,7 +12,7 @@ export function genConceptQuery(samling: string, begrep: string): string {
     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
     PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
     PREFIX skosno: <https://data.norge.no/vocabulary/skosno#>
-    PREFIX base: <http://test.wiki.terminologi.no/index.php/Special:URIResolver/>
+    PREFIX base: <${runtimeConfig.public.base}>
     CONSTRUCT  {
       base:${samling}-3A${begrep} ?p ?o.
       ?o ?p2 ?o2.
