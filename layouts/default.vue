@@ -3,7 +3,7 @@
     <NavBar />
     <main
       role="main"
-      class="container mx-auto max-w-screen-xl flex-1 bg-white p-5"
+      class="container mx-auto max-w-screen-xl flex-1 bg-white p-4 sm:p-5 md:p-7 lg:p-9 xl:p-10"
     >
       <h1
         v-if="route.path === '/'"

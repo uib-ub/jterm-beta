@@ -16,21 +16,21 @@
         aria-labelledby="resultsheading"
       >
         <thead class="bg-gray-100">
-          <tr>
-            <th class="text-lg">
+          <tr class="text-lg">
+            <th>
               {{ $t("search.term") }}
               <span v-if="searchOptions.searchLanguage !== 'all'">{{
                 $t("global.lang." + searchOptions.searchLanguage)
               }}</span>
             </th>
-            <th v-if="searchOptions.searchLanguage === 'all'" class="text-lg">
+            <th v-if="searchOptions.searchLanguage === 'all'">
               {{ $t("search.language") }}
             </th>
-            <th v-if="searchOptions.searchTranslate !== 'none'" class="text-lg">
+            <th v-if="searchOptions.searchTranslate !== 'none'">
               {{ $t("search.term") }}
               {{ $t("global.lang." + searchOptions.searchTranslate) }}
             </th>
-            <th class="text-lg">{{ $t("search.termbase") }}</th>
+            <th>{{ $t("search.termbase") }}</th>
           </tr>
         </thead>
         <tbody>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <ul id="domainTab" class="flex gap-2 overflow-x-auto px-1" role="tablist">
+      <ul id="domainTab" class="flex gap-2 overflow-x-auto px-1 pt-1  " role="tablist">
         <DomainTab tab-id="all" />
         <DomainTab tab-id="humaniora" />
         <DomainTab tab-id="naturvitenskap" />
