@@ -1,20 +1,17 @@
 <template>
-  <nav class="bg-tpblue-400 flex" role="navigation">
-    <div
-      class="mx-auto flex max-w-screen-xl grow justify-between py-2 px-5 text-white"
-    >
-      <div>
+  <nav class="bg-tpblue-400 flex text-white" role="navigation">
+    <div class="mx-auto flex max-w-screen-xl grow justify-between py-2 px-5">
+      <div class="text-xl font-medium hover:text-gray-200">
         <NuxtLink
           to="/"
-          class="text-xl font-medium text-white hover:text-gray-200"
           alt="termportalen.no"
           >Termportalen.no</NuxtLink
         >
       </div>
-      <div class="text-lg text-white hover:text-gray-200">
+      <div class="text-lg">
         <div class="xs:hidden">
           <button
-            class="ml-auto mr-0 flex rounded border border-white px-3 py-2 text-white hover:border-white hover:text-white"
+            class="ml-auto mr-0 flex rounded border border-white px-3 py-2 hover:border-white hover:text-white"
             @click="navMenuExpanded = !navMenuExpanded"
           >
             <svg
@@ -32,10 +29,10 @@
           class="xs:flex xs:gap-3"
           :class="{ hidden: !navMenuExpanded }"
         >
-          <li>
+          <li class="hover:text-gray-200">
             <NuxtLink to="/about"> {{ $t("navBar.about") }}</NuxtLink>
           </li>
-          <li>
+          <li class="hover:text-gray-200">
             <NuxtLink to="/config"> {{ $t("navBar.config") }}</NuxtLink>
           </li>
         </ul>
