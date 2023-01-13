@@ -1,7 +1,7 @@
 <template>
   <tr class="hover:bg-gray-100">
     <td
-      class="py-1 pr-5"
+      class="py-1 pr-2"
       :class="{ 'text-right': langRtoL(entryData.lang[0] as LangCode) }"
     >
       <NuxtLink class="" :to="`/${entryData.link}`">
@@ -12,7 +12,7 @@
         <span v-else v-html="entryData.label"></span>
       </NuxtLink>
     </td>
-    <td v-if="searchOptions.searchLanguage === 'all'" class="pr-5">
+    <td v-if="searchOptions.searchLanguage === 'all'" class="px-2">
       <NuxtLink class="" :to="`/${entryData.link}`">
         {{
           entryData.lang.map((l: string) => $t(`global.lang.${l}`)).join(", ")
@@ -20,12 +20,12 @@
       </NuxtLink>
     </td>
     <td
-      v-if="searchOptions.searchTranslate !== 'none'"
+      v-if="searchOptions.searchTranslate !== 'none'" class="px-2"
       :class="{ 'text-right': langRtoL(searchOptions.searchTranslate) }"
     >
       <b v-html="entryData.translate"></b>
     </td>
-    <td class="">
+    <td class="pl-2">
       {{ $t("global.samling." + entryData.samling) }}
     </td>
   </tr>
