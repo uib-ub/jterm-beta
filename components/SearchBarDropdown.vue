@@ -1,26 +1,26 @@
 <template>
   <div class="flex gap-x-2">
-    <div :id="`${dropdown}Label`" class="py-1 text-lg">
+    <label :for="`${dropdown}Select`" class="py-1 text-lg">
       {{ $t("searchBar." + dropdown) }}:
-    </div>
+    </label>
     <select
+      :id="`${dropdown}Select`"
       v-model="searchOptions[dropdown]"
       class="form-select tp-search-dd"
-      :aria-labelledby="`${dropdown}Label`"
     >
       <slot></slot>
     </select>
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const searchOptions = useSearchOptions();
 const props = defineProps({
   dropdown: { type: String, required: true },
 });
 </script>
 
-<style scoped>
+<style>
 .tp-search-dd {
   margin-right: 7px;
   margin-bottom: 7px;
