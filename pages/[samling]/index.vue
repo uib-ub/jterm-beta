@@ -1,7 +1,7 @@
 <template>
   <div>
     <Head>
-      <Title>{{ uriData?.label[0]["@value"] }} | Termportalen</Title>
+      <Title>{{ uriData?.label[0]["@value"] || uriData?.label[0]}} | Termportalen</Title>
     </Head>
     <h1 class="py-3 text-2xl">
       {{ uriData?.label[0]["@value"] || uriData?.label[0] }}
