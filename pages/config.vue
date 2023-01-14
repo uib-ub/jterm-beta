@@ -3,167 +3,48 @@
     <Head>
       <Title>{{ $t("config.title") }} | {{ $t("index.title") }}</Title>
     </Head>
-    <h1 class="text-3xl">{{ $t("config.title") }}</h1>
-    <h2 class="text-2xl">{{ $t("config.global") }}</h2>
-    <form>
-      <label for="locale-select">{{ $t("global.language") }}: </label>
-      <select id="locale-select" v-model="$i18n.locale">
-        <option value="nb">{{ $t("global.lang.nb") }}</option>
-        <option value="nn">{{ $t("global.lang.nn") }}</option>
-        <option value="en">{{ $t("global.lang.en") }}</option>
+    <h1 id="config" class="pb-3 text-3xl">
+      <NuxtLink to="#config">{{ $t("config.title") }}</NuxtLink>
+    </h1>
+    <h2 id="global" class="pb-2 text-2xl">
+      <NuxtLink to="#global">{{ $t("config.global") }}</NuxtLink>
+    </h2>
+
+    <div>
+      <label for="locale-select" class="text-lg"
+        >{{ $t("global.language") }}:
+      </label>
+      <select id="locale-select" class="tp-search-dd">
+        <option v-for="lang in ['nb', 'nn', 'en']" :key="lang" :value="lang">
+          {{ $t("global.lang." + lang) }}
+        </option>
       </select>
-    </form>
-    <h2 class="text-2xl pt-3">{{ $t("config.conceptview") }}</h2>
-    <h3 class="text-xl">{{ $t("config.dataDispLang") }}</h3>
-    <div class="form-check">
-      <input
-        id="ddl-nb"
-        v-model="dataDisplayLanguages"
-        class="form-check-input"
-        type="checkbox"
-        value="nb"
-      />
-      <label for="ddl-nb">{{ $t("global.lang.nb") }}</label
-      ><br />
-      <input
-        id="ddl-nn"
-        v-model="dataDisplayLanguages"
-        class="form-check-input"
-        type="checkbox"
-        value="nn"
-      />
-      <label for="ddl-nn">{{ $t("global.lang.nn") }}</label
-      ><br />
-      <input
-        id="ddl-en"
-        v-model="dataDisplayLanguages"
-        class="form-check-input"
-        type="checkbox"
-        value="en"
-      />
-      <label for="ddl-en">{{ $t("global.lang.en") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-ar"
-        value="ar"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-ar">{{ $t("global.lang.ar") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-da"
-        value="da"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-da">{{ $t("global.lang.da") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-de"
-        value="de"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-de">{{ $t("global.lang.de") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-es"
-        value="es"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-es">{{ $t("global.lang.es") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-fi"
-        value="fi"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-fi">{{ $t("global.lang.fi") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-fr"
-        value="fr"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-fr">{{ $t("global.lang.fr") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-it"
-        value="it"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-it">{{ $t("global.lang.it") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-la"
-        value="la"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-la">{{ $t("global.lang.la") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-pl"
-        value="pl"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-pl">{{ $t("global.lang.pl") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-ru"
-        value="ru"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-ru">{{ $t("global.lang.ru") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-so"
-        value="so"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-so">{{ $t("global.lang.so") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-sv"
-        value="sv"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-sv">{{ $t("global.lang.sv") }}</label
-      ><br />
-      <input
-        class="form-check-input"
-        type="checkbox"
-        id="ddl-ti"
-        value="ti"
-        v-model="dataDisplayLanguages"
-      />
-      <label for="ddl-ti">{{ $t("global.lang.ti") }}</label
-      ><br />
+      (deaktivert)
+    </div>
+    <h2 id="conceptview" class="pt-3 pb-2 text-2xl">
+      <NuxtLink to="#conceptview">{{ $t("config.conceptview") }}</NuxtLink>
+    </h2>
+    <h3 id="dataDispLang" class="pb-1 text-xl">
+      <NuxtLink to="#dataDispLang">{{ $t("config.dataDispLang") }}</NuxtLink>
+    </h3>
+    <div class="grid w-72 grid-flow-col grid-rows-6">
+      <div v-for="lang in languageOrder[$i18n.locale]" :key="lang" class="w-32">
+        <input
+          :id="`ddl-${lang}`"
+          v-model="dataDisplayLanguages"
+          class="checked:bg-tpblue-400"
+          type="checkbox"
+          :value="lang"
+        />
+        <label class="px-1 py-1 text-lg" :for="`ddl-${lang}`">{{
+          $t("global.lang." + lang)
+        }}</label>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+// v-model="$i18n.locale"
 const dataDisplayLanguages = useDataDisplayLanguages();
 </script>
