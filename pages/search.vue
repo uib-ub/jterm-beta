@@ -141,6 +141,10 @@ const fetchFurtherSearchData = () => {
           searchFilterData.value.lang.length > 0
             ? searchFilterData.value.lang
             : searchOptions.value.searchLanguage,
+        searchPredicate:
+          searchFilterData.value.predicate.length > 0
+            ? searchFilterData.value.predicate
+            : searchOptions.value.searchPredicate,
         searchTranslate: searchOptions.value.searchTranslate,
         searchMatching: Object.keys(offset),
         searchLimit: searchOptions.value.searchLimit,
