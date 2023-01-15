@@ -13,7 +13,7 @@
       </div>
       <div>
         <button
-          class="w-16 rounded border hover:bg-gray-100 border-solid border-gray-300 xs:w-32"
+          class="xs:w-32 w-16 rounded border border-solid border-gray-300 hover:bg-gray-100"
           type="button"
           @click="displayFilter = !displayFilter"
         >
