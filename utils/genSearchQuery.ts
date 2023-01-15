@@ -1,5 +1,11 @@
 import { SearchOptions } from "../composables/states";
-import { Matching, QueryType, Samling, Domains } from "../utils/vars";
+import {
+  Matching,
+  QueryType,
+  Samling,
+  Domains,
+  LabelPredicate,
+} from "../utils/vars";
 
 const htmlHighlight = {
   open: "<span class='bg-tpblue-100'>",
@@ -136,6 +142,16 @@ function getLanguageWhere(
   }
 }
 
+function getPredicateValues(predicate: LabelPredicate[]): string {
+  const predLength = predicate.length;
+  if (predLength === 0 || predLength === 3) {
+    return "";
+  } else {
+    const filterPred = predicate.map((p) => `skosxl:${p}`).join(" ");
+    return `VALUES ?predicate { ${filterPred} }`;
+  }
+}
+
 export function genSearchQuery(
   searchOptions: SearchOptions,
   queryType: QueryType,
@@ -147,17 +163,17 @@ export function genSearchQuery(
     searchOptions.searchBase
   );
   const language = getLanguageData(searchOptions.searchLanguage);
-  if (matching[0] === "all" && queryType === "entries") {
-    return genSearchQueryAll(searchOptions, graph, language);
-  } else {
+  const predFilter = getPredicateValues(searchOptions.searchPredicate);
 
+  if (matching[0] === "all" && queryType === "entries") {
+    return genSearchQueryAll(searchOptions, graph, language, predFilter);
+  } else {
     const aggregateCategories = [
       "?lang",
       "?samling",
       "?predicate",
       "?matching",
     ];
-
     const subqueries = (
       queryType: QueryType,
       subEntry: string,
@@ -245,14 +261,18 @@ export function genSearchQuery(
           },
         },
         aggregate: {
-          lang: `?uri ?predicate ?label
+          lang: `${predFilter}
+          ?uri ?predicate ?label
               BIND ( lang(?lit) as ?prop ).`,
-          samling: `?uri ?predicate ?label;
+          samling: `${predFilter}
+          ?uri ?predicate ?label;
                     skosp:memberOf ?s.
                   BIND (replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?prop)`,
-          predicate: `?uri ?p ?label;
-               BIND (replace(str(?p), "http://www.w3.org/2008/05/skos-xl#", "") as ?prop)`,
-          matching: `?uri ?predicate ?label
+          predicate: `${predFilter}
+          ?uri ?predicate ?label;
+               BIND (replace(str(?predicate), "http://www.w3.org/2008/05/skos-xl#", "") as ?prop)`,
+          matching: `${predFilter}
+          ?uri ?predicate ?label
                   BIND ("${aggregateMatch}" as ?prop)`,
         },
       };
@@ -285,6 +305,7 @@ export function genSearchQuery(
         WHERE {
           ${where}
           ${subqueries(queryType, match)?.filter}
+          ${predFilter}
           ?uri ?predicate ?label;
                skosp:memberOf ?s.
           ${translateOptional}

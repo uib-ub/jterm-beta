@@ -3,7 +3,8 @@ import { SearchOptions } from "../composables/states";
 export function genSearchQueryAll(
   searchOptions: SearchOptions,
   graph,
-  language
+  language,
+  predFilter
 ) {
   let languageFilter: string;
   if (language[0] === "") {
@@ -31,13 +32,14 @@ export function genSearchQueryAll(
           {
           ?label skosxl:literalForm ?literal.
           ${languageFilter}
+          ${predFilter}
           ?uri ?predicate ?label;
                skosp:memberOf ?s.
           ${translateOptional}
           }
         }
       }
-      ORDER BY lcase(str(?lit))
+      ORDER BY lcase(str(?literal))
       LIMIT ${searchOptions.searchLimit}
       OFFSET ${searchOptions.searchOffset?.all || 0}
     }`;
