@@ -29,6 +29,7 @@ export interface SearchOptions {
   searchBase: string | string[];
   searchDomain: string[];
   searchLanguage: LangCode | "all" | LangCode[];
+  searchPredicate: LabelPredicate[];
   searchTranslate: LangCode | "none";
   searchMatching: Matching | MatchingNested[];
   searchLimit: number;
@@ -41,6 +42,7 @@ export const useSearchOptions = () =>
     searchBase: "all",
     searchDomain: ["all"],
     searchLanguage: "all",
+    searchPredicate: ["prefLabel", "altLabel", "hiddenLabel"],
     searchTranslate: "none",
     searchMatching: [
       ["full-cs", "full-ci"],
