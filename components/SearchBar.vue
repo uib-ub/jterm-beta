@@ -122,3 +122,9 @@ function execSearch() {
   searchfield.focus();
 }
 </script>
+
+<style scoped>
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+</style>
