@@ -11,7 +11,7 @@ export function genSearchQueryAll(
     languageFilter = "";
   } else {
     const languageFilterExp = language
-      .map((lang) => `langmatches(lang(?literal), '${lang}')`)
+      .map((lang) => `langmatches(lang(?lit), '${lang}')`)
       .join("     \n || ");
     languageFilter = `FILTER ( ${languageFilterExp} )`;
   }
@@ -26,23 +26,21 @@ export function genSearchQueryAll(
       : "";
 
   const innerQuery = `
-    { SELECT ?uri ?predicate ?label ?literal (0 as ?sc) ?s ${translate}
-      WHERE {
-        GRAPH ${graph[1]} {
-          {
-          ?label skosxl:literalForm ?literal.
-          ${languageFilter}
-          ${predFilter}
-          ?uri ?predicate ?label;
-               skosp:memberOf ?s.
-          ${translateOptional}
+      { SELECT ?uri ?predicate ?label ?lit (0 as ?sc) ?s ${translate}
+        WHERE {
+          GRAPH ${graph[1]} {
+            ?label skosxl:literalForm ?lit.
+            ${languageFilter}
+            ${predFilter}
+            ?uri ?predicate ?label;
+                 skosp:memberOf ?s.
+            ${translateOptional}
           }
         }
-      }
-      ORDER BY lcase(str(?literal))
-      LIMIT ${searchOptions.searchLimit}
-      OFFSET ${searchOptions.searchOffset?.all || 0}
-    }`;
+        ORDER BY lcase(str(?lit))
+        LIMIT ${searchOptions.searchLimit}
+        OFFSET ${searchOptions.searchOffset?.all || 0}
+      }`;
 
   const outerQuery = `
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
@@ -51,22 +49,24 @@ export function genSearchQueryAll(
   PREFIX ns: <http://spraksamlingane.no/terminlogi/named/>
 
   SELECT DISTINCT ?uriEnc ?predicate ?literal ?samling (0 as ?score)
-         (group_concat( lang(?literal); separator="," ) as ?lang)
+         (group_concat( ?l; separator="," ) as ?lang)
          ("all" as ?matching) ${translate}
   ${graph[0]}
   WHERE {
       { SELECT ?label ?literal ?l ?uriEnc ?predicate ?samling ${translate}
         WHERE {
-                 ${innerQuery}
+          ${innerQuery}
           BIND ( replace(str(?uri), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/", "") as ?uriProc).
           BIND ( replace(?uriProc, "/", "%2F") as ?uriEnc).
           BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling).
+          BIND ( lang(?lit) as ?l)
+          Bind ( str(?lit) as ?literal)
         }
-        ORDER BY ?literal
+        ORDER BY lcase(?literal)
         LIMIT ${searchOptions.searchLimit}
     }
   }
-  GROUP BY ?uriEnc ?predicate ?literal ?samling ?score ?matching ${translate}
+  GROUP BY ?uriEnc ?predicate ?literal ?samling ?score ?lang ?matching ${translate}
   ORDER BY lcase(?literal) DESC(?predicate)
   LIMIT ${searchOptions.searchLimit}
   `;
