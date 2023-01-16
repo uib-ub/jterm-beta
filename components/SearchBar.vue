@@ -74,6 +74,9 @@
           </option>
         </SearchBarDropdown>
         <SearchBarDropdown dropdown="searchBase">
+          <option value="all">
+            {{ $t("global.samling.all") }} ({{ filteredTermbases.length }})
+          </option>
           <option
             v-for="samling in filteredTermbases"
             :key="'searchsamling_' + samling"
