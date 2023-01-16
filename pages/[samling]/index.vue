@@ -46,14 +46,14 @@
             <!--Languages-->
             <DataRow
               v-if="uriData?.language"
-              :data="intersectUnique(languageOrder[$i18n.locale as keyof typeof languageOrder], uriData.language).map((lang: string) => $t('global.lang.' + lang)) .join(', ')"
+              :data="intersectUnique(languageOrder[$i18n.locale as keyof typeof languageOrder], uriData.language).map((lang: string) => $t(`global.lang.${lang}`, 2)) .join(', ')"
 
               :label="$t('global.language', 1)"
             />
             <!--Starting languages-->
             <DataRow
               v-if="uriData?.opprinneligSpraak"
-              :data="$t('global.lang.' + uriData.opprinneligSpraak)"
+              :data="$t('global.lang.' + uriData.opprinneligSpraak, 2)"
               :label="$t('samling.startLang')"
             />
           </tbody>
