@@ -98,7 +98,7 @@ const filteredTermbases = computed(() => {
   if (topdomain === "all") {
     return samlingOrder;
   } else {
-    const termbases = ["all"].concat(domainNesting[topdomain]?.bases);
+    const termbases = domainNesting[topdomain]?.bases;
     return intersectUnique(samlingOrder, termbases);
   }
 });
