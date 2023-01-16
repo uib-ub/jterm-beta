@@ -19,7 +19,6 @@ export type LangCode =
   | "ti";
 
 export type Samling =
-  | "all"
   | "MRT"
   | "MRT2"
   | "UHR"
@@ -99,7 +98,6 @@ export const matchingOrder: Matching[] | Matching[][] = [
   "contains-ci",
 ];
 export const samlingOrder: Samling[] = [
-  "all",
   "ARTSDB",
   "ASTRONOMI",
   "BIOLOGI",
