@@ -28,8 +28,8 @@
         <p>
           Termportalen er en del av Språksamlingene ved Universitetet i Bergen,
           og arbeidet med terminologi skjer i samråd med Språkrådet.
-          Termportalen er finansiert av Kunnskapsdepartementet og
-          Kulturdepartementet.
+          Termportalen er finansiert av Kunnskapsdepartementet og Kultur- og
+          likestillingsdepartementet.
         </p>
       </div>
     </div>
