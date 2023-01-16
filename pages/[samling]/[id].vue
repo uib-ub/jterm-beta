@@ -1,6 +1,7 @@
 <template>
   <div class="flex">
     <h1 class="sr-only">{{ $t("id.topheading") }}</h1>
+
     <div v-if="searchData.length > 0" class="hidden md:block md:w-60 lg:w-1/4">
       <div class="container">
         <div class="container h-8">
@@ -34,7 +35,7 @@
       </div>
     </div>
     <div class="col px-3 lg:w-3/4 lg:px-6">
-      <div class="form-check container py-2 hidden">
+      <div class="form-check container invisible py-2">
         <input
           id="viewToggle"
           v-model="conceptViewToggle"
@@ -43,15 +44,26 @@
         />
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
-      <h2 class="text-4xl">{{ data[uri]?.label }}</h2>
 
+      <h2 class="pb-4">
+        <span class="text-3xl">{{ data[uri]?.label }}</span
+        ><br />
+        <span v-if="data[uri]?.memberOf"
+          ><NuxtLink
+            class="underline text-base text-gray-600"
+            :to="'/' + data[uri]?.memberOf.split('-3A')[0]"
+          >
+            {{ $t("global.samling." + data[uri]?.memberOf.split("-3A")[0]) }}
+          </NuxtLink></span
+        >
+      </h2>
       <div v-if="conceptViewToggle">
-        <h3>{{ $t("id.languagedata") }}</h3>
+        <h3 class="">{{ $t("id.languagedata") }}</h3>
         <table class="table-auto">
           <!--Header-->
           <thead>
             <tr>
-              <th class="col-2" scope="col"></th>
+              <th class="" scope=""></th>
               <th
                 v-for="lang in displayInfo.displayLanguages"
                 :key="'langSection_' + lang"
@@ -113,82 +125,85 @@
         </table>
       </div>
 
-      <div
-        v-for="lang in displayInfo.displayLanguages"
-        v-else
-        :key="'disp_' + lang"
-      >
-        <h3 class="pt-3 text-xl">{{ $t("global.lang." + lang) }}</h3>
-        <table class="table-auto">
-          <tbody>
-            <!--Anbefalt term-->
-            <DataRow
-              v-for="label in data[uri]?.prefLabel?.[lang]"
-              :key="'prefLabel_' + label"
-              :data="data[label]?.literalForm['@value']"
-              :data-right-align=langRtoL(lang)
-              :label="$t('id.prefLabel')"
-            />
-            <!--AltLabel-->
-            <DataRow
-              v-for="label in data[uri]?.altLabel?.[lang]"
-              :key="'altLabel_' + label"
-              :data="data[label]?.literalForm['@value']"
-              :data-right-align=langRtoL(lang)
-              :label="$t('id.altLabel')"
-            />
-            <!--HiddenLabel-->
-            <DataRow
-              v-for="label in data[uri]?.hiddenLabel?.[lang]"
-              :key="'hiddenLabel_' + label"
-              :data="data[label]?.literalForm['@value']"
-              :data-right-align=langRtoL(lang)
-              :label="$t('id.hiddenLabel')"
-            />
-          </tbody>
-        </table>
+      <div v-else class="grid gap-y-5">
+        <div
+          v-for="lang in displayInfo.displayLanguages"
+          :key="'disp_' + lang"
+        >
+          <h3 class="text-xl pb-1">{{ $t("global.lang." + lang) }}</h3>
+          <table class="table-auto">
+            <tbody>
+              <!--Anbefalt term-->
+              <DataRow
+                v-for="label in data[uri]?.prefLabel?.[lang]"
+                :key="'prefLabel_' + label"
+                :data="data[label]?.literalForm['@value']"
+                :data-right-align="langRtoL(lang)"
+                :label="$t('id.prefLabel')"
+              />
+              <!--AltLabel-->
+              <DataRow
+                v-for="label in data[uri]?.altLabel?.[lang]"
+                :key="'altLabel_' + label"
+                :data="data[label]?.literalForm['@value']"
+                :data-right-align="langRtoL(lang)"
+                :label="$t('id.altLabel')"
+              />
+              <!--HiddenLabel-->
+              <DataRow
+                v-for="label in data[uri]?.hiddenLabel?.[lang]"
+                :key="'hiddenLabel_' + label"
+                :data="data[label]?.literalForm['@value']"
+                :data-right-align="langRtoL(lang)"
+                :label="$t('id.hiddenLabel')"
+              />
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <h3 class="text-xl pb-1" v-if="data[uri]">{{ $t("id.general") }}</h3>
+          <table class="">
+            <tbody>
+              <!--Termbase-->
+              <DataRow
+                v-if="data[uri]?.memberOf"
+                :data="
+                  $t('global.samling.' + data[uri]?.memberOf.split('-3A')[0])
+                "
+                :nuxtlink="true"
+                :to="`/${samling}`"
+                :label="$t('id.collection')"
+              />
+              <!--Domene-->
+              <DataRow
+                v-if="data[uri]?.domene"
+                :data="data[uri]?.domene"
+                :label="$t('id.domain')"
+              />
+              <!--Bruksområde-->
+              <DataRow
+                v-if="data[uri]?.subject"
+                :data="data[uri]?.subject.join(', ')"
+                :label="$t('id.subject')"
+              />
+              <!--Modified-->
+              <DataRow
+                v-if="data[uri]?.modified"
+                :data="data[uri]?.modified['@value']"
+                :label="$t('id.modified')"
+              />
+              <!--Created-->
+              <!--Note TODO after export fix-->
+              <DataRow
+                v-if="data[uri]?.scopeNote"
+                :data="data[uri]?.scopeNote"
+                th-class=""
+                :label="$t('id.note')"
+              />
+            </tbody>
+          </table>
+        </div>
       </div>
-
-      <h3 class="pt-3 text-xl" v-if="data[uri]">{{ $t("id.general") }}</h3>
-      <table class="">
-        <tbody>
-          <!--Samling-->
-          <DataRow
-            v-if="data[uri]?.memberOf"
-            :samling="data[uri]?.memberOf.split('-3A')[0]"
-            :data="samling"
-            :nuxtlink="true"
-            :to="`/${samling}`"
-            :label="$t('id.collection')"
-          />
-          <!--Domene-->
-          <DataRow
-            v-if="data[uri]?.domene"
-            :data="data[uri]?.domene"
-            :label="$t('id.domain')"
-          />
-          <!--Bruksområde-->
-          <DataRow
-            v-if="data[uri]?.subject"
-            :data="data[uri]?.subject.join(', ')"
-            :label="$t('id.subject')"
-          />
-          <!--Modified-->
-          <DataRow
-            v-if="data[uri]?.modified"
-            :data="data[uri]?.modified['@value']"
-            :label="$t('id.modified')"
-          />
-          <!--Created-->
-          <!--Note TODO after export fix-->
-          <DataRow
-            v-if="data[uri]?.scopeNote"
-            :data="data[uri]?.scopeNote"
-            th-class=""
-            :label="$t('id.note')"
-          />
-        </tbody>
-      </table>
     </div>
   </div>
 </template>
