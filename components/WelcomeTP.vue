@@ -17,7 +17,7 @@
         </p>
         <p>
           I tillegg til søkesiden til Termportalen er det utviklet en
-          Redigeringsapplikasjon som kan brukes fritt til registrering av
+          redigeringsapplikasjon som kan brukes fritt til registrering av
           terminologi. Ta kontakt med oss på
           <a class="underline" href="mailto:termportalen@uib.no"
             >termportalen@uib.no</a
