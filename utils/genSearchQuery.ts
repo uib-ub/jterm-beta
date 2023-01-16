@@ -155,7 +155,8 @@ function getPredicateValues(predicate: LabelPredicate[]): string {
 export function genSearchQuery(
   searchOptions: SearchOptions,
   queryType: QueryType,
-  matching: string[]
+  matching: string[],
+  querySituation
 ): string {
   const termData = getTermData(searchOptions.searchTerm, htmlHighlight);
   const graph = getGraphData(
@@ -166,7 +167,13 @@ export function genSearchQuery(
   const predFilter = getPredicateValues(searchOptions.searchPredicate);
 
   if (matching[0] === "all" && queryType === "entries") {
-    return genSearchQueryAll(searchOptions, graph, language, predFilter);
+    return genSearchQueryAll(
+      searchOptions,
+      graph,
+      language,
+      predFilter,
+      querySituation
+    );
   } else {
     const aggregateCategories = [
       "?lang",
@@ -424,6 +431,7 @@ export function genSearchQuery(
   PREFIX ns: <http://spraksamlingane.no/terminlogi/named/>`;
 
     const queryEntries = () => `
+  #jterm-beta>${querySituation}>entry: ${JSON.stringify(searchOptions)}
   ${queryPrefix()}
 
   SELECT DISTINCT ?uriEnc ?predicate ?literal ?samling ?score ${translate}
@@ -451,6 +459,7 @@ export function genSearchQuery(
   }`;
 
     const queryAggregate = () => `
+  #jterm-beta>${querySituation}>aggregate: ${JSON.stringify(searchOptions)}
   ${queryPrefix()}
 
   SELECT ${aggregateCategories.join(" ")}

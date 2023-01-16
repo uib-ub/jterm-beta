@@ -4,7 +4,8 @@ export function genSearchQueryAll(
   searchOptions: SearchOptions,
   graph,
   language,
-  predFilter
+  predFilter,
+  querySituation
 ) {
   let languageFilter: string;
   if (language[0] === "") {
@@ -43,6 +44,7 @@ export function genSearchQueryAll(
       }`;
 
   const outerQuery = `
+  #jterm-beta>${querySituation}>entries ${JSON.stringify(searchOptions)}
   PREFIX skosxl: <http://www.w3.org/2008/05/skos-xl#>
   PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
   PREFIX text: <http://jena.apache.org/text#>
