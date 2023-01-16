@@ -5,12 +5,13 @@ export async function fetchSearchDataMatching(
   searchOptions: SearchOptions,
   matching: string[],
   append: boolean,
-  currentFetch: number
+  currentFetch: number,
+  querySituation
 ) {
   const searchData = useSearchData();
   const searchFetchLatest = useSearchFetchLatest();
   const data: SearchQueryResponse = await fetchData(
-    genSearchQuery(searchOptions, "entries", matching)
+    genSearchQuery(searchOptions, "entries", matching, querySituation)
   );
   if (currentFetch === searchFetchLatest.value) {
     if (append) {
@@ -34,7 +35,7 @@ async function fetchSearchDataAggregate(
   const searchFetchLatest = useSearchFetchLatest();
   const searchDataPending = useSearchDataPending();
   const data = await fetchData(
-    genSearchQuery(searchOptions, "aggregate", matching)
+    genSearchQuery(searchOptions, "aggregate", matching, type)
   );
   const newStats = data.results?.bindings.reduce(
     (o, key) => parseAggregateData(o, key),
@@ -112,12 +113,15 @@ export async function useFetchSearchData(
   }
 
   searchDataPending.value.entries = true;
+  let qCount = 0;
   for (const m of searchMatching) {
+    qCount++
     await fetchSearchDataMatching(
       searchOptions,
       Array.isArray(m) ? m : [m],
       append,
-      fetchTime
+      fetchTime,
+      fetchType + qCount
     );
     append = true;
     if (fetchTime !== searchFetchLatest.value) {
