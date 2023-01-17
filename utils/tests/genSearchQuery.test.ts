@@ -39,17 +39,17 @@ describe("getTermData", () => {
 
 describe("getGraphData", () => {
   test("value is 'all' string", () => {
-    expect(getGraphData("all")).toStrictEqual("FROM <urn:x-arq:UnionGraph>");
+    expect(getGraphData(["all"], "all")).toStrictEqual(['',"<urn:x-arq:UnionGraph>"]);
   });
   test("value is valid key string", () => {
-    expect(getGraphData("MRT")).toStrictEqual("FROM ns:3000");
+    expect(getGraphData(["all"], "MRT")).toStrictEqual(["", "ns:3000"]);
   });
   test("value is list of empty string", () => {
-    expect(getGraphData([])).toStrictEqual("FROM <urn:x-arq:UnionGraph>");
+    expect(getGraphData(["all"], [])).toStrictEqual(["", "<urn:x-arq:UnionGraph>"]);
   });
   test("value is list of valid keys", () => {
-    expect(getGraphData(["MRT", "MRT2"])).toStrictEqual(
-      "FROM ns:3000\n  FROM ns:3002"
+    expect(getGraphData(["all"], ["MRT", "MRT2"])).toStrictEqual(
+      ["\n  FROM NAMED ns:3000\n  FROM NAMED ns:3002", "?G"]
     );
   });
 });
