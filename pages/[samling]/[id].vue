@@ -50,7 +50,7 @@
         ><br />
         <span v-if="data[uri]?.memberOf"
           ><NuxtLink
-            class="underline text-base text-gray-600"
+            class="text-base text-gray-600 underline"
             :to="'/' + data[uri]?.memberOf.split('-3A')[0]"
           >
             {{ $t("global.samling." + data[uri]?.memberOf.split("-3A")[0]) }}
