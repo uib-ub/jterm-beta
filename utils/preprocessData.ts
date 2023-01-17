@@ -47,7 +47,9 @@ export function idLabelsWithLang(
   for (const uri of conceptUris) {
     for (const labeltype of labeltypes) {
       try {
-        data[uri][labeltype] = updateLabel(data, uri, labeltype);
+        if (data[uri][labeltype]) {
+          data[uri][labeltype] = updateLabel(data, uri, labeltype);
+        }
       } catch (e) {}
     }
   }
