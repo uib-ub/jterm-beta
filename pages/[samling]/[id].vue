@@ -126,11 +126,8 @@
       </div>
 
       <div v-else class="grid gap-y-5">
-        <div
-          v-for="lang in displayInfo.displayLanguages"
-          :key="'disp_' + lang"
-        >
-          <h3 class="text-xl pb-1">{{ $t("global.lang." + lang) }}</h3>
+        <div v-for="lang in displayInfo.displayLanguages" :key="'disp_' + lang">
+          <h3 class="pb-1 text-xl">{{ $t("global.lang." + lang) }}</h3>
           <table class="table-auto">
             <tbody>
               <!--Anbefalt term-->
@@ -161,7 +158,7 @@
           </table>
         </div>
         <div>
-          <h3 class="text-xl pb-1" v-if="data[uri]">{{ $t("id.general") }}</h3>
+          <h3 class="pb-1 text-xl" v-if="data[uri]">{{ $t("id.general") }}</h3>
           <table class="">
             <tbody>
               <!--Termbase-->
