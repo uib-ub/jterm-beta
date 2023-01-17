@@ -80,6 +80,22 @@ export function updateLabel(data: any, conceptUri: string, labelType: string) {
 }
 
 /**
+ * Check if minimun data (term, language) on label object is present.
+ *
+ * @param label - Label object
+ * @returns Boolean
+ */
+export function validateLabel(label: any): boolean {
+  const term = label.literalForm["@value"];
+  const lang = label.literalForm["@language"];
+  if (term || term !== "" || lang || lang !== "") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/**
  * Get max length for object with list as value.
  *
  * @param data - Object to be evluated.
