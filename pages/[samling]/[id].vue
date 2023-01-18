@@ -22,7 +22,7 @@
         </ol>
       </div>
     </div>
-    <div class="col px-3 lg:w-3/4 lg:px-6">
+    <div class="col lg:w-3/4" :class="{'pl-3 lg:pl-6': searchData.length > 0}">
       <div class="form-check container invisible py-2">
         <input
           id="viewToggle"
