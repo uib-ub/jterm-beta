@@ -9,7 +9,7 @@
 <script setup>
 useHead({
   htmlAttrs: {
-    lang: 'no',
+    lang: 'nb',
   }
 })
 </script>
