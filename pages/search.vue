@@ -12,7 +12,6 @@
       <ol
         v-if="searchData.length > 0"
         ref="scrollComponent"
-        class="text-lg"
         aria-labelledby="resultsheading"
       >
         <SearchResultListEntry

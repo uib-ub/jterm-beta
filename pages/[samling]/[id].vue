@@ -13,7 +13,7 @@
         <h2 class="py-3 text-2xl">{{ $t("searchFilter.results-heading") }}</h2>
       </div>
       <div class="overflow-x-auto" style="height: calc(100vh * 0.7 - 100px)">
-        <ol class="text-lg">
+        <ol>
           <SearchResultListEntryShort
             v-for="entry in searchData"
             :key="entry"
