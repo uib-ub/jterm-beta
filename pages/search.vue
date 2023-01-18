@@ -9,38 +9,17 @@
       <h2 id="resultsheading" class="py-3 text-2xl">
         {{ $t("searchFilter.results-heading") }}
       </h2>
-      <table
+      <ol
         v-if="searchData.length > 0"
         ref="scrollComponent"
-        class="w-full table-auto"
         aria-labelledby="resultsheading"
       >
-        <thead class="bg-gray-100">
-          <tr class="text-lg">
-            <th>
-              {{ $t("search.term") }}
-              <span v-if="searchOptions.searchLanguage !== 'all'">{{
-                $t("global.lang." + searchOptions.searchLanguage)
-              }}</span>
-            </th>
-            <th v-if="searchOptions.searchLanguage === 'all'">
-              {{ $t("search.language") }}
-            </th>
-            <th v-if="searchOptions.searchTranslate !== 'none'">
-              {{ $t("search.term") }}
-              {{ $t("global.lang." + searchOptions.searchTranslate) }}
-            </th>
-            <th>{{ $t("search.termbase") }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <SearchResultEntry
-            v-for="entry in searchData"
-            :key="entry.link + '_' + entry.label"
-            :entry-data="entry"
-          />
-        </tbody>
-      </table>
+        <SearchResultListEntry
+          v-for="entry in searchData"
+          :key="entry.link + '_' + entry.label"
+          :entry-data="entry"
+        />
+      </ol>
     </div>
     <div class="flex justify-center p-2">
       <div v-if="pending && countFetchedMatches > 30" role="status">
