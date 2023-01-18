@@ -12,26 +12,14 @@
 
         <h2 class="py-3 text-2xl">{{ $t("searchFilter.results-heading") }}</h2>
       </div>
-      <div class="overflow-x-auto" style="height: calc(100vh * 0.9 - 220px)">
-        <table class="w-full">
-          <thead class="bg-gray-100">
-            <tr>
-              <th class="text-lg">
-                {{ $t("search.term") }}
-                <span v-if="searchOptions.searchLanguage !== 'all'">{{
-                  $t("global.lang." + searchOptions.searchLanguage)
-                }}</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <SearchResultEntryShort
-              v-for="entry in searchData"
-              :key="entry"
-              :entry-data="entry"
-            />
-          </tbody>
-        </table>
+      <div class="overflow-x-auto" style="height: calc(100vh * 0.7 - 100px)">
+        <ol class="text-lg">
+          <SearchResultListEntryShort
+            v-for="entry in searchData"
+            :key="entry"
+            :entry-data="entry"
+          />
+        </ol>
       </div>
     </div>
     <div class="col px-3 lg:w-3/4 lg:px-6">
@@ -50,7 +38,7 @@
         ><br />
         <span v-if="data[uri]?.memberOf"
           ><NuxtLink
-            class="underline text-base text-gray-600"
+            class="text-base text-gray-600 underline"
             :to="'/' + data[uri]?.memberOf.split('-3A')[0]"
           >
             {{ $t("global.samling." + data[uri]?.memberOf.split("-3A")[0]) }}
@@ -126,11 +114,8 @@
       </div>
 
       <div v-else class="grid gap-y-5">
-        <div
-          v-for="lang in displayInfo.displayLanguages"
-          :key="'disp_' + lang"
-        >
-          <h3 class="text-xl pb-1">{{ $t("global.lang." + lang) }}</h3>
+        <div v-for="lang in displayInfo.displayLanguages" :key="'disp_' + lang">
+          <h3 class="pb-1 text-xl">{{ $t("global.lang." + lang) }}</h3>
           <table class="table-auto">
             <tbody>
               <!--Anbefalt term-->
@@ -161,7 +146,7 @@
           </table>
         </div>
         <div>
-          <h3 class="text-xl pb-1" v-if="data[uri]">{{ $t("id.general") }}</h3>
+          <h3 class="pb-1 text-xl" v-if="data[uri]">{{ $t("id.general") }}</h3>
           <table class="">
             <tbody>
               <!--Termbase-->
