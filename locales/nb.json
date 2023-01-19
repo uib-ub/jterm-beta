@@ -3,6 +3,7 @@
     "language": "Språk | Språk",
     "termbase": "Termbase",
     "domain": {
+      "domain": "Domene",
       "all": "Alle domener",
       "humaniora": "Humaniora",
       "naturvitenskap": "Naturvitenskap & teknologi",
@@ -66,7 +67,7 @@
     }
   },
 
-  "domainOverview": {"domainsAndBases": "Domener & termbaser"},
+  "domainOverview": { "domainsAndBases": "Domener & termbaser" },
   "navBar": { "about": "Om Termportalen", "config": "Inn­stillinger" },
   "searchBar": {
     "search": "Søk",

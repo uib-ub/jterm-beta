@@ -1,7 +1,8 @@
 <template>
   <div class="flex justify-center">
-    <div class="grow">
-      <DomainTabs />
+    <div class="max-w-full grow">
+      <DomainTabs class="hidden md:block"/>
+      <DomainMenu class="md:hidden"/>
       <div
         class="input-group relative flex items-stretch rounded border border-solid border-gray-300"
       >
@@ -9,7 +10,7 @@
           id="searchfield"
           v-model="searchterm"
           type="search"
-          class="form-control focus:border-tpblue-300 flex-auto rounded border border-white bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border focus:bg-white focus:text-gray-700 focus:outline-none"
+          class="min-w-0 form-control focus:border-tpblue-300 flex-auto rounded border border-white bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border focus:bg-white focus:text-gray-700 focus:outline-none"
           :placeholder="$t('searchBar.search')"
           aria-label="Searchfield"
           aria-describedby="searchbutton"
@@ -48,10 +49,12 @@
           </svg>
         </button>
       </div>
-      <div class="flex flex-wrap gap-x-3 py-2 pl-1">
+      <div class="flex flex-wrap gap-x-3 py-2 xs:px-1 text-sm xs:text-lg">
         <SearchBarDropdown dropdown="searchLanguage">
           <option value="all">
-            {{ $t("global.lang.all") }} ({{ languageOrder[$i18n.locale].length }})
+            {{ $t("global.lang.all") }} ({{
+              languageOrder[$i18n.locale].length
+            }})
           </option>
           <option
             v-for="lc in languageOrder[$i18n.locale]"

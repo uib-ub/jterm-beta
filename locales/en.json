@@ -3,6 +3,7 @@
     "language": "Language | Languages",
     "termbase": "Termbase",
     "domain": {
+      "domain": "Domain",
       "all": "All Domains",
       "humaniora": "Humanities",
       "naturvitenskap": "Sciences & Technology",

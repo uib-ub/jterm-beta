@@ -1,12 +1,8 @@
 <template>
   <nav class="bg-tpblue-400 flex text-white" role="navigation">
-    <div class="mx-auto flex max-w-screen-xl grow justify-between py-2 px-5">
+    <div class="mx-auto flex max-w-screen-xl grow justify-between py-2 px-2 xs:px-3 sm:px-4 md:px-5">
       <div class="text-xl font-medium hover:text-gray-200">
-        <NuxtLink
-          to="/"
-          alt="termportalen.no"
-          >Termportalen.no</NuxtLink
-        >
+        <NuxtLink to="/">Termportalen.no</NuxtLink>
       </div>
       <div class="text-lg">
         <div class="xs:hidden">
