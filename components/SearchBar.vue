@@ -1,7 +1,8 @@
 <template>
   <div class="flex justify-center">
-    <div class="grow">
-      <DomainTabs />
+    <div class="max-w-full grow">
+      <DomainTabs class="hidden md:block"/>
+      <DomainMenu class="md:hidden"/>
       <div
         class="input-group relative flex items-stretch rounded border border-solid border-gray-300"
       >
