@@ -51,7 +51,9 @@
       <div class="flex flex-wrap gap-x-3 py-2 pl-1">
         <SearchBarDropdown dropdown="searchLanguage">
           <option value="all">
-            {{ $t("global.lang.all") }} ({{ languageOrder[$i18n.locale].length }})
+            {{ $t("global.lang.all") }} ({{
+              languageOrder[$i18n.locale].length
+            }})
           </option>
           <option
             v-for="lc in languageOrder[$i18n.locale]"
