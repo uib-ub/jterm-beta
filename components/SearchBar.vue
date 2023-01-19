@@ -9,7 +9,7 @@
           id="searchfield"
           v-model="searchterm"
           type="search"
-          class="form-control focus:border-tpblue-300 flex-auto rounded border border-white bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border focus:bg-white focus:text-gray-700 focus:outline-none"
+          class="min-w-0 form-control focus:border-tpblue-300 flex-auto rounded border border-white bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border focus:bg-white focus:text-gray-700 focus:outline-none"
           :placeholder="$t('searchBar.search')"
           aria-label="Searchfield"
           aria-describedby="searchbutton"
