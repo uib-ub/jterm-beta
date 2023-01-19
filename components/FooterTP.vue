@@ -3,7 +3,7 @@
     class="bg-tpblue-400 static left-0 right-0 bottom-0 text-white"
     role="contentinfo"
   >
-    <div class="flex items-center justify-center gap-x-6 p-2">
+    <div class="flex flex-wrap items-center justify-center gap-x-6 p-2">
       <nuxt-img
         src="/logo_sprakradet_neg.png"
         width="180px"
