@@ -1,12 +1,12 @@
 <template>
-  <div class="flex gap-x-2">
-    <label :for="`${dropdown}Select`" class="py-1 text-lg">
+  <div class="flex flex-wrap gap-x-2">
+    <label :for="`${dropdown}Select`" class="py-1">
       {{ $t("searchBar." + dropdown) }}:
     </label>
     <select
       :id="`${dropdown}Select`"
       v-model="searchOptions[dropdown]"
-      class="form-select tp-search-dd"
+      class="form-select tp-search-dd p-1 xs:p-2"
     >
       <slot></slot>
     </select>
@@ -24,7 +24,6 @@ const props = defineProps({
 .tp-search-dd {
   margin-right: 7px;
   margin-bottom: 7px;
-  padding: 7px;
   background-color: white;
   border: solid;
   border-color: #d1d5db;
