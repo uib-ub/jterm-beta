@@ -27,7 +27,7 @@
         </button>
         <button
           id="searchbutton"
-          class="bg-tpblue-400 inline-block items-center rounded px-6 py-2.5 text-white transition duration-150 ease-in-out hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg"
+          class="bg-tpblue-400 inline-block items-center tp-searchbutton-radius px-6 py-2 text-white transition duration-200 ease-in-out hover:bg-blue-700 focus:bg-blue-700 focus:outline-none active:bg-blue-800"
           type="button"
           aria-label="search button"
           @click="execSearch"
@@ -132,5 +132,9 @@ function execSearch() {
 <style scoped>
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none;
+}
+
+.tp-searchbutton-radius {
+  border-radius: 0.2rem;
 }
 </style>
