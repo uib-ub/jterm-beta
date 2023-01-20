@@ -7,13 +7,23 @@
             class="flex grow justify-between"
             :class="{
               'sm:justify-start': searchOptions.searchTranslate !== 'none',
+              'text-right': langRtoL(entryData.lang[0] as LangCode)
             }"
           >
             <b
               v-if="entryData.predicate == 'prefLabel'"
+              :lang="entryData.lang[0]"
+              class="grow"
+              :class="{
+              'text-right': langRtoL(entryData.lang[0] as LangCode)
+            }"
               v-html="entryData.label"
             ></b>
-            <span v-else v-html="entryData.label"></span>
+            <span
+              v-else
+              :lang="entryData.lang[0]"
+              v-html="entryData.label"
+            ></span>
             <div
               v-if="searchOptions.searchLanguage === 'all'"
               class="pl-3 text-right font-light lg:hidden"
