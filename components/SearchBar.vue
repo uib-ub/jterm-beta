@@ -49,7 +49,9 @@
           </svg>
         </button>
       </div>
-      <div class="flex flex-wrap gap-x-3 py-2 xs:px-1 text-sm xs:text-lg">
+      <div
+        class="xs:px-1 xs:text-base flex flex-wrap gap-x-3 py-2 text-sm sm:text-lg"
+      >
         <SearchBarDropdown dropdown="searchLanguage">
           <option value="all">
             {{ $t("global.lang.all") }} ({{
