@@ -26,10 +26,14 @@
           :class="{ hidden: !navMenuExpanded }"
         >
           <li class="hover:text-gray-200">
-            <NuxtLink to="/about"> {{ $t("navBar.about") }}</NuxtLink>
+            <NuxtLink to="/about" @click="navMenuExpanded = false">
+              {{ $t("navBar.about") }}</NuxtLink
+            >
           </li>
           <li class="hover:text-gray-200">
-            <NuxtLink to="/config"> {{ $t("navBar.config") }}</NuxtLink>
+            <NuxtLink to="/config" @click="navMenuExpanded = false">
+              {{ $t("navBar.config") }}</NuxtLink
+            >
           </li>
         </ul>
       </div>
