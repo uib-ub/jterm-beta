@@ -19,19 +19,26 @@
               class="pl-3 text-right font-light lg:hidden"
               :class="{ 'md:hidden': searchOptions.searchTranslate === 'none' }"
             >
-              <span v-if="searchOptions.searchTranslate === 'none'">
-                {{
-                  entryData.lang
-                    .map((l: string) => $t(`global.lang.${l}`))
-                    .join(", ")
-                }}</span
-              >
-              <span v-else>
-                ({{
-                  entryData.lang
-                    .map((l: string) => $t(`global.lang.${l}`))
-                    .join(", ")
-                }})</span
+              <span>
+                <span
+                  class="hidden"
+                  :class="{
+                    'sm:inline': searchOptions.searchTranslate !== 'none',
+                  }"
+                  >(</span
+                ><span>
+                  {{
+                    entryData.lang
+                      .map((l: string) => $t(`global.lang.${l}`))
+                      .join(", ")
+                  }} </span
+                ><span
+                  class="hidden"
+                  :class="{
+                    'sm:inline': searchOptions.searchTranslate !== 'none',
+                  }"
+                  >)</span
+                ></span
               >
             </div>
           </div>
