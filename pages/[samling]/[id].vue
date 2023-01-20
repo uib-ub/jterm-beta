@@ -123,24 +123,24 @@
                 v-for="label in data[uri]?.prefLabel?.[lang]"
                 :key="'prefLabel_' + label"
                 :data="data[label]?.literalForm['@value']"
-                :data-right-align="langRtoL(lang)"
                 :label="$t('id.prefLabel')"
+                :data-lang="lang"
               />
               <!--AltLabel-->
               <DataRow
                 v-for="label in data[uri]?.altLabel?.[lang]"
                 :key="'altLabel_' + label"
                 :data="data[label]?.literalForm['@value']"
-                :data-right-align="langRtoL(lang)"
                 :label="$t('id.altLabel')"
+                :data-lang="lang"
               />
               <!--HiddenLabel-->
               <DataRow
                 v-for="label in data[uri]?.hiddenLabel?.[lang]"
                 :key="'hiddenLabel_' + label"
                 :data="data[label]?.literalForm['@value']"
-                :data-right-align="langRtoL(lang)"
                 :label="$t('id.hiddenLabel')"
+                :data-lang="lang"
               />
             </tbody>
           </table>

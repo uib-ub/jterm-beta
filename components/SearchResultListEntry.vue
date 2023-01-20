@@ -7,13 +7,14 @@
             class="flex grow justify-between"
             :class="{
               'sm:justify-start': searchOptions.searchTranslate !== 'none',
+              'text-right': langRtoL(entryData.lang[0] as LangCode)
             }"
           >
-            <b
-              v-if="entryData.predicate == 'prefLabel'"
-              v-html="entryData.label"
-            ></b>
-            <span v-else v-html="entryData.label"></span>
+            <SearchResultLabel
+              :predicate="entryData.predicate"
+              :label-data="entryData.label"
+              :label-lang="entryData.lang"
+            />
             <div
               v-if="searchOptions.searchLanguage === 'all'"
               class="pl-3 text-right font-light lg:hidden"
@@ -48,7 +49,10 @@
             :class="{ 'md:block': searchOptions.searchTranslate === 'none' }"
           >
             {{
-              entryData.lang
+              intersectUnique(
+                languageOrder[$i18n.locale as LangCode],
+                entryData.lang
+              )
                 .map((l: string) => $t(`global.lang.${l}`))
                 .join(", ")
             }}
