@@ -8,7 +8,7 @@ import {
 } from "../utils/vars";
 
 const htmlHighlight = {
-  open: "<span class='bg-tpblue-100'>",
+  open: "<span class='tp-shighlight'>",
   close: "</span>",
 };
 
