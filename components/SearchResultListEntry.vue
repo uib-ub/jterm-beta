@@ -96,3 +96,9 @@ interface Props {
 
 const props = defineProps<Props>();
 </script>
+
+<style>
+.tp-shighlight {
+  @apply bg-tpblue-100;
+}
+</style>
