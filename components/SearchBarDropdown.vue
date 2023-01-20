@@ -6,7 +6,7 @@
     <select
       :id="`${dropdown}Select`"
       v-model="searchOptions[dropdown]"
-      class="form-select tp-search-dd p-1 xs:p-2"
+      class="form-select tp-search-dd p-1 sm:p-2"
     >
       <slot></slot>
     </select>
