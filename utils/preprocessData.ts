@@ -47,7 +47,9 @@ export function idLabelsWithLang(
   for (const uri of conceptUris) {
     for (const labeltype of labeltypes) {
       try {
-        data[uri][labeltype] = updateLabel(data, uri, labeltype);
+        if (data[uri][labeltype]) {
+          data[uri][labeltype] = updateLabel(data, uri, labeltype);
+        }
       } catch (e) {}
     }
   }
@@ -67,6 +69,9 @@ export function updateLabel(data: any, conceptUri: string, labelType: string) {
   const labels: Array<string> = data[conceptUri][labelType];
   for (const label of labels) {
     const language = data[label].literalForm["@language"];
+    if (!validateLabel(data[label])) {
+      break;
+    }
     try {
       // key already exists
       newLabels[language].push(label);
@@ -77,6 +82,22 @@ export function updateLabel(data: any, conceptUri: string, labelType: string) {
     }
   }
   return newLabels;
+}
+
+/**
+ * Check if minimun data (term, language) on label object is present.
+ *
+ * @param label - Label object
+ * @returns Boolean
+ */
+export function validateLabel(label: any): boolean {
+  const term = label.literalForm["@value"];
+  const lang = label.literalForm["@language"];
+  if (term || term !== "" || lang || lang !== "") {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 /**

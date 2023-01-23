@@ -205,13 +205,17 @@ const searchOptions = useSearchOptions();
 
 const fetchedData = ref({});
 const data = computed(() => {
-  const identified = identifyData(fetchedData.value?.["@graph"]);
-  const labeled = idLabelsWithLang(
-    identified,
-    [uri],
-    ["prefLabel", "altLabel", "hiddenLabel"]
-  );
-  return labeled;
+  if (fetchedData.value?.["@graph"]) {
+    const identified = identifyData(fetchedData.value?.["@graph"]);
+    const labeled = idLabelsWithLang(
+      identified,
+      [uri],
+      ["prefLabel", "altLabel", "hiddenLabel"]
+    );
+    return labeled;
+  } else {
+    return {};
+  }
 });
 const displayInfo = computed(() => {
   const conceptLanguages = getConceptLanguages(data.value[uri]);
