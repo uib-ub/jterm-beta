@@ -28,7 +28,6 @@ import { LangCode } from "../utils/vars";
 
 const props = defineProps({
   data: { type: String, default: "" },
-  dataRightAlign: { type: Boolean },
   thClass: { type: String, default: "" },
   label: { type: String, required: true },
   to: { type: String, default: "" },
