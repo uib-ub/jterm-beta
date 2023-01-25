@@ -27,3 +27,8 @@ interface Props {
 
 const props = defineProps<Props>();
 </script>
+<style scoped>
+li {
+  margin-bottom: -1px;
+}
+</style>
