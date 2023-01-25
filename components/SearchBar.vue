@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-full grow">
+  <div class="max-w-full grow" role="search">
     <DomainTabs class="hidden md:block" />
     <DomainMenu class="md:hidden" />
     <div
