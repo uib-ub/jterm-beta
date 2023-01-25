@@ -1,5 +1,5 @@
 <template>
-  <nav class="bg-tpblue-400 flex text-white" role="navigation">
+  <nav class="bg-tpblue-400 flex text-white">
     <div
       class="xs:px-3 mx-auto flex max-w-screen-xl grow justify-between py-2 px-2 sm:px-4 md:px-5"
     >
