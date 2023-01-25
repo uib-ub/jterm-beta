@@ -9,7 +9,7 @@
     <h1 class="py-3 text-2xl">
       {{ uriData?.label[0]["@value"] || uriData?.label[0] || samling }}
     </h1>
-    <div class="flex flex-row">
+    <div class="md:flex">
       <!--Description-->
       <div class="basis-3/5 pr-4">
         <p v-for="p in uriData?.description?.['@value'].split('\n\n')" :key="p">
@@ -17,8 +17,8 @@
         </p>
       </div>
       <!--Table-->
-      <div class="">
-        <table class="">
+      <div class="pt-5 md:pt-0">
+        <table>
           <tbody>
             <!--Organisation-->
             <DataRow
