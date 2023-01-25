@@ -252,5 +252,3 @@ async function fetchConceptData() {
 
 fetchConceptData();
 </script>
-
-<style></style>

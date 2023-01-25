@@ -5,7 +5,9 @@
         class="min-w-full rounded-t px-2 h-9 text-left hover:bg-gray-100"
         @click="displayDomainMenu = !displayDomainMenu"
       >
-        <span v-if="searchOptions.searchDomain[0] !== 'all'">{{ $t("global.domain.domain") }}: </span>
+        <span v-if="searchOptions.searchDomain[0] !== 'all'"
+          >{{ $t("global.domain.domain") }}:
+        </span>
         {{ $t("global.domain." + searchOptions.searchDomain[0]) }}
       </button>
       <ul
@@ -40,5 +42,3 @@ const searchOptions = useSearchOptions();
 const displayDetails = ref(false);
 const displayDomainMenu = ref(false);
 </script>
-
-<style></style>
