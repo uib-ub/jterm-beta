@@ -12,7 +12,7 @@
           type="search"
           class="form-control focus:border-tpblue-300 min-w-0 flex-auto rounded border border-white bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border focus:bg-white focus:text-gray-700 focus:outline-none"
           :placeholder="$t('searchBar.search')"
-          aria-label="Searchfield"
+          :aria-label="$t('searchBar.searchfieldLabel')"
           aria-describedby="searchbutton"
           @keypress.enter="execSearch"
           @focus="$event.target.select()"
@@ -20,7 +20,7 @@
         <button
           type="button"
           class="w-9"
-          aria-label="Clear searchfield"
+          :aria-label="$t('searchBar.clearTextLabel')"
           @click="clearText"
         >
           x
@@ -29,7 +29,7 @@
           id="searchbutton"
           class="bg-tpblue-400 inline-block items-center tp-searchbutton-radius px-6 py-2 text-white transition duration-200 ease-in-out hover:bg-blue-700 focus:bg-blue-700 focus:outline-none active:bg-blue-800"
           type="button"
-          aria-label="search button"
+          :aria-label="$t('searchBar.searchButtonLabel')"
           @click="execSearch"
         >
           <svg
