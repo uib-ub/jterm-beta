@@ -11,9 +11,3 @@
 <script setup>
 
 </script>
-
-<style>
-h2 {
-  font-size: x-large;
-}
-</style>
