@@ -1,6 +1,5 @@
 <template>
-  <div class="flex justify-center">
-    <div class="max-w-full grow">
+    <form class="max-w-full grow" role="search">
       <DomainTabs class="hidden md:block" />
       <DomainMenu class="md:hidden" />
       <div
@@ -91,8 +90,7 @@
           </option>
         </SearchBarDropdown>
       </div>
-    </div>
-  </div>
+    </form>
 </template>
 
 <script setup>
