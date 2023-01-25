@@ -1,5 +1,5 @@
 <template>
-  <div class="px-1 text-sm md:text-base">
+  <div class="px-1 text-sm xs:text-base">
     <div class="rounded-t border border-b-0 border-gray-300">
       <button
         class="min-w-full rounded-t px-2 py-1 text-left hover:bg-gray-100"
