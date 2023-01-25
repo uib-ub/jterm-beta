@@ -14,12 +14,15 @@
       <label for="locale-select" class="text-lg"
         >{{ $t("global.language") }}:
       </label>
-      <select id="locale-select" class="tp-search-dd">
+      <select
+        id="locale-select"
+        class="tp-search-dd cursor-pointer px-2 py-1 text-lg"
+      >
         <option v-for="lang in ['nb', 'nn', 'en']" :key="lang" :value="lang">
           {{ $t("global.lang." + lang) }}
         </option>
       </select>
-      (deaktivert)
+      <span class="text-lg"> (deaktivert)</span>
     </div>
     <h2 id="conceptview" class="pt-3 pb-2 text-2xl">
       <NuxtLink to="#conceptview">{{ $t("config.conceptview") }}</NuxtLink>
@@ -27,16 +30,16 @@
     <h3 id="dataDispLang" class="pb-1 text-xl">
       <NuxtLink to="#dataDispLang">{{ $t("config.dataDispLang") }}</NuxtLink>
     </h3>
-    <div class="grid w-72 grid-flow-col grid-rows-6">
+    <div class="grid w-72 grid-flow-col grid-rows-6 gap-1">
       <div v-for="lang in languageOrder[$i18n.locale]" :key="lang" class="w-32">
         <input
           :id="`ddl-${lang}`"
           v-model="dataDisplayLanguages"
-          class="checked:bg-tpblue-400"
+          class="checked:bg-tpblue-400 cursor-pointer pr-1"
           type="checkbox"
           :value="lang"
         />
-        <label class="px-1 py-1 text-lg" :for="`ddl-${lang}`">{{
+        <label class="cursor-pointer px-1 py-1 text-lg" :for="`ddl-${lang}`">{{
           $t("global.lang." + lang)
         }}</label>
       </div>

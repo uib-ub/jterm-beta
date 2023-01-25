@@ -1,15 +1,17 @@
 <template>
-  <nav class="bg-tpblue-400 flex text-white" role="navigation">
+  <nav class="bg-tpblue-400 flex text-white">
     <div
       class="xs:px-3 mx-auto flex max-w-screen-xl grow justify-between py-2 px-2 sm:px-4 md:px-5"
     >
-      <div class="text-xl font-medium hover:text-gray-200">
+      <div
+        class="text-xl font-medium decoration-inherit hover:text-gray-200 hover:underline"
+      >
         <NuxtLink to="/">Termportalen.no</NuxtLink>
       </div>
       <div class="text-lg">
         <div class="xs:hidden">
           <button
-            class="ml-auto mr-0 flex rounded border border-white px-3 py-2 hover:border-white hover:text-white"
+            class="ml-auto mr-0 flex rounded border border-white px-3 py-2 hover:border-gray-200 hover:text-gray-200"
             @click="navMenuExpanded = !navMenuExpanded"
           >
             <svg
@@ -24,16 +26,24 @@
         </div>
         <ul
           id="NavMenuContent"
-          class="xs:flex xs:gap-3"
+          class="xs:flex xs:gap-4 xs:pt-0 xs:space-y-0 space-y-2 pt-3"
           :class="{ hidden: !navMenuExpanded }"
         >
-          <li class="hover:text-gray-200">
-            <NuxtLink to="/about" @click="navMenuExpanded = false">
+          <li>
+            <NuxtLink
+              to="/about"
+              class="decoration-inherit hover:text-gray-200 hover:underline"
+              @click="navMenuExpanded = false"
+            >
               {{ $t("navBar.about") }}</NuxtLink
             >
           </li>
-          <li class="hover:text-gray-200">
-            <NuxtLink to="/config" @click="navMenuExpanded = false">
+          <li>
+            <NuxtLink
+              to="/config"
+              class="decoration-inherit hover:text-gray-200 hover:underline"
+              @click="navMenuExpanded = false"
+            >
               {{ $t("navBar.config") }}</NuxtLink
             >
           </li>

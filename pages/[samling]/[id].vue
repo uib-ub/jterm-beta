@@ -22,23 +22,22 @@
         </ol>
       </div>
     </div>
-    <div class="col lg:w-3/4" :class="{'pl-3 lg:pl-6': searchData.length > 0}">
-      <div class="form-check container invisible py-2">
-        <input
-          id="viewToggle"
-          v-model="conceptViewToggle"
-          class="form-check-input"
-          type="checkbox"
-        />
+    <div
+      class="col lg:w-3/4"
+      :class="{ 'pl-3 lg:pl-6': searchData.length > 0 }"
+    >
+      <div class="container invisible py-2">
+        <input id="viewToggle" v-model="conceptViewToggle" type="checkbox" />
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
 
-      <h2 class="pb-4">
-        <span class="text-3xl">{{ data[uri]?.label }}</span
+      <h2 id="ctitle" class="pb-4 leading-none">
+        <NuxtLink to="#ctitle"
+          ><span class="text-3xl">{{ data[uri]?.label }}</span></NuxtLink
         ><br />
         <span v-if="data[uri]?.memberOf"
           ><NuxtLink
-            class="text-base text-gray-600 underline"
+            class="text-lg text-gray-600 underline hover:text-black"
             :to="'/' + data[uri]?.memberOf.split('-3A')[0]"
           >
             {{ $t("global.samling." + data[uri]?.memberOf.split("-3A")[0]) }}
@@ -46,7 +45,7 @@
         >
       </h2>
       <div v-if="conceptViewToggle">
-        <h3 class="">{{ $t("id.languagedata") }}</h3>
+        <h3>{{ $t("id.languagedata") }}</h3>
         <table class="table-auto">
           <!--Header-->
           <thead>
@@ -115,7 +114,11 @@
 
       <div v-else class="grid gap-y-5">
         <div v-for="lang in displayInfo.displayLanguages" :key="'disp_' + lang">
-          <h3 class="pb-1 text-xl">{{ $t("global.lang." + lang) }}</h3>
+          <h3 :id="lang" class="pb-1 text-xl">
+            <NuxtLink :to="`#${lang}`">{{
+              $t("global.lang." + lang)
+            }}</NuxtLink>
+          </h3>
           <table class="table-auto">
             <tbody>
               <!--Anbefalt term-->
@@ -146,8 +149,10 @@
           </table>
         </div>
         <div>
-          <h3 class="pb-1 text-xl" v-if="data[uri]">{{ $t("id.general") }}</h3>
-          <table class="">
+          <h3 v-if="data[uri]" id="felles" class="pb-1 text-xl">
+            <NuxtLink to="#felles"> {{ $t("id.general") }}</NuxtLink>
+          </h3>
+          <table>
             <tbody>
               <!--Termbase-->
               <DataRow
@@ -247,5 +252,3 @@ async function fetchConceptData() {
 
 fetchConceptData();
 </script>
-
-<style></style>
