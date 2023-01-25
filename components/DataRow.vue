@@ -8,10 +8,12 @@
       :lang="dataLang"
       :class="{ 'text-right': langRtoL(dataLang as LangCode) }"
     >
-      <NuxtLink v-if="nuxtlink" class="underline" :to="to">{{
+      <NuxtLink v-if="nuxtlink" class="underline hover:decoration-2" :to="to">{{
         data || to
       }}</NuxtLink>
-      <a v-else :href="to" class="underline">{{ data || to }}</a>
+      <a v-else :href="to" class="underline hover:decoration-2">{{
+        data || to
+      }}</a>
     </td>
     <td
       v-else
