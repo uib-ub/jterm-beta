@@ -33,12 +33,12 @@
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
 
-      <h2 class="pb-4">
+      <h2 class="pb-4 leading-none">
         <span class="text-3xl">{{ data[uri]?.label }}</span
         ><br />
         <span v-if="data[uri]?.memberOf"
           ><NuxtLink
-            class="text-base text-gray-600 underline"
+            class="text-lg text-gray-600 underline hover:text-black"
             :to="'/' + data[uri]?.memberOf.split('-3A')[0]"
           >
             {{ $t("global.samling." + data[uri]?.memberOf.split("-3A")[0]) }}
