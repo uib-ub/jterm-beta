@@ -1,9 +1,9 @@
 <template>
-  <form class="max-w-full grow" role="search">
+  <div class="max-w-full grow">
     <DomainTabs class="hidden md:block" />
     <DomainMenu class="md:hidden" />
     <div
-      class="input-group relative flex items-stretch rounded border border-solid border-gray-300"
+      class="relative flex items-stretch rounded border border-solid border-gray-300"
     >
       <input
         id="searchfield"
@@ -88,7 +88,7 @@
         </option>
       </SearchBarDropdown>
     </div>
-  </form>
+  </div>
 </template>
 
 <script setup>
