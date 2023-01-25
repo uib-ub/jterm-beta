@@ -8,8 +8,10 @@
       />
       <nuxt-img src="/logo_ugle_white.svg" width="100px" alt="logo uib" />
       <div class="text-lg">
-        <span>{{ $t("footer.contact") }}: </span><br />
-        <a href="mailto:termportalen@uib.no">termportalen@uib.no</a>
+        <a href="mailto:termportalen@uib.no" class="group block">
+          <span>{{ $t("footer.contact") }}: </span><br />
+          <span class="group-hover:underline">termportalen@uib.no</span></a
+        >
       </div>
     </div>
   </footer>
