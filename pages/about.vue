@@ -16,7 +16,7 @@
       </p>
       <p>
         Kontakt oss gjerne på
-        <a class="underline" href="mailto:termportalen@uib.no"
+        <a class="underline hover:decoration-2" href="mailto:termportalen@uib.no"
           >termportalen@uib.no</a
         >
         for spørsmål eller tilbakemeldinger.

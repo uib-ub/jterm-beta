@@ -54,5 +54,3 @@
 const searchOptions = useSearchOptions();
 const displayDetails = ref(false);
 </script>
-
-<style></style>

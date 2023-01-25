@@ -1,11 +1,13 @@
 <template>
-  <div class="px-1 text-sm md:text-base">
+  <div class="px-1 text-sm xs:text-base">
     <div class="rounded-t border border-b-0 border-gray-300">
       <button
-        class="min-w-full rounded-t px-2 py-1 text-left hover:bg-gray-100"
+        class="min-w-full rounded-t px-2 h-9 text-left hover:bg-gray-100"
         @click="displayDomainMenu = !displayDomainMenu"
       >
-        <span v-if="searchOptions.searchDomain[0] !== 'all'">{{ $t("global.domain.domain") }}: </span>
+        <span v-if="searchOptions.searchDomain[0] !== 'all'"
+          >{{ $t("global.domain.domain") }}:
+        </span>
         {{ $t("global.domain." + searchOptions.searchDomain[0]) }}
       </button>
       <ul
@@ -20,7 +22,7 @@
           :class="{ activeDomain: searchOptions.searchDomain[0] == domain }"
         >
           <button
-            class="min-w-full px-2 py-1 text-left"
+            class="min-w-full px-2 py-2 text-left"
             :aria-current="searchOptions.searchDomain[0] == domain"
             @click="
               (searchOptions.searchDomain = [domain]),
@@ -40,5 +42,3 @@ const searchOptions = useSearchOptions();
 const displayDetails = ref(false);
 const displayDomainMenu = ref(false);
 </script>
-
-<style></style>
