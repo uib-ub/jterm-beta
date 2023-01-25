@@ -19,7 +19,9 @@
           I tillegg til søkesiden til Termportalen er det utviklet en
           redigeringsapplikasjon som kan brukes fritt til registrering av
           terminologi. Ta kontakt med oss på
-          <a class="underline" href="mailto:termportalen@uib.no"
+          <a
+            class="underline hover:decoration-2"
+            href="mailto:termportalen@uib.no"
             >termportalen@uib.no</a
           >
           dersom du ønsker å komme i gang med terminologiarbeid på ditt
