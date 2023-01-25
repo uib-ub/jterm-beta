@@ -1,10 +1,13 @@
 <template>
   <div>
     <Head>
-      <Title>{{ uriData?.label[0]["@value"] || uriData?.label[0]}} | Termportalen</Title>
+      <Title
+        >{{ uriData?.label[0]["@value"] || uriData?.label[0] || samling }} |
+        Termportalen</Title
+      >
     </Head>
     <h1 class="py-3 text-2xl">
-      {{ uriData?.label[0]["@value"] || uriData?.label[0] }}
+      {{ uriData?.label[0]["@value"] || uriData?.label[0] || samling }}
     </h1>
     <div class="flex flex-row">
       <!--Description-->
@@ -47,7 +50,6 @@
             <DataRow
               v-if="uriData?.language"
               :data="intersectUnique(languageOrder[$i18n.locale as keyof typeof languageOrder], uriData.language).map((lang: string) => $t(`global.lang.${lang}`, 2)) .join(', ')"
-
               :label="$t('global.language', 1)"
             />
             <!--Starting languages-->
