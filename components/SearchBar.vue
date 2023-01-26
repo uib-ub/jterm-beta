@@ -100,10 +100,10 @@ const searchData = useSearchData();
 const filteredTermbases = computed(() => {
   const topdomain = searchOptions.value.searchDomain[0];
   if (topdomain === "all") {
-    return samlingOrder;
+    return termbaseOrder;
   } else {
     const termbases = domainNesting[topdomain]?.bases;
-    return intersectUnique(samlingOrder, termbases);
+    return intersectUnique(termbaseOrder, termbases);
   }
 });
 

@@ -11,7 +11,7 @@
       <ul class="list-disc space-y-1 pl-8 pt-1 text-lg">
         <li
           v-for="base in intersectUnique(
-            samlingOrder,
+            termbaseOrder,
             domainNesting[domain].bases
           )"
           :key="base"
