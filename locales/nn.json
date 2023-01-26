@@ -72,7 +72,10 @@
     "search": "Søk",
     "searchLanguage": "Søkespråk",
     "searchTranslation": "Oversettelsesspråk",
-    "searchBase": "Termbase"
+    "searchBase": "Termbase",
+    "searchfieldLabel": "Søkefelt",
+    "clearTextLabel": "Tøm søkefeltet",
+    "searchButtonLabel": "Utføre søk"
   },
   "searchFilter": {
     "results": "resultater",
