@@ -102,7 +102,11 @@ const filteredTermbases = computed(() => {
   if (topdomain === "all") {
     return termbaseOrder;
   } else {
+    const currentTermbase = searchOptions.value.searchBase;
     const termbases = domainNesting[topdomain]?.bases;
+    if (!termbases.includes(currentTermbase)) {
+      searchOptions.value.searchBase = "all";
+    }
     return intersectUnique(termbaseOrder, termbases);
   }
 });
