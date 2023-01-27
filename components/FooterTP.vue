@@ -12,6 +12,11 @@
           <span>{{ $t("footer.contact") }}: </span><br />
           <span class="group-hover:underline">termportalen@uib.no</span></a
         >
+        <ExtLink
+          class="hover:text-gray-200 hover:underline"
+          to="https://uustatus.no/nb/erklaringer/publisert/a139f9ba-80eb-4176-bb6d-b784efaf205a"
+          >{{ $t("footer.accDeclaration") }}</ExtLink
+        >
       </div>
     </div>
   </footer>
