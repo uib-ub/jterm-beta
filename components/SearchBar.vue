@@ -53,10 +53,13 @@
     >
       <SearchBarDropdown dropdown="searchLanguage">
         <option value="all">
-          {{ $t("global.lang.all") }} ({{ languageOrder[$i18n.locale].length }})
+          {{ $t("global.lang.all") }} ({{ filteredSearchLangs.length }})
         </option>
         <option
-          v-for="lc in languageOrder[$i18n.locale]"
+          v-for="lc in intersectUnique(
+            languageOrder[$i18n.locale],
+            filteredSearchLangs
+          )"
           :key="'searchlang_' + lc"
           :value="lc"
         >
@@ -68,7 +71,10 @@
           {{ $t("global.lang.none") }}
         </option>
         <option
-          v-for="lc in languageOrder[$i18n.locale]"
+          v-for="lc in intersectUnique(
+            languageOrder[$i18n.locale],
+            filteredTranslationLangs
+          )"
           :key="'translationlang_' + lc"
           :value="lc"
         >
@@ -97,14 +103,17 @@ const router = useRouter();
 const searchOptions = useSearchOptions();
 const searchterm = useSearchterm();
 const searchData = useSearchData();
+
+const filteredSearchLangs = computed(() => {
+  return deriveSearchOptions("searchLanguage", "all");
+});
+
+const filteredTranslationLangs = computed(() => {
+  return deriveSearchOptions("searchTranslate", "none");
+});
+
 const filteredTermbases = computed(() => {
-  const topdomain = searchOptions.value.searchDomain[0];
-  if (topdomain === "all") {
-    return samlingOrder;
-  } else {
-    const termbases = domainNesting[topdomain]?.bases;
-    return intersectUnique(samlingOrder, termbases);
-  }
+  return deriveSearchOptions("searchBase", "all");
 });
 
 const clearText = () => {
@@ -124,6 +133,68 @@ function execSearch() {
   useFetchSearchData(searchOptions.value, "initial");
   searchbutton.focus();
   searchfield.focus();
+}
+
+function filterTermbases(termbases, filterTermbases, option, defaultValue) {
+  if (searchOptions.value[option] !== defaultValue) {
+    return intersectUnique(filterTermbases, termbases);
+  } else {
+    return termbases;
+  }
+}
+
+function deriveSearchOptions(searchOption, defaultValue) {
+  const topdomain = searchOptions.value.searchDomain[0];
+  const currentValue = searchOptions.value[searchOption];
+  let termbases = termbaseOrder;
+  let options;
+
+  if (topdomain !== "all") {
+    termbases = domainNesting[topdomain]?.bases;
+  }
+
+  if (searchOption !== "searchLanguage") {
+    termbases = filterTermbases(
+      termbases,
+      languageInfo[searchOptions.value.searchLanguage],
+      "searchLanguage",
+      "all"
+    );
+  }
+
+  if (searchOption !== "searchTranslate") {
+    termbases = filterTermbases(
+      termbases,
+      languageInfo[searchOptions.value.searchLanguage],
+      "searchTranslate",
+      "none"
+    );
+  }
+
+  if (searchOption !== "searchBase") {
+    termbases = filterTermbases(
+      termbases,
+      [searchOptions.value.searchBase],
+      "searchBase",
+      "all"
+    );
+
+    if (termbases.length !== termbaseOrder.length) {
+      const languages = [
+        ...new Set(termbases.map((tb) => termbaseInfo[tb]).flat()),
+      ];
+      options = intersectUnique(languageOrder.nb, languages);
+    } else {
+      options = languageOrder.nb;
+    }
+  } else {
+    options = termbases;
+  }
+
+  if (!options.includes(currentValue)) {
+    searchOptions.value[searchOption] = defaultValue;
+  }
+  return options;
 }
 </script>
 
