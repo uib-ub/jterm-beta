@@ -68,7 +68,12 @@
   },
 
   "domainOverview": { "domainsAndBases": "Domener & termbaser" },
-  "navBar": { "about": "Om Termportalen", "config": "Inn­stillinger" },
+  "navBar": {
+    "about": "Om Termportalen",
+    "config": "Inn­stillinger",
+    "menuButtonShow": "Utvid menyen",
+    "menuButtonHide": "Skjul menyen"
+  },
   "searchBar": {
     "search": "Søk",
     "searchLanguage": "Søkespråk",
@@ -82,11 +87,16 @@
     "results": "resultater",
     "results-heading": "Resultater",
     "filter": "Filter",
+    "filterTitleShow": "Vis filter for søkeresultater",
+    "filterTitleHide": "Skjul filter for søkeresultater",
     "termproperty": "Egenskap",
     "matching": "Matchende"
   },
   "footer": {
     "contact": "Kontakt oss"
+  },
+  "spinnerIcon": {
+    "srText": "Venter på søkeresultater"
   },
 
   "samling": {

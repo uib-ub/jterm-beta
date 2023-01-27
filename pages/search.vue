@@ -22,9 +22,11 @@
       </ol>
     </div>
     <div class="flex justify-center p-2">
-      <div v-if="pending && countFetchedMatches > 30" role="status">
-        <span class="">Loading...</span>
-      </div>
+      <TransitionOpacity>
+        <div v-if="pending && countFetchedMatches > 30">
+          <SpinnerIcon />
+        </div>
+      </TransitionOpacity>
     </div>
   </div>
 </template>

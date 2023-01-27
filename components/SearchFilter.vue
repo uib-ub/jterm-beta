@@ -1,29 +1,44 @@
 <template>
   <div>
     <!--Filter-->
-    <div class="flex h-8 justify-between text-lg">
-      <div class="flex w-48">
+    <div class="flex h-9 justify-between text-lg">
+      <div class="flex">
         <div class="w-16 pr-1 text-right">{{ count }}</div>
         <div>{{ $t("searchFilter.results") }}</div>
       </div>
-      <div v-if="pending">
-        <div role="status">
-          <span class="text-lg">Loading...</span>
+      <TransitionOpacity>
+        <div v-if="pending">
+          <SpinnerIcon />
         </div>
-      </div>
+      </TransitionOpacity>
       <div>
         <button
-          class="xs:w-32 w-16 rounded border border-solid border-gray-300 hover:bg-gray-100"
+          class="xs:w-32 h-full w-20 rounded border border-solid border-gray-300 hover:bg-gray-100"
           type="button"
+          :title="
+            displayFilter
+              ? $t('searchFilter.filterTitleHide')
+              : $t('searchFilter.filterTitleShow')
+          "
+          :aria-label="
+            displayFilter
+              ? $t('searchFilter.filterTitleHide')
+              : $t('searchFilter.filterTitleShow')
+          "
           @click="displayFilter = !displayFilter"
         >
           {{ $t("searchFilter.filter") }}
+          <span v-if="!displayFilter"
+            ><Icon name="mdi:chevron-down" aria-hidden="true" /></span
+          ><span v-else><Icon name="mdi:chevron-up" aria-hidden="true" /></span>
         </button>
       </div>
     </div>
     <div v-if="displayFilter" id="filterCard" class="mt-2 transition-all">
-      <h2>{{ $t("searchFilter.filter") }}</h2>
-      <div class="xs:grid-cols-2 grid grid-cols-1 gap-4 md:grid-cols-4">
+      <h2 class="pb-3 pt-1 text-2xl">{{ $t("searchFilter.filter") }}</h2>
+      <div
+        class="xs:grid-cols-2 grid grid-cols-1 gap-4 rounded border border-gray-300 p-2 md:grid-cols-4"
+      >
         <div class="">
           <h3 class="text-xl">{{ $t("global.language") }}</h3>
           <div class="form-check">

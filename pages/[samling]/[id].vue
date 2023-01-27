@@ -4,7 +4,7 @@
 
     <div v-if="searchData.length > 0" class="hidden md:block md:w-60 lg:w-1/4">
       <div class="container">
-        <div class="container h-8">
+        <div class="container h-9">
           <NuxtLink class="text-lg" to="/search">{{
             $t("id.tilbake")
           }}</NuxtLink>
