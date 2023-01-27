@@ -30,7 +30,7 @@ export type Domains =
 export const termbaseOrder: Samling[] = [
   "ARTSDB",
   "ASTRONOMI",
-  "BIOLOGI",
+ // "BIOLOGI",
   "CMBIOLOGI",
   "EVERTEBRATER",
   "KJEMI",
@@ -83,7 +83,7 @@ export const domainNesting = {
       "ROMFYS",
       "KLIMA",
       "ASTRONOMI",
-      "BIOLOGI",
+     // "BIOLOGI",
       "CMBIOLOGI",
       "KJEMI",
     ],
