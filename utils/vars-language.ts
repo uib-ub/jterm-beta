@@ -21,7 +21,7 @@ export type LangCode =
   | "sv"
   | "ti";
 
-export const languageOrder = {
+export const languageOrder: { [key in LocalLangCode]: LangCode[] } = {
   nb: [
     "nb",
     "nn",
