@@ -1,14 +1,20 @@
 <template>
-  <div class="px-1 text-sm xs:text-base">
+  <div class="xs:text-base px-1 text-sm">
     <div class="rounded-t border border-b-0 border-gray-300">
       <button
-        class="min-w-full rounded-t px-2 h-9 text-left hover:bg-gray-100"
+        class="h-9 min-w-full rounded-t px-2 text-left hover:bg-gray-100"
         @click="displayDomainMenu = !displayDomainMenu"
       >
         <span v-if="searchOptions.searchDomain[0] !== 'all'"
           >{{ $t("global.domain.domain") }}:
         </span>
-        {{ $t("global.domain." + searchOptions.searchDomain[0]) }}
+        <span class="pr-2">{{
+          $t("global.domain." + searchOptions.searchDomain[0])
+        }}</span>
+        <span v-if="!displayDomainMenu">
+          <Icon name="mdi:chevron-down" aria-hidden="true"
+        /></span>
+        <span v-else><Icon name="mdi:chevron-up" aria-hidden="true" /></span>
       </button>
       <ul
         v-if="displayDomainMenu"
