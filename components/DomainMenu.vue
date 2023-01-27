@@ -17,7 +17,7 @@
       >
         <li
           v-for="domain in ['all'].concat(Object.keys(domainNesting))"
-          :key="domain"
+          :key="`${domain}Menu`"
           class="hover:bg-gray-100"
           :class="{ activeDomain: searchOptions.searchDomain[0] == domain }"
         >
