@@ -1,3 +1,5 @@
+import { Samling } from "./vars-termbase";
+
 export type LocalLangCode = "en" | "nb" | "nn";
 
 export type LangCode =
@@ -76,4 +78,18 @@ export const languageOrder = {
   ],
 };
 
-export const languageRtoL = new Set(["ar"]);
+function deriveLanguageInfo(languages: LangCode[]): {
+  [key in LangCode]: Samling[];
+} {
+  return Object.assign(
+    {},
+    ...languages.map((lang) => ({
+      [lang]: termbaseOrder.filter((base) =>
+        termbaseInfo[base].includes(lang as LangCode)
+      ),
+    }))
+  );
+}
+
+export const languageInfo = deriveLanguageInfo(languageOrder.nb);
+export const languageRtoL: Set<LangCode> = new Set(["ar"]);
