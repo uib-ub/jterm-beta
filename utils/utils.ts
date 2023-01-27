@@ -2,7 +2,7 @@ import { LangCode } from "./vars";
 import { SearchDataEntry } from "~~/composables/states";
 
 /**
- * Returns unique intersection of two Arrays, sorted by order of first.
+ * Return unique intersection of two Arrays, sorted by order of first.
  *
  * @remarks Uses Set.prototype.has() to check for existence.
  * @param a - Array a
@@ -20,7 +20,7 @@ export function sum(numbers: number[]): number {
 }
 
 /**
- * Returns real count of searchentries based on the length of their language properties if present.
+ * Return real count of searchentries based on the length of their language properties if present.
  *
  * @param matches - list of searchentries that contain languages as a list
  */
