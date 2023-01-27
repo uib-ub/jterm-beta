@@ -1,5 +1,5 @@
 <template>
-  <li class="rounded border">
+  <li class="rounded border border-gray-300">
     <NuxtLink :to="`/${entryData.link}`">
       <div class="p-2 hover:bg-gray-100 lg:flex">
         <div class="grow justify-between sm:flex">
