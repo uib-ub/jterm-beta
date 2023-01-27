@@ -93,7 +93,8 @@
     "matching": "Matchende"
   },
   "footer": {
-    "contact": "Kontakt oss"
+    "contact": "Kontakt oss",
+    "accDeclaration": "Tilgjengelighetserklæring"
   },
   "spinnerIcon": {
     "srText": "Venter på søkeresultater"
