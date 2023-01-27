@@ -7,8 +7,11 @@
         alt="logo språkrådet"
       />
       <nuxt-img src="/logo_ugle_white.svg" width="100px" alt="logo uib" />
-      <div class="text-lg">
-        <a href="mailto:termportalen@uib.no" class="group block">
+      <div class="flex flex-col space-y-2 text-lg">
+        <a
+          href="mailto:termportalen@uib.no"
+          class="group inline-block hover:text-gray-200 leading-snug"
+        >
           <span>{{ $t("footer.contact") }}: </span><br />
           <span class="group-hover:underline">termportalen@uib.no</span></a
         >
