@@ -1,7 +1,7 @@
 <template>
   <div>
     <NuxtLink v-if="isInternal === 'internal'" :to="to"><slot /></NuxtLink>
-    <NuxtLink v-if="isInternal === 'external'" :to="to"
+    <NuxtLink v-else-if="isInternal === 'external'" :to="to"
       ><span class="icon-pad">
         <slot />
       </span>
