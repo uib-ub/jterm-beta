@@ -102,7 +102,7 @@
 
 <script setup lang="ts">
 import { SearchOptions } from "~~/composables/states";
-import { LocalLangCode } from "~~/utils/vars";
+import { LocalLangCode } from "~~/utils/vars-language";
 
 const displayFilter = ref(false);
 

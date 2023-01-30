@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { LangCode } from "../utils/vars";
+import { LangCode } from "../utils/vars-language";
 
 interface Props {
   entryData: {

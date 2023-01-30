@@ -50,7 +50,7 @@
           >
             {{
               intersectUnique(
-                languageOrder[$i18n.locale as LangCode],
+                languageOrder[$i18n.locale as LocalLangCode],
                 entryData.lang
               )
                 .map((l: string) => $t(`global.lang.${l}`))
@@ -80,7 +80,7 @@
 </template>
 
 <script setup lang="ts">
-import { LangCode } from "../utils/vars";
+import { LangCode, LocalLangCode } from "../utils/vars-language";
 
 const searchOptions = useSearchOptions();
 interface Props {
