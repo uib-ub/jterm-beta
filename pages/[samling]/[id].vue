@@ -5,9 +5,7 @@
     <div v-if="searchData.length > 0" class="hidden md:block md:w-60 lg:w-1/4">
       <div class="container">
         <div class="container h-9">
-          <NuxtLink class="text-lg" to="/search">{{
-            $t("id.tilbake")
-          }}</NuxtLink>
+          <AppLink class="text-lg" to="/search">{{ $t("id.tilbake") }}</AppLink>
         </div>
 
         <h2 class="py-3 text-2xl">{{ $t("searchFilter.results-heading") }}</h2>
@@ -31,17 +29,15 @@
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
 
-      <h2 id="ctitle" class="pb-4 leading-none">
-        <NuxtLink to="#ctitle"
-          ><span class="text-3xl">{{ data[uri]?.label }}</span></NuxtLink
-        ><br />
+      <h2 id="ctitle" class="pb-4">
+        <AppLink class="text-3xl" to="#ctitle">{{ data[uri]?.label }}</AppLink>
         <span v-if="data[uri]?.memberOf"
-          ><NuxtLink
+          ><AppLink
             class="text-lg text-gray-600 underline hover:text-black"
             :to="'/' + data[uri]?.memberOf.split('-3A')[0]"
           >
             {{ $t("global.samling." + data[uri]?.memberOf.split("-3A")[0]) }}
-          </NuxtLink></span
+          </AppLink></span
         >
       </h2>
       <div v-if="conceptViewToggle">
@@ -115,9 +111,7 @@
       <div v-else class="grid gap-y-5">
         <div v-for="lang in displayInfo.displayLanguages" :key="'disp_' + lang">
           <h3 :id="lang" class="pb-1 text-xl">
-            <NuxtLink :to="`#${lang}`">{{
-              $t("global.lang." + lang)
-            }}</NuxtLink>
+            <AppLink :to="`#${lang}`">{{ $t("global.lang." + lang) }}</AppLink>
           </h3>
           <table class="table-auto">
             <tbody>
@@ -150,7 +144,7 @@
         </div>
         <div>
           <h3 v-if="data[uri]" id="felles" class="pb-1 text-xl">
-            <NuxtLink to="#felles"> {{ $t("id.general") }}</NuxtLink>
+            <AppLink to="#felles"> {{ $t("id.general") }}</AppLink>
           </h3>
           <table>
             <tbody>
@@ -160,7 +154,6 @@
                 :data="
                   $t('global.samling.' + data[uri]?.memberOf.split('-3A')[0])
                 "
-                :nuxtlink="true"
                 :to="`/${samling}`"
                 :label="$t('id.collection')"
               />

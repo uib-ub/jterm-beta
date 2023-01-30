@@ -8,17 +8,19 @@
       />
       <nuxt-img src="/logo_ugle_white.svg" width="100px" alt="logo uib" />
       <div class="flex flex-col space-y-2 text-lg">
-        <a
-          href="mailto:termportalen@uib.no"
-          class="group inline-block hover:text-gray-200 leading-snug"
+        <AppLink
+          to="mailto:termportalen@uib.no"
+          class="group inline-block leading-snug hover:text-gray-200"
         >
           <span>{{ $t("footer.contact") }}: </span><br />
-          <span class="group-hover:underline">termportalen@uib.no</span></a
+          <span class="group-hover:underline"
+            >termportalen@uib.no</span
+          ></AppLink
         >
-        <ExtLink
+        <AppLink
           class="hover:text-gray-200 hover:underline"
           to="https://uustatus.no/nb/erklaringer/publisert/a139f9ba-80eb-4176-bb6d-b784efaf205a"
-          >{{ $t("footer.accDeclaration") }}</ExtLink
+          >{{ $t("footer.accDeclaration") }}</AppLink
         >
       </div>
     </div>

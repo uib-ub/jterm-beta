@@ -1,6 +1,6 @@
 <template>
   <li class="rounded border border-gray-300">
-    <NuxtLink :to="`/${entryData.link}`">
+    <AppLink :to="`/${entryData.link}`">
       <div class="p-2 hover:bg-gray-100 lg:flex">
         <div class="grow justify-between sm:flex">
           <div
@@ -75,7 +75,7 @@
           {{ $t("global.samling." + entryData.samling) }}
         </div>
       </div>
-    </NuxtLink>
+    </AppLink>
   </li>
 </template>
 
