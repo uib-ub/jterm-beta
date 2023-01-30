@@ -1,6 +1,6 @@
 <template>
   <li class="rounded border">
-    <NuxtLink :to="`/${entryData.link}`">
+    <AppLink :to="`/${entryData.link}`">
       <div class="p-2 hover:bg-gray-100 lg:flex">
         <SearchResultLabel
           :predicate="entryData.predicate"
@@ -8,12 +8,11 @@
           :label-lang="entryData.lang"
         />
       </div>
-    </NuxtLink>
+    </AppLink>
   </li>
 </template>
 
 <script setup lang="ts">
-
 interface Props {
   entryData: {
     link: string;

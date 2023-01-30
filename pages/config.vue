@@ -4,10 +4,10 @@
       <Title>{{ $t("config.title") }} | {{ $t("index.title") }}</Title>
     </Head>
     <h1 id="config" class="pb-3 text-3xl">
-      <NuxtLink to="#config">{{ $t("config.title") }}</NuxtLink>
+      <AppLink to="#config">{{ $t("config.title") }}</AppLink>
     </h1>
     <h2 id="global" class="pb-2 text-2xl">
-      <NuxtLink to="#global">{{ $t("config.global") }}</NuxtLink>
+      <AppLink to="#global">{{ $t("config.global") }}</AppLink>
     </h2>
 
     <div>
@@ -25,10 +25,10 @@
       <span class="text-lg"> (deaktivert)</span>
     </div>
     <h2 id="conceptview" class="pt-3 pb-2 text-2xl">
-      <NuxtLink to="#conceptview">{{ $t("config.conceptview") }}</NuxtLink>
+      <AppLink to="#conceptview">{{ $t("config.conceptview") }}</AppLink>
     </h2>
     <h3 id="dataDispLang" class="pb-1 text-xl">
-      <NuxtLink to="#dataDispLang">{{ $t("config.dataDispLang") }}</NuxtLink>
+      <AppLink to="#dataDispLang">{{ $t("config.dataDispLang") }}</AppLink>
     </h3>
     <div class="grid w-72 grid-flow-col grid-rows-6 gap-1">
       <div v-for="lang in languageOrder[$i18n.locale]" :key="lang" class="w-32">

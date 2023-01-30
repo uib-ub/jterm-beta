@@ -16,7 +16,9 @@
 </template>
 <script setup lang="ts">
 import { SearchDataStats } from "~~/composables/states";
-import { LangCode, Samling, Matching, LabelPredicate } from "~~/utils/vars";
+import { Matching, LabelPredicate } from "~~/utils/vars";
+import { LangCode } from "~~/utils/vars-language";
+import { Samling } from "~~/utils/vars-termbase";
 
 const searchFilterData = useSearchFilterData();
 const searchDataStats = useSearchDataStats();

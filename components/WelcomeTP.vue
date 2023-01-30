@@ -2,7 +2,7 @@
   <div>
     <div v-if="$i18n.locale === 'nb'">
       <h2 id="velkommen" class="pb-3 text-2xl">
-        <NuxtLink to="#velkommen">Velkommen til Termportalen</NuxtLink>
+        <AppLink to="#velkommen">Velkommen til Termportalen</AppLink>
       </h2>
       <div class="space-y-2">
         <p>
@@ -37,12 +37,12 @@
     </div>
     <div v-if="$i18n.locale === 'nn'">
       <h2 id="velkommen" class="pb-3 text-2xl">
-        <NuxtLink to="#velkommen"></NuxtLink>
+        <AppLink to="#velkommen"></AppLink>
       </h2>
     </div>
     <div v-if="$i18n.locale === 'en'">
       <h2 id="velkommen" class="pb-3 text-2xl">
-        <NuxtLink to="#velkommen"></NuxtLink>
+        <AppLink to="#velkommen"></AppLink>
       </h2>
     </div>
   </div>
