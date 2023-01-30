@@ -6,7 +6,7 @@
       <div
         class="text-xl font-medium decoration-inherit hover:text-gray-200 hover:underline"
       >
-        <NuxtLink to="/">Termportalen.no</NuxtLink>
+        <AppLink to="/">Termportalen.no</AppLink>
       </div>
       <div class="text-lg">
         <div class="xs:hidden">
@@ -33,21 +33,21 @@
           :class="{ hidden: !navMenuExpanded }"
         >
           <li>
-            <NuxtLink
+            <AppLink
               to="/about"
               class="decoration-inherit hover:text-gray-200 hover:underline"
               @click="navMenuExpanded = false"
             >
-              {{ $t("navBar.about") }}</NuxtLink
+              {{ $t("navBar.about") }}</AppLink
             >
           </li>
           <li>
-            <NuxtLink
+            <AppLink
               to="/config"
               class="decoration-inherit hover:text-gray-200 hover:underline"
               @click="navMenuExpanded = false"
             >
-              {{ $t("navBar.config") }}</NuxtLink
+              {{ $t("navBar.config") }}</AppLink
             >
           </li>
         </ul>

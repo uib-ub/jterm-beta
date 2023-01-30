@@ -1,9 +1,9 @@
 <template>
   <div>
     <h2 id="domener" class="pb-1 text-2xl">
-      <NuxtLink to="#domener">{{
+      <AppLink to="#domener">{{
         $t("domainOverview.domainsAndBases")
-      }}</NuxtLink>
+      }}</AppLink>
     </h2>
     <ul class="pl-1">
       <DomainOverviewEntry

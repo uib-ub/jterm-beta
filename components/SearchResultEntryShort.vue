@@ -4,19 +4,19 @@
       class="py-1"
       :class="{ 'text-right': langRtoL(entryData.lang[0] as LangCode) }"
     >
-      <NuxtLink class="" :to="`/${entryData.link}`">
+      <AppLink class="" :to="`/${entryData.link}`">
         <b
           v-if="entryData.predicate == 'prefLabel'"
           v-html="entryData.label"
         ></b>
         <span v-else v-html="entryData.label"></span>
-      </NuxtLink>
+      </AppLink>
     </td>
   </tr>
 </template>
 
 <script setup lang="ts">
-import { LangCode } from "../utils/vars";
+import { LangCode } from "../utils/vars-language";
 
 interface Props {
   entryData: {

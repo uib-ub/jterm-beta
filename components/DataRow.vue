@@ -8,12 +8,9 @@
       :lang="dataLang"
       :class="{ 'text-right': langRtoL(dataLang as LangCode) }"
     >
-      <NuxtLink v-if="nuxtlink" class="underline hover:decoration-2" :to="to">{{
+      <AppLink class="underline hover:decoration-2" :to="to">{{
         data || to
-      }}</NuxtLink>
-      <a v-else :href="to" class="underline hover:decoration-2">{{
-        data || to
-      }}</a>
+      }}</AppLink>
     </td>
     <td
       v-else
@@ -26,14 +23,13 @@
 </template>
 
 <script setup lang="ts">
-import { LangCode } from "../utils/vars";
+import { LangCode } from "../utils/vars-language";
 
 const props = defineProps({
   data: { type: String, default: "" },
   thClass: { type: String, default: "" },
   label: { type: String, required: true },
   to: { type: String, default: "" },
-  nuxtlink: Boolean,
   dataLang: { type: String, default: null },
 });
 </script>

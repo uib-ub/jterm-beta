@@ -1,6 +1,6 @@
 <template>
   <li class="rounded border border-gray-300">
-    <NuxtLink :to="`/${entryData.link}`">
+    <AppLink :to="`/${entryData.link}`">
       <div class="p-2 hover:bg-gray-100 lg:flex">
         <div class="grow justify-between sm:flex">
           <div
@@ -50,7 +50,7 @@
           >
             {{
               intersectUnique(
-                languageOrder[$i18n.locale as LangCode],
+                languageOrder[$i18n.locale as LocalLangCode],
                 entryData.lang
               )
                 .map((l: string) => $t(`global.lang.${l}`))
@@ -75,12 +75,12 @@
           {{ $t("global.samling." + entryData.samling) }}
         </div>
       </div>
-    </NuxtLink>
+    </AppLink>
   </li>
 </template>
 
 <script setup lang="ts">
-import { LangCode } from "../utils/vars";
+import { LangCode, LocalLangCode } from "../utils/vars-language";
 
 const searchOptions = useSearchOptions();
 interface Props {
