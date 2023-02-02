@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div v-if="$i18n.locale === 'nb'">
+  <article>
+    <template v-if="$i18n.locale === 'nb'">
       <h2 id="velkommen" class="pb-3 text-2xl">
         <AppLink to="#velkommen">Velkommen til Termportalen</AppLink>
       </h2>
@@ -19,11 +19,12 @@
           I tillegg til søkesiden til Termportalen er det utviklet en
           redigeringsapplikasjon som kan brukes fritt til registrering av
           terminologi. Ta kontakt med oss på
-          <a
+          <AppLink
             class="underline hover:decoration-2"
-            href="mailto:termportalen@uib.no"
-            >termportalen@uib.no</a
+            to="mailto:termportalen@uib.no"
           >
+            termportalen@uib.no
+          </AppLink>
           dersom du ønsker å komme i gang med terminologiarbeid på ditt
           fagområde.
         </p>
@@ -34,16 +35,16 @@
           likestillingsdepartementet.
         </p>
       </div>
-    </div>
-    <div v-if="$i18n.locale === 'nn'">
+    </template>
+    <template v-if="$i18n.locale === 'nn'">
       <h2 id="velkommen" class="pb-3 text-2xl">
         <AppLink to="#velkommen"></AppLink>
       </h2>
-    </div>
-    <div v-if="$i18n.locale === 'en'">
+    </template>
+    <template v-if="$i18n.locale === 'en'">
       <h2 id="velkommen" class="pb-3 text-2xl">
         <AppLink to="#velkommen"></AppLink>
       </h2>
-    </div>
-  </div>
+    </template>
+  </article>
 </template>
