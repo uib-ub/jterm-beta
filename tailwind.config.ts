@@ -8,6 +8,7 @@ export default <Partial<Config>>{
       ...defaultTheme.screens,
     },
     extend: {
+      flexBasis: { GRb: "61.8%", GRs: "38.2%" },
       colors: {
         tpblue: {
           100: "#e2efff",
