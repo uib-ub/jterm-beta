@@ -6,7 +6,7 @@
       size="1.6em"
       aria-hidden="true"
     />
-    <span class="sr-only">{{ $t("spinnerIcon") }}</span>
+    <span class="sr-only">{{ $t("spinnerIcon.srText") }}</span>
   </div>
 </template>
 
