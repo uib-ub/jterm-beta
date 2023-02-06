@@ -7,7 +7,7 @@
         <AppLink class="text-lg" to="/search">{{ $t("id.tilbake") }}</AppLink>
       </div>
       <nav aria-labelledby="sidebarresults">
-        <h2 id="sidebarresults" class="py-3 text-2xl">
+        <h2 id="sidebarresults" class="pb-2 pt-3 text-2xl">
           {{ $t("searchFilter.results-heading") }}
         </h2>
         <div class="overflow-x-auto" style="height: calc(100vh * 0.7 - 100px)">
@@ -35,13 +35,13 @@
           <AppLink class="text-3xl" to="#ctitle">{{
             data[uri]?.label
           }}</AppLink>
-          <span v-if="data[uri]?.memberOf"
+          <div v-if="data[uri]?.memberOf"
             ><AppLink
               class="text-lg text-gray-600 underline hover:text-black"
               :to="'/' + data[uri]?.memberOf.split('-3A')[0]"
             >
               {{ $t("global.samling." + data[uri]?.memberOf.split("-3A")[0]) }}
-            </AppLink></span
+            </AppLink></div
           >
         </h2>
         <div v-if="conceptViewToggle">
