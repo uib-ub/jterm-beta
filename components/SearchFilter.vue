@@ -7,96 +7,67 @@
         <div>{{ $t("searchFilter.results") }}</div>
       </div>
       <TransitionOpacity>
-        <div v-if="pending">
-          <SpinnerIcon />
-        </div>
+        <SpinnerIcon v-if="pending" />
       </TransitionOpacity>
-      <div>
-        <button
-          class="xs:w-32 h-full w-20 rounded border border-solid border-gray-300 hover:bg-gray-100"
-          type="button"
-          :title="
-            displayFilter
-              ? $t('searchFilter.filterTitleHide')
-              : $t('searchFilter.filterTitleShow')
-          "
-          :aria-label="
-            displayFilter
-              ? $t('searchFilter.filterTitleHide')
-              : $t('searchFilter.filterTitleShow')
-          "
-          @click="displayFilter = !displayFilter"
-        >
-          {{ $t("searchFilter.filter") }}
-          <span v-if="!displayFilter"
-            ><Icon name="mdi:chevron-down" aria-hidden="true" /></span
-          ><span v-else><Icon name="mdi:chevron-up" aria-hidden="true" /></span>
-        </button>
-      </div>
+      <button
+        class="xs:w-32 h-full w-20 rounded border border-solid border-gray-300 hover:bg-gray-100"
+        type="button"
+        :title="
+          displayFilter
+            ? $t('searchFilter.filterTitleHide')
+            : $t('searchFilter.filterTitleShow')
+        "
+        :aria-label="
+          displayFilter
+            ? $t('searchFilter.filterTitleHide')
+            : $t('searchFilter.filterTitleShow')
+        "
+        @click="displayFilter = !displayFilter"
+      >
+        {{ $t("searchFilter.filter") }}
+        <Icon
+          v-if="!displayFilter"
+          name="mdi:chevron-down"
+          aria-hidden="true"
+        /><Icon v-else name="mdi:chevron-up" aria-hidden="true" />
+      </button>
     </div>
-    <div v-if="displayFilter" id="filterCard" class="mt-2 transition-all">
-      <h2 class="pb-3 pt-1 text-2xl">{{ $t("searchFilter.filter") }}</h2>
+    <section v-if="displayFilter" id="filterCard" class="mt-2">
+      <h2 class="pb-2 pt-1 text-2xl">{{ $t("searchFilter.filter") }}</h2>
       <div
         class="xs:grid-cols-2 grid grid-cols-1 gap-4 rounded border border-gray-300 p-2 md:grid-cols-4"
       >
-        <div class="">
-          <h3 class="text-xl">{{ $t("global.language") }}</h3>
-          <div class="form-check">
-            <FilterCheckbox
-              v-for="language in intersectUnique(
+        <SearchFilterFieldset
+          v-for="{ title, key, data } in [
+            { title: $t('global.language'),
+              key: 'lang',
+              data: intersectUnique(
                     languageOrder[$i18n.locale as LocalLangCode],
-                    Object.keys(searchDataStats.lang || {})
-                  )"
-              :key="language"
-              ftype="lang"
-              :fvalue="language"
-            />
-          </div>
-        </div>
-
-        <div class="col">
-          <h3 class="text-xl">{{ $t("global.termbase") }}</h3>
-          <div class="form-check">
-            <FilterCheckbox
-              v-for="samling in Object.keys(
-                searchDataStats.samling || {}
-              ).sort()"
-              :key="samling"
-              ftype="samling"
-              :fvalue="samling"
-            />
-          </div>
-        </div>
-        <div class="col">
-          <h3 class="text-xl">{{ $t("searchFilter.termproperty") }}</h3>
-          <div class="form-check">
-            <FilterCheckbox
-              v-for="predicate in intersectUnique(
+                    Object.keys(searchDataStats.lang || {})) },
+            { title: $t('global.termbase'),
+              key:'samling',
+              data: Object.keys(searchDataStats.samling || {}).sort()},
+            { title: $t('searchFilter.termproperty'),
+              key: 'predicate',
+              data: intersectUnique(
                 predicateOrder,
                 Object.keys(searchDataStats.predicate || {})
-              )"
-              :key="predicate"
-              ftype="predicate"
-              :fvalue="predicate"
-            />
-          </div>
-        </div>
-        <div class="col">
-          <h3 class="text-xl">{{ $t("searchFilter.matching") }}</h3>
-          <div class="form-check">
-            <FilterCheckbox
-              v-for="matching in intersectUnique(
-                matchingOrder,
-                Object.keys(searchDataStats.matching || {})
-              )"
-              :key="matching"
-              ftype="matching"
-              :fvalue="matching"
-            />
-          </div>
-        </div>
+              )
+            },
+            { title: $t('searchFilter.matching'),
+              key: 'matching',
+              data: intersectUnique(
+                    matchingOrder,
+                    Object.keys(searchDataStats.matching || {})
+              )}
+          ]"
+        :key="title"
+        :title="title"
+        >
+          <FilterCheckbox v-for="d in data" :key="d" :ftype="key" :fvalue="d" />
+        </SearchFilterFieldset>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
