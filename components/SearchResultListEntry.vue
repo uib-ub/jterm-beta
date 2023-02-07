@@ -71,7 +71,7 @@
             </div>
           </div>
         </div>
-        <div class="max-w-[26rem] lg:w-[26rem] lg:pl-2">
+        <div class="max-w-[20em] lg:w-[20em] lg:pl-2">
           {{ $t("global.samling." + entryData.samling) }}
         </div>
       </section>
