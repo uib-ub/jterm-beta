@@ -11,10 +11,12 @@
         <span class="pr-2">{{
           $t("global.domain." + searchOptions.searchDomain[0])
         }}</span>
-        <span v-if="!displayDomainMenu">
-          <Icon name="mdi:chevron-down" aria-hidden="true"
-        /></span>
-        <span v-else><Icon name="mdi:chevron-up" aria-hidden="true" /></span>
+        <Icon
+          v-if="!displayDomainMenu"
+          name="mdi:chevron-down"
+          aria-hidden="true"
+        />
+        <Icon v-else name="mdi:chevron-up" aria-hidden="true" />
       </button>
       <ul
         v-if="displayDomainMenu"

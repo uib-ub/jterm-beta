@@ -1,7 +1,7 @@
 <template>
   <div class="flex h-screen flex-col">
     <NavBar />
-    <main
+    <div
       class="xs:p-4 container mx-auto max-w-screen-xl flex-1 bg-white p-2 sm:p-5 md:p-7 lg:p-9 xl:p-10"
     >
       <h1
@@ -12,7 +12,7 @@
       </h1>
       <SearchBar />
       <slot />
-    </main>
+    </div>
     <FooterTP />
   </div>
 </template>

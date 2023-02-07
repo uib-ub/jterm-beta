@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <main id="main">
     <Head>
       <Title>{{ $t("about.title") }} | {{ $t("index.title") }}</Title>
     </Head>
@@ -16,11 +16,13 @@
       </p>
       <p>
         Kontakt oss gjerne på
-        <a class="underline hover:decoration-2" href="mailto:termportalen@uib.no"
-          >termportalen@uib.no</a
+        <AppLink
+          class="underline hover:decoration-2"
+          to="mailto:termportalen@uib.no"
+          >termportalen@uib.no</AppLink
         >
         for spørsmål eller tilbakemeldinger.
       </p>
     </div>
-  </div>
+  </main>
 </template>

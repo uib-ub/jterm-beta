@@ -5,8 +5,8 @@
     </Head>
     <h1 class="sr-only">{{ $t("search.title") }}</h1>
     <SearchFilter />
-    <div>
-      <h2 id="resultsheading" class="py-3 text-2xl">
+    <main id="main">
+      <h2 id="resultsheading" class="pb-2 pt-3 text-2xl">
         {{ $t("searchFilter.results-heading") }}
       </h2>
       <ol
@@ -20,14 +20,10 @@
           :entry-data="entry"
         />
       </ol>
-    </div>
-    <div class="flex justify-center p-2">
-      <TransitionOpacity>
-        <div v-if="pending && countFetchedMatches > 30">
-          <SpinnerIcon />
-        </div>
+      <TransitionOpacity class="flex justify-center p-2">
+        <SpinnerIcon v-if="pending && countFetchedMatches > 30" />
       </TransitionOpacity>
-    </div>
+    </main>
   </div>
 </template>
 

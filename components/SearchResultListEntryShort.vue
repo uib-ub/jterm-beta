@@ -1,13 +1,13 @@
 <template>
   <li class="rounded border">
     <AppLink :to="`/${entryData.link}`">
-      <div class="p-2 hover:bg-gray-100 lg:flex">
+      <section class="p-2 hover:bg-gray-100 lg:flex">
         <SearchResultLabel
           :predicate="entryData.predicate"
           :label-data="entryData.label"
           :label-lang="entryData.lang"
         />
-      </div>
+      </section>
     </AppLink>
   </li>
 </template>

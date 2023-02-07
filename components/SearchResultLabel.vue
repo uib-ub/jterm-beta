@@ -1,24 +1,25 @@
 <template>
-  <b
-    v-if="predicate == 'prefLabel'"
-    :lang="(intersectUnique(
-              languageOrder[$i18n.locale as LocalLangCode],
-              labelLang as LangCode[])[0]
-            )"
-    class="grow"
-    :class="{
-              'text-right': langRtoL(labelLang[0] as LangCode)
-            }"
-    v-html="labelData"
-  ></b>
-  <span
+  <h3 v-if="predicate == 'prefLabel'">
+    <b
+      :lang="(intersectUnique(
+                languageOrder[$i18n.locale as LocalLangCode],
+                labelLang as LangCode[])[0]
+              )"
+      class="grow"
+      :class="{
+                'text-right': langRtoL(labelLang[0] as LangCode)
+              }"
+      v-html="labelData"
+    ></b>
+  </h3>
+  <h3
     v-else
     :lang="(intersectUnique(
-              languageOrder[$i18n.locale as LocalLangCode],
-              labelLang as LangCode[])[0]
-            )"
+                languageOrder[$i18n.locale as LocalLangCode],
+                labelLang as LangCode[])[0]
+              )"
     v-html="labelData"
-  ></span>
+  ></h3>
 </template>
 
 <script setup lang="ts">
