@@ -155,7 +155,7 @@ function deriveSearchOptions(searchOption, defaultValue) {
   if (searchOption !== "searchTranslate") {
     termbases = filterTermbases(
       termbases,
-      languageInfo[searchOptions.value.searchLanguage],
+      languageInfo[searchOptions.value.searchTranslate],
       "searchTranslate",
       "none"
     );
