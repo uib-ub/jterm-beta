@@ -40,10 +40,8 @@
         <Icon name="ic:outline-search" size="2em" aria-hidden="true" />
       </button>
     </div>
-    <div
-      class="xs:px-1 xs:text-base flex flex-wrap gap-x-3 py-2 text-sm sm:text-lg"
-    >
-      <SearchBarDropdown dropdown="searchLanguage">
+    <div class="xs:px-1 flex flex-wrap gap-x-3 py-2 sm:text-lg">
+      <SearchBarDropdown dropdown="searchLanguage" dd-width="7.8em">
         <option value="all">
           {{ $t("global.lang.all") }} ({{ filteredSearchLangs.length }})
         </option>
@@ -58,7 +56,7 @@
           {{ $t("global.lang." + lc) }}
         </option>
       </SearchBarDropdown>
-      <SearchBarDropdown dropdown="searchTranslate">
+      <SearchBarDropdown dropdown="searchTranslate" dd-width="5.5em">
         <option value="none">
           {{ $t("global.lang.none") }}
         </option>
@@ -73,7 +71,7 @@
           {{ $t("global.lang." + lc) }}
         </option>
       </SearchBarDropdown>
-      <SearchBarDropdown dropdown="searchBase">
+      <SearchBarDropdown dropdown="searchBase" dd-width="20em">
         <option value="all">
           {{ $t("global.samling.all") }} ({{ filteredTermbases.length }})
         </option>
@@ -141,7 +139,6 @@ function deriveSearchOptions(searchOption, defaultValue) {
   const currentValue = searchOptions.value[searchOption];
   let termbases = termbaseOrder;
   let options;
-
   if (topdomain !== "all") {
     termbases = domainNesting[topdomain]?.bases;
   }
@@ -158,7 +155,7 @@ function deriveSearchOptions(searchOption, defaultValue) {
   if (searchOption !== "searchTranslate") {
     termbases = filterTermbases(
       termbases,
-      languageInfo[searchOptions.value.searchLanguage],
+      languageInfo[searchOptions.value.searchTranslate],
       "searchTranslate",
       "none"
     );
