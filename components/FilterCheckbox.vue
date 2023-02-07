@@ -1,19 +1,22 @@
 <template>
-  <input
-    :id="`filter-${ftype}-${fvalue}`"
-    v-model="searchFilterData[ftype as keyof SearchDataStats]"
-    class="form-check-input"
-    type="checkbox"
-    :value="fvalue"
-  />
-  <label class="px-1 py-1 text-lg" :for="`filter-${ftype}-${fvalue}`"
-    >{{ $t("global." + ftype + "." + fvalue) }} ({{
-      searchDataStats[ftype as keyof SearchDataStats][
-        fvalue as LangCode | Samling | Matching | LabelPredicate
-      ]
-    }})</label
-  ><br />
+  <div class="text-lg space-x-3">
+    <input
+      :id="`filter-${ftype}-${fvalue}`"
+      v-model="searchFilterData[ftype as keyof SearchDataStats]"
+      class="cursor-pointer"
+      type="checkbox"
+      :value="fvalue"
+    />
+    <label class="cursor-pointer" :for="`filter-${ftype}-${fvalue}`"
+      >{{ $t("global." + ftype + "." + fvalue) }} ({{
+        searchDataStats[ftype as keyof SearchDataStats][
+          fvalue as LangCode | Samling | Matching | LabelPredicate
+        ]
+      }})</label
+    >
+  </div>
 </template>
+
 <script setup lang="ts">
 import { SearchDataStats } from "~~/composables/states";
 import { Matching, LabelPredicate } from "~~/utils/vars";

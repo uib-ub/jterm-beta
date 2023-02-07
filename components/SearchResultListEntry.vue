@@ -1,7 +1,7 @@
 <template>
   <li class="rounded border border-gray-300">
     <AppLink :to="`/${entryData.link}`">
-      <div class="p-2 hover:bg-gray-100 lg:flex">
+      <section class="lg:py-2 py-1 px-2 hover:bg-gray-100 lg:flex">
         <div class="grow justify-between sm:flex">
           <div
             class="flex grow justify-between"
@@ -71,10 +71,10 @@
             </div>
           </div>
         </div>
-        <div class="max-w-[26rem] lg:w-[26rem] lg:pl-2">
+        <div class="max-w-[20em] lg:w-[20em] lg:pl-2">
           {{ $t("global.samling." + entryData.samling) }}
         </div>
-      </div>
+      </section>
     </AppLink>
   </li>
 </template>

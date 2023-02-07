@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <section>
     <h2 id="domener" class="pb-1 text-2xl">
       <AppLink to="#domener">{{
         $t("domainOverview.domainsAndBases")
@@ -12,5 +12,5 @@
         :domain="domain"
       />
     </ul>
-  </div>
+  </section>
 </template>

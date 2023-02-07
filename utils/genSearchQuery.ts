@@ -8,8 +8,8 @@ import {
 } from "../utils/vars";
 
 const htmlHighlight = {
-  open: "<span class='tp-shighlight'>",
-  close: "</span>",
+  open: "<mark class='tp-shighlight'>",
+  close: "</mark>",
 };
 
 const samlingMapping = {

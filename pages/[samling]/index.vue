@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <main id="main">
     <Head>
       <Title
         >{{ uriData?.label[0]["@value"] || uriData?.label[0] || samling }} |
@@ -17,7 +17,7 @@
         </p>
       </div>
       <!--Table-->
-      <div class="pt-5 md:pt-0">
+      <aside class="pt-5 md:pt-0">
         <table>
           <tbody>
             <!--Organisation-->
@@ -60,9 +60,9 @@
             />
           </tbody>
         </table>
-      </div>
+      </aside>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup lang="ts">
