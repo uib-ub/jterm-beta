@@ -3,7 +3,7 @@
     <Head>
       <Title>{{ $t("index.title") }}</Title>
     </Head>
-    <WelcomeTP class="lg:basis-GRb" />
-    <DomainOverview class="lg:basis-GRs" />
+    <WelcomeTP class="basis-GRb" />
+    <DomainOverview class="basis-GRs" />
   </main>
 </template>

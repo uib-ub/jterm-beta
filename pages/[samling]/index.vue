@@ -6,18 +6,18 @@
         Termportalen</Title
       >
     </Head>
-    <h1 class="py-3 text-2xl">
+    <h1 class="pt-5 pb-2 text-2xl">
       {{ uriData?.label[0]["@value"] || uriData?.label[0] || samling }}
     </h1>
-    <div class="md:flex">
+    <div class="flex flex-col gap-x-5 gap-y-5 md:flex-row">
       <!--Description-->
-      <div class="basis-3/5 pr-4">
+      <div class="basis-GRb space-y-2">
         <p v-for="p in uriData?.description?.['@value'].split('\n\n')" :key="p">
           {{ p }}
         </p>
       </div>
       <!--Table-->
-      <aside class="pt-5 md:pt-0">
+      <aside class="basis-GRs">
         <table>
           <tbody>
             <!--Organisation-->

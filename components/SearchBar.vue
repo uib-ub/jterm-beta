@@ -1,25 +1,54 @@
 <template>
-  <div class="max-w-full grow" role="search">
-    <DomainTabs class="hidden md:block" />
-    <DomainMenu class="md:hidden" />
+  <div
+    class="max-w-full grow"
+    role="search"
+    :class="{
+      'xs:pt-3 pt-2 sm:pt-4 md:pt-5 lg:pt-6 xl:pt-7': !expandSearchBar,
+    }"
+  >
     <div
-      class="relative flex h-11 items-stretch rounded border border-solid border-gray-300"
+      v-if="expandSearchBar"
+      class="xs:pt-4 pt-2 sm:pt-5 md:pt-7 lg:pt-8 xl:pt-9"
+    >
+      <DomainTabs class="hidden md:block" />
+      <DomainMenu class="md:hidden" />
+    </div>
+    <div
+      class="flex h-11 items-stretch rounded border border-solid border-gray-300"
     >
       <input
         id="searchfield"
         v-model="searchterm"
         type="search"
         class="form-control focus:border-tpblue-300 min-w-0 flex-auto rounded border border-white bg-white bg-clip-padding px-3 py-1.5 text-base font-normal text-gray-700 transition ease-in-out focus:border focus:bg-white focus:text-gray-700 focus:outline-none"
-        :placeholder="$t('searchBar.search')"
+        :placeholder="
+          $t('searchBar.search') +
+          (searchOptions.searchLanguage !== 'all'
+            ? ` ${$t('searchBar.inLanguage')} ${$t(
+                `global.lang.${searchOptions.searchLanguage}`,
+                2
+              )}`
+            : '') +
+          (searchOptions.searchBase !== 'all'
+            ? ` ${$t('searchBar.inDomain')} ${$t(
+                'global.samling.' + searchOptions.searchBase
+              )}`
+            : searchOptions.searchDomain[0] !== 'all'
+            ? ` ${$t('searchBar.inDomain')} ${$t(
+                'global.domain.domain',
+                2
+              )} ${$t('global.domain.' + searchOptions.searchDomain.slice(-1))}`
+            : '')
+        "
         :aria-label="$t('searchBar.searchfieldLabel')"
         aria-describedby="searchbutton"
         @keypress.enter="execSearch"
-        @focus="$event.target.select()"
+        @focus="$event.target.select(), (searchBarWasFocused = true)"
       />
       <button
         v-if="searchterm.length > 0"
         type="button"
-        class="flex w-9 items-center justify-center"
+        class="flex w-8 items-center justify-center"
         :aria-label="$t('searchBar.clearTextLabel')"
         @click="clearText"
       >
@@ -32,7 +61,7 @@
       </button>
       <button
         id="searchbutton"
-        class="bg-tpblue-400 tp-searchbutton-radius inline-block h-full w-20 items-center text-white transition duration-200 ease-in-out hover:bg-blue-700 focus:bg-blue-700 focus:outline-none active:bg-blue-800"
+        class="bg-tpblue-400 tp-searchbutton-radius inline-block h-full w-24 items-center text-white transition duration-200 ease-in-out hover:bg-blue-700 focus:bg-blue-700 focus:outline-none active:bg-blue-800"
         type="button"
         :aria-label="$t('searchBar.searchButtonLabel')"
         @click="execSearch"
@@ -40,7 +69,10 @@
         <Icon name="ic:outline-search" size="2em" aria-hidden="true" />
       </button>
     </div>
-    <div class="xs:px-1 flex flex-wrap gap-x-3 py-2 sm:text-lg">
+    <div
+      v-if="expandSearchBar"
+      class="xs:px-1 flex flex-wrap gap-x-3 pt-2 sm:text-lg"
+    >
       <SearchBarDropdown dropdown="searchLanguage" dd-width="7.8em">
         <option value="all">
           {{ $t("global.lang.all") }} ({{ filteredSearchLangs.length }})
@@ -93,6 +125,20 @@ const router = useRouter();
 const searchOptions = useSearchOptions();
 const searchterm = useSearchterm();
 const searchData = useSearchData();
+const searchBarWasFocused = useSearchBarWasFocused();
+
+const expandSearchBar = computed(() => {
+  if (
+    route.path === "/" ||
+    route.path === "/search" ||
+    route.name === "samling-id" ||
+    searchBarWasFocused.value
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+});
 
 const filteredSearchLangs = computed(() => {
   return deriveSearchOptions("searchLanguage", "all");
