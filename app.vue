@@ -12,6 +12,16 @@ useHead({
     lang: "nb",
   },
 });
+
+const searchBarWasFocused = useSearchBarWasFocused();
+const route = useRoute();
+
+watch(
+  () => route.path,
+  () => {
+    searchBarWasFocused.value = false;
+  }
+);
 </script>
 
 <style>
@@ -32,5 +42,9 @@ body {
   border-color: #d1d5db;
   border-width: 1px;
   border-radius: 4px;
+}
+
+.tp-transition-slow {
+  transition: all 450ms cubic-bezier(0.235, 0.615, 0.115, 0.995);
 }
 </style>
