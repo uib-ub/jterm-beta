@@ -6,8 +6,10 @@
     <h1 class="sr-only">{{ $t("search.title") }}</h1>
     <SearchFilter />
     <main id="main">
-      <h2 id="resultsheading" class="pb-2 pt-3 text-2xl">
-        {{ $t("searchFilter.results-heading") }}
+      <h2 id="mainheading" class="pb-2 pt-3 text-2xl">
+        <AppLink to="#mainheading">
+          {{ $t("searchFilter.results-heading") }}</AppLink
+        >
       </h2>
       <ol
         v-if="searchData.length > 0"
