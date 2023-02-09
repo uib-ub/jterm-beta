@@ -13,6 +13,7 @@
       <SearchBar />
       <slot />
     </div>
+    <ButtonScrollTop />
     <FooterTP />
   </div>
 </template>

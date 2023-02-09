@@ -102,6 +102,8 @@
     "srText": "Venter på søkeresultater"
   },
 
+  "buttonScrollTop": {"srLabel": "Tilbake til toppen"},
+
   "samling": {
     "organisation": "Organisajon",
     "orgnr": "Organisasjonsnr",
