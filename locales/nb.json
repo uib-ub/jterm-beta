@@ -2,8 +2,9 @@
   "global": {
     "language": "Språk | Språk",
     "termbase": "Termbase",
+    "skipLink": "Gå til hovedinnhold",
     "domain": {
-      "domain": "Domene",
+      "domain": "Domene | domene",
       "all": "Alle domener",
       "humaniora": "Humaniora",
       "naturvitenskap": "Naturvitenskap & teknologi",
@@ -76,6 +77,8 @@
   },
   "searchBar": {
     "search": "Søk",
+    "inDomain": "i",
+    "inLanguage": "på",
     "searchLanguage": "Søkespråk",
     "searchTranslate": "Målspråk",
     "searchBase": "Termbase",
@@ -99,6 +102,8 @@
   "spinnerIcon": {
     "srText": "Venter på søkeresultater"
   },
+
+  "buttonScrollTop": {"srLabel": "Tilbake til toppen"},
 
   "samling": {
     "organisation": "Organisajon",

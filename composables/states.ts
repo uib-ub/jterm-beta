@@ -55,6 +55,8 @@ export const useSearchOptions = () =>
     searchOffset: undefined,
   }));
 
+export const useSearchBarWasFocused = () =>
+  useState<boolean>("searchBarWasFocused", () => false);
 export const useSearchterm = () => useState<string>("searchterm", () => "");
 export const useSearchLanguage = () =>
   useState<string>("searchLanguage", () => "");

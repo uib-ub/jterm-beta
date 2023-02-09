@@ -10,7 +10,7 @@
         <SpinnerIcon v-if="pending" />
       </TransitionOpacity>
       <button
-        class="xs:w-32 h-full w-20 rounded border border-solid border-gray-300 hover:bg-gray-100"
+        class="h-full w-32 rounded border border-solid border-gray-300 hover:bg-gray-100"
         type="button"
         :title="
           displayFilter
@@ -28,8 +28,14 @@
         <Icon
           v-if="!displayFilter"
           name="mdi:chevron-down"
+          class="ml-[-4px] mr-[-8px]"
           aria-hidden="true"
-        /><Icon v-else name="mdi:chevron-up" aria-hidden="true" />
+        /><Icon
+          v-else
+          class="ml-[-4px] mr-[-8px]"
+          name="mdi:chevron-up"
+          aria-hidden="true"
+        />
       </button>
     </div>
     <section v-if="displayFilter" id="filterCard" class="mt-2">
@@ -61,8 +67,8 @@
                     Object.keys(searchDataStats.matching || {})
               )}
           ]"
-        :key="title"
-        :title="title"
+          :key="title"
+          :title="title"
         >
           <FilterCheckbox v-for="d in data" :key="d" :ftype="key" :fvalue="d" />
         </SearchFilterFieldset>

@@ -3,7 +3,7 @@
     <Head>
       <Title>{{ $t("config.title") }} | {{ $t("index.title") }}</Title>
     </Head>
-    <h1 id="config" class="pb-3 text-3xl">
+    <h1 id="config" class="pt-5 pb-2 text-3xl">
       <AppLink to="#config">{{ $t("config.title") }}</AppLink>
     </h1>
     <section>

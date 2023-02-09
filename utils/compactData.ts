@@ -1,4 +1,6 @@
-import { ContextDefinition, compact } from "jsonld";
+import pkg from 'jsonld'
+
+const { compact } = pkg;
 
 const context = function () {
   const runtimeConfig = useRuntimeConfig();
