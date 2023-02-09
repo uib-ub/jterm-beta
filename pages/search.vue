@@ -20,7 +20,7 @@
           :entry-data="entry"
         />
       </ol>
-      <TransitionOpacity class="flex justify-center p-2">
+      <TransitionOpacity v-if="false" class="flex justify-center p-2">
         <SpinnerIcon v-if="pending && countFetchedMatches > 30" />
       </TransitionOpacity>
     </main>
