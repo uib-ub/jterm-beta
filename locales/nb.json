@@ -3,7 +3,7 @@
     "language": "Språk | Språk",
     "termbase": "Termbase",
     "domain": {
-      "domain": "Domene",
+      "domain": "Domene | domene",
       "all": "Alle domener",
       "humaniora": "Humaniora",
       "naturvitenskap": "Naturvitenskap & teknologi",
@@ -76,6 +76,8 @@
   },
   "searchBar": {
     "search": "Søk",
+    "inDomain": "i",
+    "inLanguage": "på",
     "searchLanguage": "Søkespråk",
     "searchTranslate": "Målspråk",
     "searchBase": "Termbase",
