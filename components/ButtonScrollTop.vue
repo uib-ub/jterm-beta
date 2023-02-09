@@ -1,8 +1,7 @@
 <template>
   <Transition>
-    <a href="#anchor">
+    <a v-if="displayButton" href="#anchor">
       <button
-        v-if="displayButton"
         class="xs:right-4 xs:bottom-4 fixed bottom-2 right-2 rounded border border-gray-400 bg-white p-1 sm:right-5 sm:bottom-5 md:right-7 md:bottom-7 lg:bottom-8 lg:right-9 xl:bottom-8 xl:right-8"
         :aria-label="$t('buttonScrollTop.srLabel')"
         :title="$t('buttonScrollTop.srLabel')"
