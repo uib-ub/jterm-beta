@@ -11,7 +11,7 @@
         <div
           class="text-[1.4em] font-medium leading-tight decoration-inherit hover:text-gray-200 hover:underline"
         >
-          <AppLink to="/">Termportalen.no</AppLink>
+          <AppLink id="anchor" to="/">Termportalen.no</AppLink>
         </div>
         <div class="text-lg">
           <div class="xs:hidden">
