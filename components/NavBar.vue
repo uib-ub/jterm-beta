@@ -69,6 +69,7 @@ const navBar = ref();
 function toggleNavBar(prevScrollpos: number) {
   const currentScrollPos = window.pageYOffset;
   if (prevScrollpos < currentScrollPos && currentScrollPos > 32) {
+    navMenuExpanded.value = false;
     navBar.value.style.top = "-48px";
   } else {
     navBar.value.style.top = "0px";
