@@ -34,7 +34,7 @@
           </div>
           <ul
             id="NavMenuContent"
-            class="xs:flex xs:gap-4 xs:pt-0 xs:space-y-0 space-y-2 pt-3"
+            class="xs:flex xs:gap-4 xs:pt-0 xs:space-y-0 bg-tpblue-400 xs:mt-0 xs:rounded-none xs:border-none xs:p-0 right-0 mt-[8.5px] space-y-2 rounded-b border border-t-0 border-white p-4"
             :class="{ hidden: !navMenuExpanded }"
           >
             <li>
