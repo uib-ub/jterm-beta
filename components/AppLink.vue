@@ -1,6 +1,7 @@
 <template>
-  <NuxtLink v-if="isInternal === 'internal'" :to="to"><slot /></NuxtLink>
-  <NuxtLink v-else-if="isInternal === 'external'" :to="to"
+  <NuxtLink v-if="linkType === 'internal'" :to="to"><slot /></NuxtLink>
+  <a v-else-if="linkType === 'pageinternal'" :href="to"><slot /></a>
+  <NuxtLink v-else-if="linkType === 'external'" :to="to"
     ><span class="icon-pad">
       <slot />
     </span>
@@ -13,9 +14,11 @@
 const props = defineProps({
   to: { type: String, required: true },
 });
-const isInternal = computed(() => {
-  if (props.to.startsWith("/") || props.to.startsWith("#")) {
+const linkType = computed(() => {
+  if (props.to.startsWith("/")) {
     return "internal";
+  } else if (props.to.startsWith("#")) {
+    return "pageinternal";
   } else if (props.to.startsWith("http")) {
     return "external";
   }

@@ -2,9 +2,9 @@
   <div>
     <ul class="skip-links">
       <li>
-        <a ref="skipLink" href="#main" class="skip-link">{{
+        <AppLink ref="skipLink" to="#main" class="skip-link">{{
           $t("global.skipLink")
-        }}</a>
+        }}</AppLink>
       </li>
     </ul>
     <NuxtLayout>
