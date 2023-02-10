@@ -62,20 +62,31 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const navMenuExpanded = ref(false);
 const navBar = ref();
 
+function toggleNavBar(prevScrollpos: number) {
+  const currentScrollPos = window.pageYOffset;
+  if (prevScrollpos < currentScrollPos && currentScrollPos > 32) {
+    navBar.value.style.top = "-48px";
+  } else {
+    navBar.value.style.top = "0px";
+  }
+  return currentScrollPos;
+}
+
 onMounted(() => {
-  let prevScrollpos = window.pageYOffset;
-  window.addEventListener("scroll", () => {
-    const currentScrollPos = window.pageYOffset;
-    if (prevScrollpos < currentScrollPos && currentScrollPos > 32) {
-      navBar.value.style.top = "-48px";
-    } else {
-      navBar.value.style.top = "0px";
+  let prevScrollPos: number = window.pageYOffset;
+  let tick = false;
+  window.addEventListener("scroll", function (e) {
+    if (!tick) {
+      setTimeout(function () {
+        prevScrollPos = toggleNavBar(prevScrollPos);
+        tick = false;
+      }, 180);
     }
-    prevScrollpos = currentScrollPos;
+    tick = true;
   });
 });
 </script>
