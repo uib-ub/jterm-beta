@@ -34,7 +34,7 @@
           </div>
           <ul
             id="NavMenuContent"
-            class="xs:flex xs:gap-4 xs:pt-0 xs:space-y-0 space-y-2 pt-3"
+            class="xs:flex xs:gap-4 xs:pt-0 xs:space-y-0 bg-tpblue-400 xs:mt-0 xs:rounded-none xs:border-none xs:p-0 right-0 mt-[8.5px] space-y-2 rounded-b border border-t-0 border-white p-4"
             :class="{ hidden: !navMenuExpanded }"
           >
             <li>
@@ -62,20 +62,32 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const navMenuExpanded = ref(false);
 const navBar = ref();
 
+function toggleNavBar(prevScrollpos: number) {
+  const currentScrollPos = window.pageYOffset;
+  if (prevScrollpos < currentScrollPos && currentScrollPos > 32) {
+    navMenuExpanded.value = false;
+    navBar.value.style.top = "-48px";
+  } else {
+    navBar.value.style.top = "0px";
+  }
+  return currentScrollPos;
+}
+
 onMounted(() => {
-  let prevScrollpos = window.pageYOffset;
-  window.addEventListener("scroll", () => {
-    const currentScrollPos = window.pageYOffset;
-    if (prevScrollpos < currentScrollPos && currentScrollPos > 32) {
-      navBar.value.style.top = "-48px";
-    } else {
-      navBar.value.style.top = "0px";
+  let prevScrollPos: number = window.pageYOffset;
+  let tick = false;
+  window.addEventListener("scroll", function (e) {
+    if (!tick) {
+      setTimeout(function () {
+        prevScrollPos = toggleNavBar(prevScrollPos);
+        tick = false;
+      }, 180);
     }
-    prevScrollpos = currentScrollPos;
+    tick = true;
   });
 });
 </script>

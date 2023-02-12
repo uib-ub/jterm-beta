@@ -1,7 +1,11 @@
 <template>
   <li class="rounded border">
     <AppLink :to="`/${entryData.link}`">
-      <section class="p-2 hover:bg-gray-100 lg:flex">
+      <section
+        class="p-2 hover:bg-gray-100 lg:flex"
+        :class="{ 'bg-gray-200': isCurrentEntry }"
+        :aria-current="isCurrentEntry"
+      >
         <SearchResultLabel
           :predicate="entryData.predicate"
           :label-data="entryData.label"
@@ -13,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+const route = useRoute();
+
 interface Props {
   entryData: {
     link: string;
@@ -25,6 +31,14 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+
+const isCurrentEntry = computed(() => {
+  if ("/" + props.entryData.link === route.path) {
+    return true;
+  } else {
+    return false;
+  }
+});
 </script>
 <style scoped>
 li {

@@ -3,8 +3,18 @@
     <h1 class="sr-only">{{ $t("id.topheading") }}</h1>
 
     <div v-if="searchData.length > 0" class="hidden md:block md:w-60 lg:w-1/4">
-      <div class="container h-9">
-        <AppLink class="text-lg" to="/search">{{ $t("id.tilbake") }}</AppLink>
+      <div class="flex h-9">
+        <AppLink class="flex group items-center space-x-2 text-lg" to="/search">
+          <Icon
+            name="ion:return-up-back-sharp"
+            size="1.7em"
+            aria-hidden="true"
+            class="bg-tpblue-400 h-7 w-12 rounded text-white group-hover:bg-blue-700"
+          ></Icon>
+          <div class="group-hover:underline">
+            {{ $t("id.tilbake") }}
+          </div></AppLink
+        >
       </div>
       <nav aria-labelledby="sidebarresults">
         <h2 id="sidebarresults" class="pb-2 pt-3 text-2xl">
@@ -25,24 +35,23 @@
       class="col lg:w-3/4"
       :class="{ 'pl-3 lg:pl-6': searchData.length > 0 }"
     >
-      <div class="container invisible py-2">
+      <div class="h-9 invisible">
         <input id="viewToggle" v-model="conceptViewToggle" type="checkbox" />
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
-
       <main id="main">
         <h2 id="ctitle" class="pb-4">
           <AppLink class="text-3xl" to="#ctitle">{{
             data[uri]?.label
           }}</AppLink>
-          <div v-if="data[uri]?.memberOf"
-            ><AppLink
+          <div v-if="data[uri]?.memberOf">
+            <AppLink
               class="text-lg text-gray-600 underline hover:text-black"
               :to="'/' + data[uri]?.memberOf.split('-3A')[0]"
             >
               {{ $t("global.samling." + data[uri]?.memberOf.split("-3A")[0]) }}
-            </AppLink></div
-          >
+            </AppLink>
+          </div>
         </h2>
         <div v-if="conceptViewToggle">
           <h3>{{ $t("id.languagedata") }}</h3>
