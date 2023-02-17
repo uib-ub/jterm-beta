@@ -1,7 +1,7 @@
 <template>
   <li class="rounded border border-gray-300">
     <AppLink :to="`/${entryData.link}`">
-      <section class="lg:py-2 py-1 px-2 hover:bg-gray-100 lg:flex">
+      <section class="py-1 px-2 hover:bg-gray-100 lg:flex lg:py-2">
         <div class="grow justify-between sm:flex">
           <div
             class="flex grow justify-between"
