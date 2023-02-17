@@ -40,7 +40,25 @@
               )} ${$t('global.domain.' + searchOptions.searchDomain.slice(-1))}`
             : '')
         "
-        :aria-label="$t('searchBar.searchfieldLabel')"
+        :aria-label="
+          $t('searchBar.search') +
+          (searchOptions.searchLanguage !== 'all'
+            ? ` ${$t('searchBar.inLanguage')} ${$t(
+                `global.lang.${searchOptions.searchLanguage}`,
+                2
+              )}`
+            : '') +
+          (searchOptions.searchBase !== 'all'
+            ? ` ${$t('searchBar.inDomain')} ${$t(
+                'global.samling.' + searchOptions.searchBase
+              )}`
+            : searchOptions.searchDomain[0] !== 'all'
+            ? ` ${$t('searchBar.inDomain')} ${$t(
+                'global.domain.domain',
+                2
+              )} ${$t('global.domain.' + searchOptions.searchDomain.slice(-1))}`
+            : '')
+        "
         aria-describedby="searchbutton"
         @keypress.enter="execSearch"
         @focus="$event.target.select(), (searchBarWasFocused = true)"

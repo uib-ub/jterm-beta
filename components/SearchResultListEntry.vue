@@ -1,13 +1,21 @@
 <template>
   <li class="rounded border border-gray-300">
     <AppLink :to="`/${entryData.link}`">
-      <section class="lg:py-2 py-1 px-2 hover:bg-gray-100 lg:flex">
+      <section
+        class="py-1.5 px-2 hover:bg-gray-100 lg:flex lg:py-2"
+        :class="{
+          'sm:flex':
+            searchOptions.searchTranslate === 'none' &&
+            searchOptions.searchTranslate !== 'all',
+        }"
+      >
         <div class="grow justify-between sm:flex">
           <div
             class="flex grow justify-between"
             :class="{
               'sm:justify-start': searchOptions.searchTranslate !== 'none',
-              'text-right': langRtoL(entryData.lang[0] as LangCode)
+              'text-right': langRtoL(entryData.lang[0] as LangCode),
+              'sm:grow-0': searchOptions.searchTranslate !== 'none'
             }"
           >
             <SearchResultLabel
@@ -16,31 +24,29 @@
               :label-lang="entryData.lang"
             />
             <div
-              v-if="searchOptions.searchLanguage === 'all'"
-              class="pl-3 text-right font-light lg:hidden"
-              :class="{ 'md:hidden': searchOptions.searchTranslate === 'none' }"
+              class="pl-3 font-light lg:hidden"
+              :class="{
+                hidden:
+                  searchOptions.searchTranslate === 'none' &&
+                  searchOptions.searchLanguage !== 'all',
+                'md:hidden': searchOptions.searchTranslate === 'none',
+                'sm:hidden': searchOptions.searchLanguage !== 'all',
+              }"
             >
-              <span>
-                <span
-                  class="hidden"
-                  :class="{
-                    'sm:inline': searchOptions.searchTranslate !== 'none',
-                  }"
-                  >(</span
-                ><span>
-                  {{
-                    entryData.lang
-                      .map((l: string) => $t(`global.lang.${l}`))
-                      .join(", ")
-                  }} </span
-                ><span
-                  class="hidden"
-                  :class="{
-                    'sm:inline': searchOptions.searchTranslate !== 'none',
-                  }"
-                  >)</span
-                ></span
-              >
+              <span class="hidden sm:inline">
+                ({{
+                  entryData.lang
+                    .map((l: string) => $t(`global.lang.${l}`))
+                    .join(", ")
+                }})
+              </span>
+              <span class="sm:hidden">
+                {{
+                  entryData.lang
+                    .map((l: string) => $t(`global.lang.${l}`))
+                    .join(", ")
+                }}
+              </span>
             </div>
           </div>
           <div

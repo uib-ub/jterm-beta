@@ -3,7 +3,8 @@
     <AppLink :to="`/${entryData.link}`">
       <section
         class="p-2 hover:bg-gray-100 lg:flex"
-        :class="{ 'bg-gray-200': isCurrentEntry }"
+        :class="{ 'bg-gray-200': isCurrentEntry,
+                  'text-right': langRtoL(entryData.lang[0] as LangCode) }"
         :aria-current="isCurrentEntry"
       >
         <SearchResultLabel
@@ -17,6 +18,7 @@
 </template>
 
 <script setup lang="ts">
+import { LangCode } from "utils/vars-language";
 const route = useRoute();
 
 interface Props {

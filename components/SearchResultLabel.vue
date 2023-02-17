@@ -1,11 +1,10 @@
 <template>
-  <h3 v-if="predicate == 'prefLabel'">
+  <h3 v-if="predicate == 'prefLabel'" class="grow">
     <b
       :lang="(intersectUnique(
                 languageOrder[$i18n.locale as LocalLangCode],
                 labelLang as LangCode[])[0]
               )"
-      class="grow"
       :class="{
                 'text-right': langRtoL(labelLang[0] as LangCode)
               }"
@@ -14,6 +13,7 @@
   </h3>
   <h3
     v-else
+    class="grow"
     :lang="(intersectUnique(
                 languageOrder[$i18n.locale as LocalLangCode],
                 labelLang as LangCode[])[0]
