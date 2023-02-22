@@ -27,3 +27,24 @@ export const matchingOrder: Matching[] | Matching[][] = [
   "contains-ci",
 ];
 export type QueryType = "entries" | "aggregate" | "count";
+
+export type SemanticRelation =
+  | "narrower"
+  | "specializes"
+  | "isPartOf"
+  | "broader"
+  | "generalizes"
+  | "hasPart"
+  | "related"
+  | "seeAlso";
+
+export const semanticRelationTypes: SemanticRelation[] = [
+  "narrower",
+  "specializes",
+  "isPartOf",
+  "broader",
+  "generalizes",
+  "hasPart",
+  "related",
+  "seeAlso",
+];
