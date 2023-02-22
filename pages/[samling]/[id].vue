@@ -134,6 +134,14 @@
             </h3>
             <table class="table-auto">
               <tbody>
+                <!--Definisjon-->
+                <DataRow
+                  v-for="def in data[uri]?.definisjon?.[lang]"
+                  :key="'definisjoin_' + def"
+                  :data="data[def]?.label['@value']"
+                  :label="$t('id.definisjon')"
+                  :data-lang="lang"
+                />
                 <!--Anbefalt term-->
                 <DataRow
                   v-for="label in data[uri]?.prefLabel?.[lang]"
