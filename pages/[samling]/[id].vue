@@ -211,7 +211,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import { SemanticRelation } from "utils/vars";
+
+const i18n = useI18n();
 const route = useRoute();
 const samling = route.params.samling;
 const id = route.params.id;
@@ -219,17 +223,23 @@ const uri = `${samling}-3A${id}`;
 const dataDisplayLanguages = useDataDisplayLanguages();
 const conceptViewToggle = useConceptViewToggle();
 const searchData = useSearchData();
-const searchOptions = useSearchOptions();
 
 const fetchedData = ref({});
 const data = computed(() => {
   if (fetchedData.value?.["@graph"]) {
     const identified = identifyData(fetchedData.value?.["@graph"]);
-    const labeled = idLabelsWithLang(
-      identified,
-      [uri],
-      ["prefLabel", "altLabel", "hiddenLabel"]
-    );
+    let labels: string[] = [uri];
+    for (const type of semanticRelationTypes) {
+      if (identified[uri][type]) {
+        labels = labels.concat(identified[uri][type]);
+      }
+    }
+    const labeled = idLabelsWithLang(identified, labels, [
+      "prefLabel",
+      "altLabel",
+      "hiddenLabel",
+      "definisjon",
+    ]);
     return labeled;
   } else {
     return {};
