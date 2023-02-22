@@ -245,13 +245,25 @@ const displayInfo = computed(() => {
   const hiddenLabelLength = getMaxNumberOfInstances(
     data.value?.[uri]?.hiddenLabel
   );
-  return {
+  const info = {
     conceptLanguages,
     displayLanguages,
     prefLabelLength,
     altLabelLength,
     hiddenLabelLength,
   };
+  for (const relationType of semanticRelationTypes) {
+    const data = getRelationData(relationType);
+    if (data) {
+      try {
+        info.semanticRelations[relationType] = data;
+      } catch {
+        info.semanticRelations = {};
+        info.semanticRelations[relationType] = data;
+      }
+    }
+  }
+  return info;
 });
 
 function getRelationData(relationType: SemanticRelation) {
