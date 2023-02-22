@@ -68,9 +68,14 @@ export function updateLabel(data: any, conceptUri: string, labelType: string) {
   const newLabels: { [key: string]: Array<string> } = {};
   const labels: Array<string> = data[conceptUri][labelType];
   for (const label of labels) {
-    const language = data[label].literalForm["@language"];
-    if (!validateLabel(data[label])) {
-      break;
+    let language;
+    if (labelType === "definisjon") {
+      language = data[label].label["@language"];
+    } else {
+      language = data[label].literalForm["@language"];
+      if (!validateLabel(data[label])) {
+        break;
+      }
     }
     try {
       // key already exists
