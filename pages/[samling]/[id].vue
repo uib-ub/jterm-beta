@@ -169,6 +169,28 @@
               </tbody>
             </table>
           </div>
+          <div v-if="displayInfo.semanticRelations">
+            <h3 id="relasjon" class="pb-1 text-xl">
+              <AppLink to="#relasjon"> {{ $t("id.relasjon") }}</AppLink>
+            </h3>
+            <table>
+              <tbody>
+                <template v-for="relationType in semanticRelationTypes">
+                  <template v-if="displayInfo.semanticRelations[relationType]">
+                    <DataRow
+                      v-for="relation in displayInfo.semanticRelations[
+                        relationType
+                      ]"
+                      :key="relation"
+                      :data="relation[0]"
+                      :to="relation[1]"
+                      :label="$t('id.' + relationType)"
+                    />
+                  </template>
+                </template>
+              </tbody>
+            </table>
+          </div>
           <div>
             <h3 v-if="data[uri]" id="felles" class="pb-1 text-xl">
               <AppLink to="#felles"> {{ $t("id.general") }}</AppLink>
