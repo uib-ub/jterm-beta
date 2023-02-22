@@ -1,4 +1,4 @@
-import pkg from 'jsonld'
+import pkg from "jsonld";
 
 const { compact } = pkg;
 
@@ -10,7 +10,7 @@ const context = function () {
     skos: "http://www.w3.org/2004/02/skos/core#",
     xkos: "http://rdf-vocabulary.ddialliance.org/xkos#",
     skosxl: "http://www.w3.org/2008/05/skos-xl#",
-    skosno: "https://data.norge.no/vocabulary/skosno#",
+    skosno: "https://vokab.norge.no/skosno#",
     skosp: "http://www.data.ub.uib.no/ns/spraksamlingene/skos#",
     dcterms: "http://purl.org/dc/terms/",
     xsd: "http://www.w3.org/2001/XMLSchema#",
@@ -32,6 +32,47 @@ const context = function () {
       "@type": "@id",
       "@container": "@set",
     },
+    related: {
+      "@id": "skos:related",
+      "@type": "@id",
+      "@container": "@set",
+    },
+    broader: {
+      "@id": "skos:broader",
+      "@type": "@id",
+      "@container": "@set",
+    },
+    specializes: {
+      "@id": "xkos:specializes",
+      "@type": "@id",
+      "@container": "@set",
+    },
+    isPartOf: {
+      "@id": "xkos:isPartOf",
+      "@type": "@id",
+      "@container": "@set",
+    },
+    narrower: {
+      "@id": "skos:narrower",
+      "@type": "@id",
+      "@container": "@set",
+    },
+    generalizes: {
+      "@id": "xkos:generalizes",
+      "@type": "@id",
+      "@container": "@set",
+    },
+    hasPart: {
+      "@id": "xkos:hasPart",
+      "@type": "@id",
+      "@container": "@set",
+    },
+    seeAlso: {
+      "@id": "rdfs:seeAlso",
+      "@type": "@id",
+      "@container": "@set",
+    },
+
     subject: {
       "@id": "dcterms:subject",
       "@type": "@id",
@@ -41,17 +82,17 @@ const context = function () {
       "@id": "skosp:memberOf",
       "@type": "@id",
     },
-    related: {
-      "@id": "skos:related",
-      "@type": "@id",
-      "@container": "@set",
-    },
     prefLabel: {
       "@id": "skosxl:prefLabel",
       "@type": "@id",
     },
     altLabel: {
       "@id": "skosxl:altLabel",
+      "@type": "@id",
+      "@container": "@set",
+    },
+    definisjon: {
+      "@id": "skosno:definisjon",
       "@type": "@id",
       "@container": "@set",
     },
