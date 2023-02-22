@@ -4,7 +4,7 @@
 
     <div v-if="searchData.length > 0" class="hidden md:block md:w-60 lg:w-1/4">
       <div class="flex h-9">
-        <AppLink class="flex group items-center space-x-2 text-lg" to="/search">
+        <AppLink class="group flex items-center space-x-2 text-lg" to="/search">
           <Icon
             name="ion:return-up-back-sharp"
             size="1.7em"
@@ -35,7 +35,7 @@
       class="col lg:w-3/4"
       :class="{ 'pl-3 lg:pl-6': searchData.length > 0 }"
     >
-      <div class="h-9 invisible">
+      <div class="invisible h-9">
         <input id="viewToggle" v-model="conceptViewToggle" type="checkbox" />
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
