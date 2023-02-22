@@ -254,6 +254,24 @@ const displayInfo = computed(() => {
   };
 });
 
+function getRelationData(relationType: SemanticRelation) {
+  if (data.value[uri]?.[relationType]) {
+    return data.value[uri]?.[relationType].map((target: string) => {
+      try {
+        const label =
+          data.value[data.value[target]?.prefLabel[i18n.locale.value]]
+            ?.literalForm["@value"] || data.value[target].label;
+        const link = "/" + target.replace("-3A", "/");
+        return [label, link];
+      } catch (error) {
+        return false;
+      }
+    });
+  } else {
+    return false;
+  }
+}
+
 async function fetchConceptData() {
   const fetched = await fetchData(
     genConceptQuery(samling, id),
