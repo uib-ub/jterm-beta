@@ -264,7 +264,7 @@ const data = computed(() => {
         labels = labels.concat(identified[uri][type]);
       }
     }
-    const labeled = idLabelsWithLang(identified, labels, [
+    const labeled = idSubobjectsWithLang(identified, labels, [
       "prefLabel",
       "altLabel",
       "hiddenLabel",

@@ -39,7 +39,7 @@ export function getConceptLanguages(data: any): string[] {
  * @param labeltypes - List of label types to identify with language code
  * @returns Dataset where labels with same languagecode are grouped in object with lc as key
  */
-export function idLabelsWithLang(
+export function idSubobjectsWithLang(
   data: any,
   conceptUris: string[],
   labeltypes: string[]
