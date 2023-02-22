@@ -24,7 +24,7 @@
           <ol>
             <SearchResultListEntryShort
               v-for="entry in searchData"
-              :key="entry"
+              :key="entry.label + entry.link + entry.lang"
               :entry-data="entry"
             />
           </ol>
