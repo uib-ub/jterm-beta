@@ -65,12 +65,13 @@ body {
   left: 50%;
   margin-left: -72px;
   opacity: 0;
-  z-index: 1;
+  z-index: -1;
 }
 .skip-link:focus {
   opacity: 1;
   background-color: white;
   padding: 0.5em;
   border: 1px solid black;
+  z-index: 1  ;
 }
 </style>
