@@ -4,7 +4,7 @@
 
     <div v-if="searchData.length > 0" class="hidden md:block md:w-60 lg:w-1/4">
       <div class="flex h-9">
-        <AppLink class="flex group items-center space-x-2 text-lg" to="/search">
+        <AppLink class="group flex items-center space-x-2 text-lg" to="/search">
           <Icon
             name="ion:return-up-back-sharp"
             size="1.7em"
@@ -24,7 +24,7 @@
           <ol>
             <SearchResultListEntryShort
               v-for="entry in searchData"
-              :key="entry"
+              :key="entry.label + entry.link + entry.lang"
               :entry-data="entry"
             />
           </ol>
@@ -35,7 +35,7 @@
       class="col lg:w-3/4"
       :class="{ 'pl-3 lg:pl-6': searchData.length > 0 }"
     >
-      <div class="h-9 invisible">
+      <div class="invisible h-9">
         <input id="viewToggle" v-model="conceptViewToggle" type="checkbox" />
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
@@ -134,6 +134,14 @@
             </h3>
             <table class="table-auto">
               <tbody>
+                <!--Definisjon-->
+                <DataRow
+                  v-for="def in data[uri]?.definisjon?.[lang]"
+                  :key="'definisjoin_' + def"
+                  :data="data[def]?.label['@value']"
+                  :label="$t('id.definisjon')"
+                  :data-lang="lang"
+                />
                 <!--Anbefalt term-->
                 <DataRow
                   v-for="label in data[uri]?.prefLabel?.[lang]"
@@ -158,6 +166,28 @@
                   :label="$t('id.hiddenLabel')"
                   :data-lang="lang"
                 />
+              </tbody>
+            </table>
+          </div>
+          <div v-if="displayInfo.semanticRelations">
+            <h3 id="relasjon" class="pb-1 text-xl">
+              <AppLink to="#relasjon"> {{ $t("id.relasjon") }}</AppLink>
+            </h3>
+            <table>
+              <tbody>
+                <template v-for="relationType in semanticRelationTypes">
+                  <template v-if="displayInfo.semanticRelations[relationType]">
+                    <DataRow
+                      v-for="relation in displayInfo.semanticRelations[
+                        relationType
+                      ]"
+                      :key="relation"
+                      :data="relation[0]"
+                      :to="relation[1]"
+                      :label="$t('id.' + relationType)"
+                    />
+                  </template>
+                </template>
               </tbody>
             </table>
           </div>
@@ -211,7 +241,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { useI18n } from "vue-i18n";
+import { SemanticRelation } from "utils/vars";
+
+const i18n = useI18n();
 const route = useRoute();
 const samling = route.params.samling;
 const id = route.params.id;
@@ -219,17 +253,23 @@ const uri = `${samling}-3A${id}`;
 const dataDisplayLanguages = useDataDisplayLanguages();
 const conceptViewToggle = useConceptViewToggle();
 const searchData = useSearchData();
-const searchOptions = useSearchOptions();
 
 const fetchedData = ref({});
 const data = computed(() => {
   if (fetchedData.value?.["@graph"]) {
     const identified = identifyData(fetchedData.value?.["@graph"]);
-    const labeled = idLabelsWithLang(
-      identified,
-      [uri],
-      ["prefLabel", "altLabel", "hiddenLabel"]
-    );
+    let labels: string[] = [uri];
+    for (const type of semanticRelationTypes) {
+      if (identified[uri][type]) {
+        labels = labels.concat(identified[uri][type]);
+      }
+    }
+    const labeled = idSubobjectsWithLang(identified, labels, [
+      "prefLabel",
+      "altLabel",
+      "hiddenLabel",
+      "definisjon",
+    ]);
     return labeled;
   } else {
     return {};
@@ -245,14 +285,44 @@ const displayInfo = computed(() => {
   const hiddenLabelLength = getMaxNumberOfInstances(
     data.value?.[uri]?.hiddenLabel
   );
-  return {
+  const info = {
     conceptLanguages,
     displayLanguages,
     prefLabelLength,
     altLabelLength,
     hiddenLabelLength,
   };
+  for (const relationType of semanticRelationTypes) {
+    const data = getRelationData(relationType);
+    if (data) {
+      try {
+        info.semanticRelations[relationType] = data;
+      } catch {
+        info.semanticRelations = {};
+        info.semanticRelations[relationType] = data;
+      }
+    }
+  }
+  return info;
 });
+
+function getRelationData(relationType: SemanticRelation) {
+  if (data.value[uri]?.[relationType]) {
+    return data.value[uri]?.[relationType].map((target: string) => {
+      try {
+        const label =
+          data.value[data.value[target]?.prefLabel[i18n.locale.value]]
+            ?.literalForm["@value"] || data.value[target].label;
+        const link = "/" + target.replace("-3A", "/");
+        return [label, link];
+      } catch (error) {
+        return false;
+      }
+    });
+  } else {
+    return false;
+  }
+}
 
 async function fetchConceptData() {
   const fetched = await fetchData(

@@ -6,6 +6,7 @@
     <td
       v-if="to"
       :lang="dataLang"
+      class="max-w-prose"
       :class="{ 'text-right': langRtoL(dataLang as LangCode) }"
     >
       <AppLink class="underline hover:decoration-2" :to="to">{{
@@ -14,6 +15,7 @@
     </td>
     <td
       v-else
+      class="max-w-prose"
       :class="{ 'text-right': langRtoL(dataLang as LangCode) }"
       :lang="dataLang"
     >

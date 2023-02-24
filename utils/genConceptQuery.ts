@@ -13,6 +13,7 @@ export function genConceptQuery(samling: string, begrep: string): string {
   PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
   PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
   PREFIX skosno: <https://data.norge.no/vocabulary/skosno#>
+  PREFIX skosno: <https://vokab.norge.no/skosno#>
   PREFIX base: <${runtimeConfig.public.base}>
 
   CONSTRUCT  {
@@ -36,6 +37,9 @@ export function genConceptQuery(samling: string, begrep: string): string {
         }
         FILTER NOT EXISTS {
           ?o2 a skos:Collection
+        }
+        FILTER NOT EXISTS {
+          ?o2 a skos:Concept
         }
       }
     }
