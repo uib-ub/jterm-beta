@@ -19,7 +19,8 @@ export type Samling =
   | "BIOLOGI"
   | "LINGVISTIKK"
   | "CMBIOLOGI"
-  | "KJEMI";
+  | "KJEMI"
+  | "FBK";
 
 export type Domains =
   | "humaniora"
@@ -30,9 +31,10 @@ export type Domains =
 export const termbaseOrder: Samling[] = [
   "ARTSDB",
   "ASTRONOMI",
- // "BIOLOGI",
+  // "BIOLOGI",
   "CMBIOLOGI",
   "EVERTEBRATER",
+  "FBK",
   "KJEMI",
   "KLIMA",
   "LINGVISTIKK",
@@ -54,6 +56,7 @@ export const termbaseInfo: { [key in Samling]: LangCode[] } = {
   BIOLOGI: [],
   CMBIOLOGI: ["nb", "nn", "en"],
   EVERTEBRATER: ["nb", "la"],
+  FBK: ["nb", "nn", "en"],
   KJEMI: ["nb", "nn", "en", "da"],
   KLIMA: ["nb", "nn", "en"],
   LINGVISTIKK: ["nb", "nn", "en"],
@@ -83,11 +86,11 @@ export const domainNesting = {
       "ROMFYS",
       "KLIMA",
       "ASTRONOMI",
-     // "BIOLOGI",
+      // "BIOLOGI",
       "CMBIOLOGI",
       "KJEMI",
     ],
   },
   sammfunnsfag: { bases: ["NOJU", "TOLKING", "UHR"] },
-  okonomAdmin: { bases: ["NHH"] },
+  okonomAdmin: { bases: ["NHH", "FBK"] },
 };
