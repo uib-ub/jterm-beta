@@ -12,7 +12,7 @@
     <div class="flex flex-col gap-x-5 gap-y-5 md:flex-row">
       <!--Description-->
       <div class="basis-GRb space-y-2">
-        <p v-for="p in uriData?.description?.['@value'].split('\n\n')" :key="p">
+        <p v-for="p in description" :key="p">
           {{ p }}
         </p>
       </div>
@@ -66,6 +66,9 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
+const i18n = useI18n();
+
 const route = useRoute();
 const samling = getSamlingFromParam();
 const uri = `${samling}-3A${samling}`;
@@ -74,8 +77,24 @@ const displayData = computed(() => {
   return identifyData(samlingData.value?.["@graph"]);
 });
 const uriData = computed(() => {
+  idSubobjectsWithLang(displayData.value, [uri], ["description"]);
   return displayData.value?.[uri];
 });
+
+const description = computed(() => {
+  const localLanguageOrder = languageOrder[i18n.locale.value].slice(0, 3);
+  let description = "";
+  for (const lang of localLanguageOrder) {
+    if (uriData.value?.description?.[lang]) {
+      try {
+        description = uriData.value?.description?.[lang][0]["@value"];
+      } catch (e) {}
+      break;
+    }
+  }
+  return description.split("\n\n");
+});
+
 const orgData = computed(() => {
   return displayData.value?.[`${uri}-23org`];
 });
