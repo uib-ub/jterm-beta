@@ -20,13 +20,15 @@ const context = function () {
     domene: "skosp:domene",
     modified: "dcterms:modified",
     identifier: "dcterms:identifier",
-    description: "dcterms:description",
     language: "dcterms:language",
     scopeNote: "skos:scopeNote", // TODO
     opprinneligSpraak: "skosp:opprinneligSpraak",
     hasTelephone: "vcard:hasTelephone",
     hasEmail: { "@id": "vcard:hasEmail", "@type": "@id" },
-
+    description: {
+      "@id": "dcterms:description",
+      "@container": "@set",
+    },
     semanticRelation: {
       "@id": "skos:semanticRelation",
       "@type": "@id",
