@@ -71,7 +71,7 @@
   },
 
   "domainOverview": {"domainsAndBases": "Domains & Termbases"},
-  "navBar": { "about": "About", "config": "Settings" },
+  "navBar": { "om": "About", "innstillinger": "Settings" },
   "searchBar": {
     "search": "Search",
     "searchLanguage": "Search language",
@@ -116,8 +116,8 @@
     "language": "Språk",
     "termbase": "Termbase"
   },
-  "about": { "title": "About Termportalen" },
-  "config": {
+  "om": { "title": "About Termportalen" },
+  "innstillinger": {
     "title": "Settings",
     "global": "Global",
     "conceptview": "Conceot view",
