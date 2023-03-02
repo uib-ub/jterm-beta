@@ -37,6 +37,7 @@
       "ASTRONOMI": "Astronomi",
       "CMBIOLOGI": "Celle- og molekylærbiologi",
       "EVERTEBRATER": "Evertebrater",
+      "FBK": "Felles Begrepskatalog",
       "KLIMA": "Klima",
       "LINGVISTIKK": "Lingvistikk",
       "MRT": "Maritim ordbok",
@@ -70,8 +71,8 @@
 
   "domainOverview": { "domainsAndBases": "Domener & termbaser" },
   "navBar": {
-    "about": "Om Termportalen",
-    "config": "Inn­stillinger",
+    "om": "Om Termportalen",
+    "innstillinger": "Inn­stillinger",
     "menuButtonShow": "Utvid menyen",
     "menuButtonHide": "Skjul menyen"
   },
@@ -146,8 +147,8 @@
     "language": "Språk",
     "termbase": "Termbase"
   },
-  "about": { "title": "Om Termportalen" },
-  "config": {
+  "om": { "title": "Om Termportalen" },
+  "innstillinger": {
     "title": "Inn­stillinger",
     "global": "Global",
     "conceptview": "Begrepsvisning",

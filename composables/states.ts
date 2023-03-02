@@ -1,10 +1,6 @@
-import {
-  LabelPredicate,
-  LangCode,
-  Samling,
-  Matching,
-  MatchingNested,
-} from "~~/utils/vars";
+import { LabelPredicate, Matching, MatchingNested } from "~~/utils/vars";
+import { LangCode } from "~~/utils/vars-language";
+import { Samling } from "~~/utils/vars-termbase";
 
 export interface SearchDataEntry {
   predicate: string;
@@ -71,6 +67,8 @@ export const useSearchDataPending = () =>
     aggregate: false,
     entries: false,
   }));
+export const useSearchScrollBarPos = () =>
+  useState<number>("searchScrollBarPos", () => 0);
 
 export const useSearchDataCount = () => useState("searchDataCount", () => {});
 export const useSearchDataStats = () =>

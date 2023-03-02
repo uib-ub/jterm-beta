@@ -71,6 +71,8 @@ export function updateLabel(data: any, conceptUri: string, labelType: string) {
     let language;
     if (labelType === "definisjon") {
       language = data[label].label["@language"];
+    } else if (labelType === "description") {
+      language = label["@language"];
     } else {
       language = data[label].literalForm["@language"];
       if (!validateLabel(data[label])) {

@@ -1,14 +1,14 @@
 <template>
   <main id="main">
     <Head>
-      <Title>{{ $t("config.title") }} | {{ $t("index.title") }}</Title>
+      <Title>{{ $t("innstillinger.title") }} | {{ $t("index.title") }}</Title>
     </Head>
-    <h1 id="config" class="pt-5 pb-2 text-3xl">
-      <AppLink to="#config">{{ $t("config.title") }}</AppLink>
+    <h1 id="innstillinger" class="pt-5 pb-2 text-3xl">
+      <AppLink to="#innstillinger">{{ $t("innstillinger.title") }}</AppLink>
     </h1>
     <section>
       <h2 id="global" class="pb-2 text-2xl">
-        <AppLink to="#global">{{ $t("config.global") }}</AppLink>
+        <AppLink to="#global">{{ $t("innstillinger.global") }}</AppLink>
       </h2>
       <label for="locale-select" class="text-lg"
         >{{ $t("global.language") }}:
@@ -25,11 +25,11 @@
     </section>
     <section>
       <h2 id="conceptview" class="pt-3 pb-2 text-2xl">
-        <AppLink to="#conceptview">{{ $t("config.conceptview") }}</AppLink>
+        <AppLink to="#conceptview">{{ $t("innstillinger.conceptview") }}</AppLink>
       </h2>
       <fieldset>
         <legend id="dataDispLang" class="pb-1 text-xl">
-          <AppLink to="#dataDispLang">{{ $t("config.dataDispLang") }}</AppLink>
+          <AppLink to="#dataDispLang">{{ $t("innstillinger.dataDispLang") }}</AppLink>
         </legend>
         <div class="grid w-72 grid-flow-col grid-rows-6 gap-y-2 gap-x-3">
           <div v-for="lang in languageOrder[$i18n.locale]" :key="lang">

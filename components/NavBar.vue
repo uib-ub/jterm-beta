@@ -39,20 +39,20 @@
           >
             <li>
               <AppLink
-                to="/about"
+                to="/om"
                 class="decoration-inherit hover:text-gray-200 hover:underline"
                 @click="navMenuExpanded = false"
               >
-                {{ $t("navBar.about") }}</AppLink
+                {{ $t("navBar.om") }}</AppLink
               >
             </li>
             <li>
               <AppLink
-                to="/config"
+                to="/innstillinger"
                 class="decoration-inherit hover:text-gray-200 hover:underline"
                 @click="navMenuExpanded = false"
               >
-                {{ $t("navBar.config") }}</AppLink
+                {{ $t("navBar.innstillinger") }}</AppLink
               >
             </li>
           </ul>

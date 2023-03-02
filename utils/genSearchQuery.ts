@@ -18,6 +18,7 @@ const samlingMapping = {
   UHR: 3004,
   ARTSDB: 3006,
   EVERTEBRATER: 3008,
+  FBK: 3030,
   NHH: 3010,
   NOJU: 3012,
   NOT: 3014,

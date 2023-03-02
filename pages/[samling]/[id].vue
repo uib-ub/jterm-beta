@@ -1,8 +1,11 @@
 <template>
-  <div class="flex">
+  <div class="flex h-full" style="height: calc(100% - 128px)">
     <h1 class="sr-only">{{ $t("id.topheading") }}</h1>
 
-    <div v-if="searchData.length > 0" class="hidden md:block md:w-60 lg:w-1/4">
+    <div
+      v-if="searchData.length > 0"
+      class="hidden flex-col md:flex md:w-60 lg:w-1/4"
+    >
       <div class="flex h-9">
         <AppLink class="group flex items-center space-x-2 text-lg" to="/search">
           <Icon
@@ -20,26 +23,28 @@
         <h2 id="sidebarresults" class="pb-2 pt-3 text-2xl">
           {{ $t("searchFilter.results-heading") }}
         </h2>
-        <div class="overflow-x-auto" style="height: calc(100vh * 0.7 - 100px)">
-          <ol>
-            <SearchResultListEntryShort
-              v-for="entry in searchData"
-              :key="entry.label + entry.link + entry.lang"
-              :entry-data="entry"
-            />
-          </ol>
-        </div>
+        <ol
+          ref="sidebar"
+          class="overflow-y-auto"
+          style="max-height: 0px"
+        >
+          <SearchResultListEntryShort
+            v-for="entry in searchData"
+            :key="entry.label + entry.link + entry.lang"
+            :entry-data="entry"
+          />
+        </ol>
       </nav>
     </div>
     <div
-      class="col lg:w-3/4"
+      class="flex flex-col lg:w-3/4"
       :class="{ 'pl-3 lg:pl-6': searchData.length > 0 }"
     >
       <div class="invisible h-9">
         <input id="viewToggle" v-model="conceptViewToggle" type="checkbox" />
         <label for="viewToggle">{{ $t("id.tableview") }}</label>
       </div>
-      <main id="main">
+      <main id="main" ref="main" class="h-full">
         <h2 id="ctitle" class="pb-4">
           <AppLink class="text-3xl" to="#ctitle">{{
             data[uri]?.label
@@ -332,6 +337,23 @@ async function fetchConceptData() {
   const compacted = await compactData(fetched);
   fetchedData.value = compacted;
 }
-
 fetchConceptData();
+
+// Resize sidebar
+const sidebar = ref(null);
+const main = ref(null);
+useResizeObserver(main, (e) => {
+  sidebar.value.style.maxHeight = `${main.value.offsetHeight - 95}px`
+
+})
+
+const searchScrollBarPos = useSearchScrollBarPos();
+onMounted(()=> {
+  sidebar.value.scrollTop = searchScrollBarPos.value
+
+})
+
+onBeforeUnmount(() => {
+  searchScrollBarPos.value = sidebar.value.scrollTop
+})
 </script>
