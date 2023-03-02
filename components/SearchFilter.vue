@@ -10,7 +10,7 @@
         <SpinnerIcon v-if="pending" />
       </TransitionOpacity>
       <button
-        class="h-full w-32 rounded border border-solid border-gray-300 hover:bg-gray-100"
+        class="h-full w-32 rounded border border-solid border-gray-300 hover:bg-gray-200"
         type="button"
         :title="
           displayFilter
