@@ -346,4 +346,16 @@ useResizeObserver(main, (e) => {
   sidebar.value.style.maxHeight = `${main.value.offsetHeight - 95}px`
 
 })
+
+const searchScrollBarPos = useSearchScrollBarPos();
+onMounted(()=> {
+  sidebar.value.scrollTop = searchScrollBarPos.value
+  console.log("id jump " + sidebar.value.scrollTop)
+
+})
+
+onBeforeUnmount(() => {
+  searchScrollBarPos.value = sidebar.value.scrollTop
+  console.log("id leaving " + sidebar.value.scrollTop)
+})
 </script>
