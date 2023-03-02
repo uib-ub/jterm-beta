@@ -1,8 +1,8 @@
 <template>
-  <li class="rounded border">
+  <li class="rounded border border-gray-300">
     <AppLink :to="`/${entryData.link}`">
       <section
-        class="p-2 hover:bg-gray-100 lg:flex"
+        class="p-2 hover:bg-gray-300 lg:flex"
         :class="{ 'bg-gray-200': isCurrentEntry,
                   'text-right': langRtoL(entryData.lang[0] as LangCode) }"
         :aria-current="isCurrentEntry"

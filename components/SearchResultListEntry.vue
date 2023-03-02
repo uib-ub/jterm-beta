@@ -2,7 +2,7 @@
   <li class="rounded border border-gray-300">
     <AppLink :to="`/${entryData.link}`">
       <section
-        class="py-1.5 px-2 hover:bg-gray-100 lg:flex lg:py-2"
+        class="py-1.5 px-2 hover:bg-gray-200 lg:flex lg:py-2"
         :class="{
           'sm:flex':
             searchOptions.searchTranslate === 'none' &&
