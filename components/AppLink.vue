@@ -1,7 +1,7 @@
 <template>
   <NuxtLink v-if="linkType === 'internal'" :to="to"><slot /></NuxtLink>
   <a v-else-if="linkType === 'pageinternal'" :href="to"><slot /></a>
-  <NuxtLink v-else-if="linkType === 'external'" :to="to"
+  <NuxtLink v-else-if="linkType === 'external'" :to="to" target="_blank"
     ><span class="icon-pad">
       <slot />
     </span>
