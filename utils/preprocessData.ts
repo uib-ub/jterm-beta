@@ -137,7 +137,13 @@ export function getMaxNumberOfInstances(data: {
 export function processBinding(binding: {
   [key: string]: any;
 }): SearchDataEntry {
-  const link = binding.uriEnc.value.replace("-3A", "/");
+  const runtimeConfig = useRuntimeConfig();
+  let link;
+  if (binding.uri.value.startsWith(runtimeConfig.public.base)) {
+    link = binding.uri.value
+      .replace(runtimeConfig.public.base, "")
+      .replace("-3A", "/");
+  }
   const predicate = binding.predicate.value.replace(
     "http://www.w3.org/2008/05/skos-xl#",
     ""
