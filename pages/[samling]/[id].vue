@@ -23,11 +23,7 @@
         <h2 id="sidebarresults" class="pb-2 pt-3 text-2xl">
           {{ $t("searchFilter.results-heading") }}
         </h2>
-        <ol
-          ref="sidebar"
-          class="overflow-y-auto"
-          style="max-height: 0px"
-        >
+        <ol ref="sidebar" class="overflow-y-auto" style="max-height: 0px">
           <SearchResultListEntryShort
             v-for="entry in searchData"
             :key="entry.label + entry.link + entry.lang"
