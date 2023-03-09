@@ -343,17 +343,21 @@ fetchConceptData();
 const sidebar = ref(null);
 const main = ref(null);
 useResizeObserver(main, (e) => {
-  sidebar.value.style.maxHeight = `${main.value.offsetHeight - 95}px`
-
-})
+  if (sidebar.value) {
+    sidebar.value.style.maxHeight = `${main.value.offsetHeight - 95}px`;
+  }
+});
 
 const searchScrollBarPos = useSearchScrollBarPos();
-onMounted(()=> {
-  sidebar.value.scrollTop = searchScrollBarPos.value
-
-})
+onMounted(() => {
+  if (sidebar.value) {
+    sidebar.value.scrollTop = searchScrollBarPos.value;
+  }
+});
 
 onBeforeUnmount(() => {
-  searchScrollBarPos.value = sidebar.value.scrollTop
-})
+  if (sidebar.value) {
+    searchScrollBarPos.value = sidebar.value.scrollTop;
+  }
+});
 </script>
