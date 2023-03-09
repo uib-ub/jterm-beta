@@ -1,11 +1,6 @@
 import { SearchOptions } from "../composables/states";
-import {
-  Matching,
-  QueryType,
-  Samling,
-  Domains,
-  LabelPredicate,
-} from "../utils/vars";
+import { Matching, QueryType, LabelPredicate } from "../utils/vars";
+import { Samling, Domains } from "./vars-termbase";
 
 const htmlHighlight = {
   open: "<mark class='tp-shighlight'>",
