@@ -69,7 +69,7 @@ export function updateLabel(data: any, conceptUri: string, labelType: string) {
   const labels: Array<string> = data[conceptUri][labelType];
   for (const label of labels) {
     let language;
-    if (labelType === "definisjon") {
+    if (labelType === "definisjon" || labelType === "betydningsbeskrivelse") {
       language = data[label].label["@language"];
     } else if (labelType === "description") {
       language = label["@language"];
