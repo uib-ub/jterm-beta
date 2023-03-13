@@ -1,8 +1,11 @@
+export function genConceptQuery(
+  base: string,
+  url: string,
+  id: string
+): string {
 
-export function genConceptQuery(samling: string, begrep: string): string {
-  const runtimeConfig = useRuntimeConfig()
   const query = `
-  #jterm-beta>concept: ${samling}-3A${begrep}
+  #jterm-beta>concept: ${url}
   PREFIX dc: <http://purl.org/dc/elements/1.1/>
   PREFIX dcterms: <http://purl.org/dc/terms/>
   PREFIX xkos: <http://rdf-vocabulary.ddialliance.org/xkos#>
@@ -14,15 +17,15 @@ export function genConceptQuery(samling: string, begrep: string): string {
   PREFIX skosp: <http://www.data.ub.uib.no/ns/spraksamlingene/skos#>
   PREFIX skosno: <https://data.norge.no/vocabulary/skosno#>
   PREFIX skosno: <https://vokab.norge.no/skosno#>
-  PREFIX base: <${runtimeConfig.public.base}>
+  PREFIX base: <${base}>
 
   CONSTRUCT  {
-    base:${samling}-3A${begrep} ?p ?o.
+    <${base}${id}> ?p ?o.
     ?o ?p2 ?o2.
     ?o2 ?p3 ?o3.}
   WHERE {
     GRAPH ?GRAPH {
-      base:${samling}-3A${begrep} ?p ?o.
+      <${base}${id}> ?p ?o.
       OPTIONAL {?o ?p2 ?o2.
         OPTIONAL {?o2 ?p3 ?o3
           FILTER NOT EXISTS {

@@ -50,16 +50,14 @@ export function genSearchQueryAll(
   PREFIX text: <http://jena.apache.org/text#>
   PREFIX ns: <http://spraksamlingane.no/terminlogi/named/>
 
-  SELECT DISTINCT ?uriEnc ?predicate ?literal ?samling (0 as ?score)
+  SELECT DISTINCT ?uri ?predicate ?literal ?samling (0 as ?score)
          (group_concat( ?l; separator="," ) as ?lang)
          ("all" as ?matching) ${translate}
   ${graph[0]}
   WHERE {
-      { SELECT ?label ?literal ?l ?uriEnc ?predicate ?samling ${translate}
+      { SELECT ?label ?literal ?l ?uri ?predicate ?samling ${translate}
         WHERE {
           ${innerQuery}
-          BIND ( replace(str(?uri), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/", "") as ?uriProc).
-          BIND ( replace(?uriProc, "/", "%2F") as ?uriEnc).
           BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling).
           BIND ( lang(?lit) as ?l)
           Bind ( str(?lit) as ?literal)
@@ -68,7 +66,7 @@ export function genSearchQueryAll(
         LIMIT ${searchOptions.searchLimit}
     }
   }
-  GROUP BY ?uriEnc ?predicate ?literal ?samling ?score ?lang ?matching ${translate}
+  GROUP BY ?uri ?predicate ?literal ?samling ?score ?lang ?matching ${translate}
   ORDER BY lcase(?literal) DESC(?predicate)
   LIMIT ${searchOptions.searchLimit}
   `;

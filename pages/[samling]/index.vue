@@ -68,6 +68,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 const i18n = useI18n();
+const runtimeConfig = useRuntimeConfig();
 
 const route = useRoute();
 const samling = getSamlingFromParam();
@@ -113,7 +114,7 @@ function getSamlingFromParam() {
 
 async function fetchSamlingData() {
   const data = await fetchData(genSamlingQuery(samling), "application/ld+json");
-  samlingData.value = await compactData(data);
+  samlingData.value = await compactData(data, runtimeConfig.public.base);
 }
 fetchSamlingData();
 </script>

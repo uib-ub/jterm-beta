@@ -94,3 +94,14 @@ export const domainNesting = {
   sammfunnsfag: { bases: ["NOJU", "TOLKING", "UHR"] },
   okonomAdmin: { bases: ["NHH", "FBK"] },
 };
+
+
+export const termbaseUriPatterns = {
+  FBK: {
+    bkg: "http://begrepskatalogen/begrep/",
+    nav: "https://data.nav.no/begrep/",
+    brreg: "http://data.brreg.no/begrep/",
+    fbk: "https://concept-catalog.fellesdatakatalog.digdir.no/collections/"
+
+  },
+};

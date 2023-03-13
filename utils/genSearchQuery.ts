@@ -1,11 +1,6 @@
 import { SearchOptions } from "../composables/states";
-import {
-  Matching,
-  QueryType,
-  Samling,
-  Domains,
-  LabelPredicate,
-} from "../utils/vars";
+import { Matching, QueryType, LabelPredicate } from "../utils/vars";
+import { Samling, Domains } from "./vars-termbase";
 
 const htmlHighlight = {
   open: "<mark class='tp-shighlight'>",
@@ -308,7 +303,7 @@ export function genSearchQuery(
       {
         SELECT ?label ?literal ?l (?sc + ${
           subqueries(queryType, match)?.score
-        } as ?score) ?uriEnc ?predicate ?samling ${translate}
+        } as ?score) ?uri ?predicate ?samling ${translate}
                ("${match}" as ?matching)
         WHERE {
           ${where}
@@ -317,8 +312,6 @@ export function genSearchQuery(
           ?uri ?predicate ?label;
                skosp:memberOf ?s.
           ${translateOptional}
-          BIND ( replace(str(?uri), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/", "") as ?uriProc).
-          BIND ( replace(?uriProc, "/", "%2F") as ?uriEnc).
           BIND ( lang(?lit) as ?l ).
           BIND ( str(?lit) as ?literal ).
           BIND ( replace(str(?s), "http://.*wiki.terminologi.no/index.php/Special:URIResolver/.*-3A", "") as ?samling).
@@ -435,7 +428,7 @@ export function genSearchQuery(
   #jterm-beta>${querySituation}>entry: ${JSON.stringify(searchOptions)}
   ${queryPrefix()}
 
-  SELECT DISTINCT ?uriEnc ?predicate ?literal ?samling ?score ${translate}
+  SELECT DISTINCT ?uri ?predicate ?literal ?samling ?score ${translate}
          (group_concat( ?l; separator="," ) as ?lang)
          ?matching ${graph[0]}
   WHERE {
@@ -444,7 +437,7 @@ export function genSearchQuery(
       }
     }
   }
-  GROUP BY ?uriEnc ?predicate ?literal ?samling ?score ?matching ${translate}
+  GROUP BY ?uri ?predicate ?literal ?samling ?score ?matching ${translate}
   ORDER BY DESC(?score) lcase(?literal) DESC(?predicate)
   LIMIT ${searchOptions.searchLimit}`;
 
