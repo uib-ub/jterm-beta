@@ -5,6 +5,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "lint": "eslint --ext .ts,.js,.vue --ignore-path .gitignore .",
     "pa11y": "pa11y-ci",
     "test": "vitest",
     "coverage": "vitest run --coverage",
