@@ -1,5 +1,8 @@
 <template>
   <div class="flex h-full" style="height: calc(100% - 128px)">
+    <Head>
+      <Title> {{ pagetitle }} | {{ $t("index.title") }} </Title>
+    </Head>
     <h1 class="sr-only">{{ $t("id.topheading") }}</h1>
 
     <div
@@ -42,15 +45,13 @@
       </div>
       <main id="main" ref="main" class="h-full">
         <h2 id="ctitle" class="pb-4">
-          <AppLink class="text-3xl" to="#ctitle">{{
-            data[uri]?.label
-          }}</AppLink>
-          <div v-if="data[uri]?.memberOf">
+          <AppLink class="text-3xl" to="#ctitle">{{ pagetitle }}</AppLink>
+          <div v-if="data[id]?.memberOf">
             <AppLink
               class="text-lg text-gray-600 underline hover:text-black"
-              :to="'/' + data[uri]?.memberOf.split('-3A')[0]"
+              :to="'/' + data[id]?.memberOf.split('-3A')[1]"
             >
-              {{ $t("global.samling." + data[uri]?.memberOf.split("-3A")[0]) }}
+              {{ $t("global.samling." + data[id]?.memberOf.split("-3A")[1]) }}
             </AppLink>
           </div>
         </h2>
@@ -82,7 +83,7 @@
                   :key="'prefLabel_' + lang + i"
                 >
                   {{
-                    data[data[uri]?.prefLabel[lang]?.[i]]?.literalForm["@value"]
+                    data[data[id]?.prefLabel[lang]?.[i]]?.literalForm["@value"]
                   }}
                 </td>
                 <!--Kontekst?-->
@@ -98,7 +99,7 @@
                   :key="'altLabel_' + lang + i"
                 >
                   {{
-                    data[data[uri]?.altLabel[lang]?.[i]]?.literalForm["@value"]
+                    data[data[id]?.altLabel[lang]?.[i]]?.literalForm["@value"]
                   }}
                 </td>
               </tr>
@@ -113,7 +114,7 @@
                   :key="'hiddenLabel' + lang + i"
                 >
                   {{
-                    data[data[uri]?.hiddenLabel[lang]?.[i]]?.literalForm[
+                    data[data[id]?.hiddenLabel[lang]?.[i]]?.literalForm[
                       "@value"
                     ]
                   }}
@@ -137,7 +138,8 @@
               <tbody>
                 <!--Definisjon-->
                 <DataRow
-                  v-for="def in data[uri]?.definisjon?.[lang]"
+                  v-for="def in data[id]?.definisjon?.[lang] ||
+                  data[id]?.betydningsbeskrivelse?.[lang]"
                   :key="'definisjoin_' + def"
                   :data="data[def]?.label['@value']"
                   :label="$t('id.definisjon')"
@@ -145,7 +147,7 @@
                 />
                 <!--Anbefalt term-->
                 <DataRow
-                  v-for="label in data[uri]?.prefLabel?.[lang]"
+                  v-for="label in data[id]?.prefLabel?.[lang]"
                   :key="'prefLabel_' + label"
                   :data="data[label]?.literalForm['@value']"
                   :label="$t('id.prefLabel')"
@@ -153,7 +155,7 @@
                 />
                 <!--AltLabel-->
                 <DataRow
-                  v-for="label in data[uri]?.altLabel?.[lang]"
+                  v-for="label in data[id]?.altLabel?.[lang]"
                   :key="'altLabel_' + label"
                   :data="data[label]?.literalForm['@value']"
                   :label="$t('id.altLabel')"
@@ -161,7 +163,7 @@
                 />
                 <!--HiddenLabel-->
                 <DataRow
-                  v-for="label in data[uri]?.hiddenLabel?.[lang]"
+                  v-for="label in data[id]?.hiddenLabel?.[lang]"
                   :key="'hiddenLabel_' + label"
                   :data="data[label]?.literalForm['@value']"
                   :label="$t('id.hiddenLabel')"
@@ -193,43 +195,43 @@
             </table>
           </div>
           <div>
-            <h3 v-if="data[uri]" id="felles" class="pb-1 text-xl">
+            <h3 v-if="data[id]" id="felles" class="pb-1 text-xl">
               <AppLink to="#felles"> {{ $t("id.general") }}</AppLink>
             </h3>
             <table>
               <tbody>
                 <!--Termbase-->
                 <DataRow
-                  v-if="data[uri]?.memberOf"
+                  v-if="data[id]?.memberOf"
                   :data="
-                    $t('global.samling.' + data[uri]?.memberOf.split('-3A')[0])
+                    $t('global.samling.' + data[id]?.memberOf.split('-3A')[1])
                   "
                   :to="`/${samling}`"
                   :label="$t('id.collection')"
                 />
                 <!--Domene-->
                 <DataRow
-                  v-if="data[uri]?.domene"
-                  :data="data[uri]?.domene"
+                  v-if="data[id]?.domene"
+                  :data="data[id]?.domene"
                   :label="$t('id.domain')"
                 />
                 <!--Bruksområde-->
                 <DataRow
-                  v-if="data[uri]?.subject"
-                  :data="data[uri]?.subject.join(', ')"
+                  v-if="data[id]?.subject"
+                  :data="data[id]?.subject.join(', ')"
                   :label="$t('id.subject')"
                 />
                 <!--Modified-->
                 <DataRow
-                  v-if="data[uri]?.modified"
-                  :data="data[uri]?.modified['@value']"
+                  v-if="data[id]?.modified"
+                  :data="data[id]?.modified['@value']"
                   :label="$t('id.modified')"
                 />
                 <!--Created-->
                 <!--Note TODO after export fix-->
                 <DataRow
-                  v-if="data[uri]?.scopeNote"
-                  :data="data[uri]?.scopeNote"
+                  v-if="data[id]?.scopeNote"
+                  :data="data[id]?.scopeNote"
                   th-class=""
                   :label="$t('id.note')"
                 />
@@ -245,24 +247,63 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { SemanticRelation } from "utils/vars";
+import { LocalLangCode } from "~~/utils/vars-language";
 
+const runtimeConfig = useRuntimeConfig();
 const i18n = useI18n();
 const route = useRoute();
 const samling = route.params.samling;
-const id = route.params.id;
-const uri = `${samling}-3A${id}`;
+const idArray = route.params.id as Array<string>;
 const dataDisplayLanguages = useDataDisplayLanguages();
 const conceptViewToggle = useConceptViewToggle();
 const searchData = useSearchData();
+
+let base: string;
+let id: string;
+if (!Object.keys(termbaseUriPatterns).includes(samling)) {
+  base = runtimeConfig.public.base;
+  id = `${samling}-3A${idArray[0]}`;
+} else {
+  base = termbaseUriPatterns[samling][idArray[0]];
+  id = idArray.slice(1).join("/");
+}
+
+const pagetitle = computed(() => {
+  if (data.value[id]) {
+    return getConceptDisplaytitle(data.value, id);
+  } else {
+    return "";
+  }
+});
+
+function getConceptDisplaytitle(data, id: string) {
+  let title = "";
+  const languages = languageOrder[i18n.locale.value as LocalLangCode].slice(
+    0,
+    3
+  );
+  for (const label of ["prefLabel", "altLabel"]) {
+    for (const lang of languages) {
+      if (data[data[id]?.[label][lang]]) {
+        title = data[data[id]?.[label][lang]?.[0]]?.literalForm["@value"];
+        break;
+      }
+    }
+    if (title) {
+      break;
+    }
+  }
+  return title;
+}
 
 const fetchedData = ref({});
 const data = computed(() => {
   if (fetchedData.value?.["@graph"]) {
     const identified = identifyData(fetchedData.value?.["@graph"]);
-    let labels: string[] = [uri];
+    let labels: string[] = [id];
     for (const type of semanticRelationTypes) {
-      if (identified[uri][type]) {
-        labels = labels.concat(identified[uri][type]);
+      if (identified[id][type]) {
+        labels = labels.concat(identified[id][type]);
       }
     }
     const labeled = idSubobjectsWithLang(identified, labels, [
@@ -270,21 +311,23 @@ const data = computed(() => {
       "altLabel",
       "hiddenLabel",
       "definisjon",
+      "betydningsbeskrivelse",
     ]);
     return labeled;
   } else {
     return {};
   }
 });
+
 const displayInfo = computed(() => {
-  const conceptLanguages = getConceptLanguages(data.value[uri]);
+  const conceptLanguages = getConceptLanguages(data.value[id]);
   const displayLanguages = dataDisplayLanguages.value.filter((language) =>
     Array.from(conceptLanguages).includes(language)
   );
-  const prefLabelLength = getMaxNumberOfInstances(data.value?.[uri]?.prefLabel);
-  const altLabelLength = getMaxNumberOfInstances(data.value?.[uri]?.altLabel);
+  const prefLabelLength = getMaxNumberOfInstances(data.value?.[id]?.prefLabel);
+  const altLabelLength = getMaxNumberOfInstances(data.value?.[id]?.altLabel);
   const hiddenLabelLength = getMaxNumberOfInstances(
-    data.value?.[uri]?.hiddenLabel
+    data.value?.[id]?.hiddenLabel
   );
   const info = {
     conceptLanguages,
@@ -308,12 +351,10 @@ const displayInfo = computed(() => {
 });
 
 function getRelationData(relationType: SemanticRelation) {
-  if (data.value[uri]?.[relationType]) {
-    return data.value[uri]?.[relationType].map((target: string) => {
+  if (data.value[id]?.[relationType]) {
+    return data.value[id]?.[relationType].map((target: string) => {
       try {
-        const label =
-          data.value[data.value[target]?.prefLabel[i18n.locale.value]]
-            ?.literalForm["@value"] || data.value[target].label;
+        const label = getConceptDisplaytitle(data.value, target)
         const link = "/" + target.replace("-3A", "/");
         return [label, link];
       } catch (error) {
@@ -327,10 +368,10 @@ function getRelationData(relationType: SemanticRelation) {
 
 async function fetchConceptData() {
   const fetched = await fetchData(
-    genConceptQuery(samling, id),
+    genConceptQuery(base, route.path, id),
     "application/ld+json"
   );
-  const compacted = await compactData(fetched);
+  const compacted = await compactData(fetched, base);
   fetchedData.value = compacted;
 }
 fetchConceptData();
