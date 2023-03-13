@@ -107,7 +107,7 @@ const fetchFurtherSearchData = () => {
           }
         }
       } else {
-        offset["all"] = countFetchedMatches.value;
+        offset.all = countFetchedMatches.value;
       }
       const newOptions = {
         searchTerm: searchOptions.value.searchTerm,
