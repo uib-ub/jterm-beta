@@ -1,4 +1,6 @@
-import { LabelPredicate, LangCode, Samling, Matching } from "./vars";
+import { LabelPredicate, Matching } from "./vars";
+import { LangCode } from "./vars-language";
+import { Samling } from "./vars-termbase";
 import { SearchDataEntry, SearchDataStats } from "~~/composables/states";
 
 /**

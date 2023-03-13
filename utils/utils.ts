@@ -1,4 +1,4 @@
-import { LangCode } from "./vars";
+import { LangCode } from "./vars-language";
 import { SearchDataEntry } from "~~/composables/states";
 
 /**
